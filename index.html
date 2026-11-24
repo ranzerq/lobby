@@ -8,8 +8,8 @@
 <meta property="og:url" content="https://gofishex.github.io/lobby/">
 <meta property="og:image" content="https://file.garden/auxypIh_GSVvs_VS/New%20Project%20(15).png"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230f4d33'/%3E%3Ctext x='50' y='70' font-size='62' text-anchor='middle'%3E🐟%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
 <style>
   /* ============================================================
      THEME (green felt table)
@@ -45,7 +45,7 @@
     padding: 10px 16px; background: var(--accent); color: #fff; font-weight: 700;
     min-height: 42px;
   }
-  button:hover:not(:disabled) { filter: brightness(1.12); }
+  @media (hover: hover) { button:hover:not(:disabled) { filter: brightness(1.12); } }
   button:disabled { opacity: .45; cursor: not-allowed; }
   button.secondary { background: #1c6f4e; border: 1px solid var(--panel-border); }
   input, select {
@@ -339,67 +339,36 @@
     .wave .l { animation-duration: 2.4s; }
     .st-mine { animation: none; }
   }
+
+  /* ===================== 3D TABLE UI ===================== */
+  button { touch-action: manipulation; }
+  #screen-game { position: fixed; inset: 0; max-width: none; margin: 0; padding: 0; display: block; height: auto; }
+  #stage { position: absolute; inset: 0; overflow: hidden; background: #070a0f; }
+  #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; -webkit-user-select: none; user-select: none; }
+  .lab { position: absolute; transform: translate(-50%,-50%); pointer-events: none; font-size: 12px; font-weight: 600; background: rgba(0,0,0,.55); color: #fff; padding: 3px 10px; border-radius: 99px; white-space: nowrap; z-index: 5; }
+  .lab.clk { pointer-events: auto; cursor: pointer; }
+  .lab.turn { background: var(--gold); color: #2a1f00; }
+  .lab.pick { outline: 2px solid var(--sky); box-shadow: 0 0 14px var(--sky); }
+  .lab.off { opacity: .55; }
+  .lab.nope { animation: nope .45s; }
+  .lab .kick { position: static; pointer-events: auto; margin-left: 6px; min-height: 18px; padding: 0 6px; font-size: .7rem; border-radius: 6px; }
+  .topbar { position: absolute; top: calc(8px + env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 20; margin: 0; background: rgba(10,24,18,.72); backdrop-filter: blur(6px); }
+  .topbar .fab { pointer-events: auto; }
+  #board { position: absolute; top: calc(62px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: min(94vw, 700px); min-height: 0; flex: none; pointer-events: none; padding: 8px 12px; background: rgba(6,16,12,.55); backdrop-filter: blur(4px); z-index: 15; border-radius: 14px; }
+  #board .ab-outcome { font-size: clamp(15px, 3.2vw, 26px); }
+  #board .ab-status { font-size: clamp(13px, 2.6vw, 17px); padding: 5px 12px; }
+  #overBanner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 40; min-width: min(90vw, 420px); }
+  #askp { position: absolute; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); width: 220px; z-index: 20; display: flex; flex-direction: column; gap: 7px;
+    background: rgba(10,24,18,.82); border: 1px solid var(--panel-border); border-radius: 14px; padding: 10px; backdrop-filter: blur(6px); }
+  #askp .tlabel { font-size: .75rem; color: var(--muted); }
+  #askRank { font-size: .9rem; }
+  #cntRow { display: flex; gap: 6px; }
+  #cntRow .cb { flex: 1; }
+  #btnAsk { width: 100%; min-height: 40px; line-height: 1.15; padding: 6px 10px; }
+  #note { position: absolute; left: 50%; bottom: calc(6px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 15; color: var(--gold); font-size: .85rem; text-shadow: 0 1px 4px #000; pointer-events: none; max-width: 56vw; text-align: center; margin: 0; min-height: 0; }
+  @media (max-height: 520px) { #askp { width: 190px; padding: 6px 8px; gap: 5px; } #board { top: calc(46px + env(safe-area-inset-top)); padding: 4px 10px; } #board .ab-outcome { font-size: clamp(14px, 3vw, 20px); } .topbar { padding: 2px 10px; } }
+  @media (max-width: 640px) { #askp { left: 8px; right: 8px; width: auto; flex-direction: row; flex-wrap: wrap; align-items: center; } #askp .tlabel { display: none; } #askRank { flex: 1 1 100%; } #cntRow { flex: none; } #btnAsk { flex: 1; width: auto; } #note { bottom: auto; top: calc(48px + env(safe-area-inset-top)); max-width: 90vw; } }
 </style>
-</head>
-<body>
-
-<!-- ============================================================
-     SVG DEFINITIONS: suit symbols + face-card avatars (reused by every card via <use>)
-     ============================================================ -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs>
-    <symbol id="s-spade" viewBox="0 0 100 100"><path fill="currentColor" d="M50 3 C50 3 6 36 6 62 C6 77 17 86 30 86 C38 86 44 82 48 76 C47 86 43 93 35 97 L65 97 C57 93 53 86 52 76 C56 82 62 86 70 86 C83 86 94 77 94 62 C94 36 50 3 50 3 Z"/></symbol>
-    <symbol id="s-heart" viewBox="0 0 100 100"><path fill="currentColor" d="M50 93 C18 67 4 49 4 31 C4 16 16 7 29 7 C39 7 46 12 50 20 C54 12 61 7 71 7 C84 7 96 16 96 31 C96 49 82 67 50 93 Z"/></symbol>
-    <symbol id="s-diamond" viewBox="0 0 100 100"><path fill="currentColor" d="M50 2 L88 50 L50 98 L12 50 Z"/></symbol>
-    <symbol id="s-club" viewBox="0 0 100 100"><g fill="currentColor"><circle cx="50" cy="27" r="22"/><circle cx="26" cy="63" r="22"/><circle cx="74" cy="63" r="22"/><path d="M50 45 L36 97 L64 97 Z"/></g></symbol>
-
-    <!-- KING: crown, beard, moustache (top half; the card draws it twice, the 2nd rotated 180deg) -->
-    <g id="face-K">
-      <path d="M26 70 L29 63 Q34 58 43 56.5 L57 56.5 Q66 58 71 63 L74 70 Z" fill="currentColor"/>
-      <path d="M29 63 Q34 58 43 56.5 L57 56.5 Q66 58 71 63" fill="none" stroke="#d9a520" stroke-width="1.6"/>
-      <path d="M42 57 L50 67 L58 57 Z" fill="#fff" stroke="#c9c3b4" stroke-width=".5"/>
-      <circle cx="50" cy="47" r="9" fill="#f3d3b0" stroke="#a97c50" stroke-width=".7"/>
-      <circle cx="46.6" cy="45.5" r="1" fill="#222"/><circle cx="53.4" cy="45.5" r="1" fill="#222"/>
-      <path d="M41.2 48 Q41.5 62 50 64 Q58.5 62 58.8 48 Q57 53 50 53.5 Q43 53 41.2 48 Z" fill="#d8dadf" stroke="#9a9da6" stroke-width=".6"/>
-      <path d="M45 51 Q50 49.2 55 51 Q50 53.6 45 51 Z" fill="#c4c7ce"/>
-      <path d="M39.5 41 L38.5 27 L44.5 33 L50 24 L55.5 33 L61.5 27 L60.5 41 Z" fill="#e8b82a" stroke="#8a6510" stroke-width=".8" stroke-linejoin="round"/>
-      <rect x="39.5" y="37.5" width="21" height="3.6" fill="#c9981c" stroke="#8a6510" stroke-width=".6"/>
-      <circle cx="38.5" cy="26.5" r="1.7" fill="#d33"/><circle cx="50" cy="23.5" r="1.9" fill="#d33"/><circle cx="61.5" cy="26.5" r="1.7" fill="#d33"/>
-    </g>
-
-    <!-- QUEEN: tiara, long hair, necklace -->
-    <g id="face-Q">
-      <path d="M41 42 Q33 52 35 69 L43 69 Q41 58 44 50 Z" fill="#6b3f1f"/>
-      <path d="M59 42 Q67 52 65 69 L57 69 Q59 58 56 50 Z" fill="#6b3f1f"/>
-      <path d="M30 70 L33 63 Q38 58.5 44 57 L56 57 Q62 58.5 67 63 L70 70 Z" fill="currentColor"/>
-      <path d="M33 63 Q38 58.5 44 57 L56 57 Q62 58.5 67 63" fill="none" stroke="#d9a520" stroke-width="1.6"/>
-      <path d="M44 58 Q50 66 56 58" fill="none" stroke="#fff" stroke-width="1.2" stroke-dasharray="1.2 1.4"/>
-      <circle cx="50" cy="63.6" r="1.8" fill="#e8b82a" stroke="#8a6510" stroke-width=".4"/>
-      <ellipse cx="50" cy="47.5" rx="8" ry="9.5" fill="#f3d3b0" stroke="#a97c50" stroke-width=".7"/>
-      <path d="M41.5 44 Q42 36 50 36 Q58 36 58.5 44 Q54 40 50 41 Q46 40 41.5 44 Z" fill="#6b3f1f"/>
-      <circle cx="46.8" cy="47" r="1" fill="#222"/><circle cx="53.2" cy="47" r="1" fill="#222"/>
-      <path d="M47.4 53 Q50 55.2 52.6 53 Q50 53.9 47.4 53 Z" fill="#c4504a"/>
-      <path d="M42 38.5 L41 29 L45.5 34 L50 26 L54.5 34 L59 29 L58 38.5 Z" fill="#e8b82a" stroke="#8a6510" stroke-width=".8" stroke-linejoin="round"/>
-      <circle cx="50" cy="25" r="1.8" fill="#3aa0ff"/><circle cx="41" cy="28.5" r="1.4" fill="#d33"/><circle cx="59" cy="28.5" r="1.4" fill="#d33"/>
-    </g>
-
-    <!-- JACK: feathered cap -->
-    <g id="face-J">
-      <path d="M41 42 Q38 50 40 58 L44 54 Q42 48 44 44 Z" fill="#3b2a1c"/>
-      <path d="M59 42 Q62 50 60 58 L56 54 Q58 48 56 44 Z" fill="#3b2a1c"/>
-      <path d="M27 70 L30 63 Q35 58 43 56.5 L57 56.5 Q65 58 70 63 L73 70 Z" fill="currentColor"/>
-      <path d="M30 63 Q35 58 43 56.5 L57 56.5 Q65 58 70 63" fill="none" stroke="#d9a520" stroke-width="1.6"/>
-      <path d="M43 57 L50 66 L57 57 Z" fill="#f6f1e6" stroke="#c9c3b4" stroke-width=".5"/>
-      <circle cx="50" cy="48" r="8.6" fill="#f3d3b0" stroke="#a97c50" stroke-width=".7"/>
-      <circle cx="46.7" cy="47" r="1" fill="#222"/><circle cx="53.3" cy="47" r="1" fill="#222"/>
-      <path d="M47.5 53.5 Q50 55.2 52.5 53.5" stroke="#8a4a3a" fill="none" stroke-width=".8" stroke-linecap="round"/>
-      <path d="M38.5 44 Q38 31 50 30 Q62 31 61.5 44 Q56 38 50 38.5 Q44 38 38.5 44 Z" fill="currentColor" stroke="#8a6510" stroke-width=".6"/>
-      <path d="M38.8 43 Q44 38 50 38.5 Q56 38 61.2 43" fill="none" stroke="#e8b82a" stroke-width="1.6"/>
-      <path d="M58 34 Q70 24 74 30 Q68 31 63 38 Z" fill="#fff" stroke="#c9c3b4" stroke-width=".6"/>
-      <path d="M60 35 Q67 29 72 29.5" stroke="#d33" fill="none" stroke-width=".9"/>
-    </g>
-  </defs>
-</svg>
 
 <!-- ================= SETUP SCREEN ================= -->
 <div id="screen-setup" class="center-wrap">
@@ -443,51 +412,34 @@
   </div>
 </div>
 
-<!-- ================= GAME SCREEN ================= -->
+<!-- ================= GAME SCREEN (3D table) ================= -->
 <div id="screen-game" class="hidden">
+  <div id="stage"></div>
   <div class="topbar">
     <div>Room: <b id="roomTag"></b></div>
     <div class="deckbox"><div class="deck-icon" id="deckIcon" title="Draw pile"></div><span><b id="deckCount">52</b> in the deck</span></div>
   </div>
-
-  <div class="table">
-    <!-- Players / scores -->
-    <div id="seats"></div>
-
-    <!-- Game Event Announcement Board (replaces the old persistent log) -->
-    <div class="board" id="board">
-      <div class="ab-ask" id="abAsk"></div>
-      <div class="ab-outcome" id="abOutcome"></div>
-      <div class="ab-extras" id="abExtras"></div>
-      <div class="ab-status" id="abStatus"></div>
-      <div id="tbar" class="hidden"><i></i></div>
-    </div>
-
-    <div id="overBanner" class="panel hidden">
-      <h2 id="overTitle"></h2>
-      <div id="overDetail" class="muted"></div>
-      <div class="row" style="justify-content:center;margin-top:12px">
-        <button id="btnAgain" class="hidden">Play Again (back to lobby)</button>
-      </div>
-    </div>
+  <div class="board" id="board">
+    <div class="ab-ask" id="abAsk"></div>
+    <div class="ab-outcome" id="abOutcome"></div>
+    <div class="ab-extras" id="abExtras"></div>
+    <div class="ab-status" id="abStatus"></div>
+    <div id="tbar" class="hidden"><i></i></div>
   </div>
-
-  <!-- Bottom dock: guess form + fanned hand -->
-  <div class="dock">
-    <div class="actionbar">
-      <div class="tlabel" id="tlabel">Tap a player above, tap a card in your hand, then pick a count</div>
-      <div id="cntRow"></div>
-      <select id="selRank" hidden></select>
-      <button id="btnAsk">Ask!</button>
-    </div>
-    <div id="note"></div>
-    <div id="fanWrap">
-      <div id="fan" aria-label="Your hand">
-        <div class="fan-empty hidden" id="fanEmpty">No cards in hand</div>
-      </div>
-    </div>
+  <div id="overBanner" class="panel hidden">
+    <h2 id="overTitle"></h2>
+    <div id="overDetail" class="muted"></div>
+    <div class="row" style="justify-content:center;margin-top:12px"><button id="btnAgain" class="hidden">Play Again (back to lobby)</button></div>
   </div>
+  <div id="askp">
+    <div class="tlabel" id="tlabel"></div>
+    <div id="askRank"></div>
+    <div id="cntRow"></div>
+    <button id="btnAsk">Ask!</button>
+  </div>
+  <div id="note"></div>
 </div>
+
 
 <!-- Pull announcement splash (wave text) -->
 <div id="splash" class="splash hidden" aria-live="polite">
@@ -504,6 +456,7 @@
     <label class="small" for="bgColor">Page background colour (just for you)</label>
     <div class="row"><input id="bgColor" type="color" value="#0f4d33"><button id="bgReset" class="secondary">Reset</button></div>
     <label class="small" for="vol">Music volume</label><input id="vol" type="range" min="0" max="100" value="25">
+    <label class="small" for="sfxVol">Sound effects volume</label><input id="sfxVol" type="range" min="0" max="100" value="70">
     <div id="hostOnly" class="hidden">
       <label class="small" for="mp3">Host: play an MP3 for everyone (max 6 MB)</label><input id="mp3" type="file" accept="audio/*">
       <label class="chk"><input id="allowMid" type="checkbox" checked> Allow joining mid-game</label>
@@ -516,14 +469,14 @@
 
 <!-- PeerJS (free WebRTC wrapper + public signalling broker) -->
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 'use strict';
 
 /* ==================================================================
    1. CONSTANTS & SMALL HELPERS
    ================================================================== */
-const VERSION = '3.5';                                // bump on every release: old cached pages get a clear 'refresh' message
+const VERSION = '4.0';                                // bump on every release: old cached pages get a clear 'refresh' message
 const PEER_OPTS = {};                              // TURN slot (off): { config: { iceServers: [ {urls:'stun:stun.l.google.com:19302'}, /* {urls:'turn:...',username:'',credential:''} */ ] } }
 const PEER_PREFIX = 'exactgofish-';                 // makes our room IDs unlikely to collide on the public broker
 const CODE_CHARS  = 'ABCDEFGHJKMNPQRSTUVWXYZ';           // letters only, no confusing I/L/O (23^5 codes)
@@ -641,13 +594,13 @@ function hostInit() {
 /** Start (or restart) a game from the lobby. */
 function startGame() {
   if (!isHost || G.phase !== 'lobby') return;
-  if (G.players.length < 2) { toast('You need at least 2 players to start.'); return; }
+  if (G.players.length < 4) { toast('You need at least 4 players (4 to 8) to start.'); return; }
   G.deck = shuffle(makeDeck());
   G.events = []; G.winners = [];
   G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; });
   G.phase = 'playing';
   // One card at a time, round-robin. The gap shrinks only for big tables so a deal never takes more than ~8s.
-  const total = G.players.length * HAND_SIZE, gap = Math.min(250, Math.floor(8000 / total)), dur = 450, order = [];
+  const total = G.players.length * HAND_SIZE, gap = Math.min(250, Math.floor(8000 / total)), dur = 1000, order = [];
   for (let r = 0; r < HAND_SIZE; r++) G.players.forEach(p => order.push(p.id));
   emit({ t: 'start', order, gap, dur });
   G.players.forEach(p => { p.hand = G.deck.splice(-HAND_SIZE); p.dealt = p.hand.map(c => c.rank + c.suit); sortHand(p); });
@@ -774,7 +727,7 @@ function handleMove(pid, msg) {
   setTimeout(() => resolveMove(p, t, rank, count), ASK_DELAY);
   return null;
 }
-const ASK_DELAY = 2000, FISH_DELAY = 1600;           // ms: ask -> result, and miss -> fish
+const ASK_DELAY = 2250, FISH_DELAY = 1600;           // ms: ask -> result, and miss -> fish
 function resolveMove(p, t, rank, count) {
   G.busy = false;
   if (G.phase !== 'playing' || !G.players.includes(p) || !G.players.includes(t) || curPlayer() !== p) { broadcast(); return; }
@@ -1129,251 +1082,460 @@ function joinRoom(codeIn, tokIn, isRetry) {
   });
 }
 
-/** Send my move (guest -> host over the network; host -> its own engine directly). */
-function sendMove(move) {
-  asking = true; userPicked = false; cardsOff = false; tgt = cnt = null; $('btnAsk').disabled = true;
-  if (isHost) {
-    const err = handleMove(myId, move);
-    if (err) { toast(err); unlockAsk(); }
-  } else if (hostConn && hostConn.open) {
-    hostConn.send(move);
-  } else {
-    toast('Not connected to host.'); unlockAsk();
+
+// ---------- sound effects (engine + sounds taken from the uploaded SFX lab) ----------
+const A=(()=>{
+let vol=.7,muted=false;
+const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+
+let ctx = null;
+let master = null;
+let reverb = null;
+let reverbReturn = null;
+let noiseBuffer = null;
+
+function initAudio() {
+  if (ctx) {
+    if (ctx.state === 'suspended') ctx.resume();
+    return;
   }
+  ctx = new AudioCtxClass();
+
+  // Master chain: master -> limiter -> destination
+  master = ctx.createGain();
+  master.gain.value = muted ? 0 : vol;
+
+  const limiter = ctx.createDynamicsCompressor();
+  limiter.threshold.value = -6;
+  limiter.knee.value = 0;
+  limiter.ratio.value = 20;
+  limiter.attack.value = 0.003;
+  limiter.release.value = 0.1;
+
+  master.connect(limiter).connect(ctx.destination);
+
+  // Reverb (generated impulse response)
+  reverb = ctx.createConvolver();
+  reverb.buffer = makeImpulseResponse(2.2, 2.6);
+  reverbReturn = ctx.createGain();
+  reverbReturn.gain.value = 0.3;
+  reverb.connect(reverbReturn).connect(master);
+
+  // Shared noise buffer
+  noiseBuffer = makeNoiseBuffer(2);
 }
-function unlockAsk() { asking = false; if (lastState) { refreshForm(lastState); applySel(); } }
 
-/* ==================================================================
-   7. CARD ARTWORK (inline SVG, generated per card and cached)
-   ================================================================== */
-const SVG_CACHE = {};
-/* Pip layouts on a 100x140 card: [x, y, flipped]. Lower-half pips are rotated 180deg like real cards. */
-const PIP_LAYOUT = (() => {
-  const L = 31, C = 50, R = 69, T = 28, B = 112;
-  return {
-    '2':  [[C,T,0],[C,B,1]],
-    '3':  [[C,T,0],[C,70,0],[C,B,1]],
-    '4':  [[L,T,0],[R,T,0],[L,B,1],[R,B,1]],
-    '5':  [[L,T,0],[R,T,0],[C,70,0],[L,B,1],[R,B,1]],
-    '6':  [[L,T,0],[R,T,0],[L,70,0],[R,70,0],[L,B,1],[R,B,1]],
-    '7':  [[L,T,0],[R,T,0],[C,49,0],[L,70,0],[R,70,0],[L,B,1],[R,B,1]],
-    '8':  [[L,T,0],[R,T,0],[C,49,0],[L,70,0],[R,70,0],[C,91,1],[L,B,1],[R,B,1]],
-    '9':  [[L,T,0],[R,T,0],[L,56,0],[R,56,0],[C,70,0],[L,84,1],[R,84,1],[L,B,1],[R,B,1]],
-    '10': [[L,T,0],[R,T,0],[C,42,0],[L,56,0],[R,56,0],[L,84,1],[R,84,1],[C,98,1],[L,B,1],[R,B,1]]
-  };
-})();
+function makeImpulseResponse(duration, decay) {
+  const rate = ctx.sampleRate;
+  const length = Math.floor(rate * duration);
+  const buf = ctx.createBuffer(2, length, rate);
+  for (let ch = 0; ch < 2; ch++) {
+    const data = buf.getChannelData(ch);
+    for (let i = 0; i < length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+    }
+  }
+  return buf;
+}
 
-/** Build the full SVG markup for one playing card (rank top-left & bottom-right, suit symbol, pips or face). */
-function cardSVG(rank, suit) {
-  const key = rank + suit;
-  if (SVG_CACHE[key]) return SVG_CACHE[key];
-  const sid = '#' + SUIT_ID[suit];
-  const ten = rank === '10';
-  // Corner index: rank over a small suit symbol. The bottom-right copy is the same group rotated 180deg.
-  const corner =
-    '<text x="11.5" y="' + (ten ? 20 : 21) + '" text-anchor="middle" font-family="CardFont, Georgia, Times New Roman, serif" font-weight="700" font-size="' + (ten ? 17 : 21) + '"' +
-    (ten ? ' letter-spacing="-1.5"' : '') + ' fill="currentColor">' + rank + '</text>' +
-    '<use href="' + sid + '" x="5" y="25" width="13" height="13"/>';
-  let body = '';
-  if (rank === 'J' || rank === 'Q' || rank === 'K') {
-    const face = '#face-' + rank;
-    const pip = '<use href="' + sid + '" x="26" y="23" width="11" height="11"';
-    body =
-      '<rect x="24" y="20" width="52" height="100" rx="2.5" fill="currentColor" fill-opacity=".07" stroke="currentColor" stroke-opacity=".6" stroke-width=".8"/>' +
-      '<line x1="24" y1="70" x2="76" y2="70" stroke="currentColor" stroke-opacity=".3" stroke-width=".6"/>' +
-      '<use href="' + face + '"/><use href="' + face + '" transform="rotate(180 50 70)"/>' +
-      pip + '/>' + pip + ' transform="rotate(180 50 70)"/>';
-  } else if (rank === 'A') {
-    body = '<use href="' + sid + '" x="26" y="46" width="48" height="48"/>';
-  } else {
-    PIP_LAYOUT[rank].forEach(p => {
-      body += '<use href="' + sid + '" x="' + (p[0] - 10) + '" y="' + (p[1] - 10) + '" width="20" height="20"' +
-              (p[2] ? ' transform="rotate(180 ' + p[0] + ' ' + p[1] + ')"' : '') + '/>';
+function makeNoiseBuffer(duration) {
+  const rate = ctx.sampleRate;
+  const length = Math.floor(rate * duration);
+  const buf = ctx.createBuffer(1, length, rate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < length; i++) data[i] = Math.random() * 2 - 1;
+  return buf;
+}
+
+function now() { return ctx.currentTime + 0.01; }
+
+function reverbSend(node, amount) {
+  if (amount <= 0) return;
+  const send = ctx.createGain();
+  send.gain.value = amount;
+  node.connect(send).connect(reverb);
+}
+
+/* Bell-like chime: 3 harmonic partials, higher ones decay faster */
+function chime(freq, start, duration, peak, reverbAmt = 0.3) {
+  const out = ctx.createGain();
+  out.connect(master);
+  reverbSend(out, reverbAmt);
+  const partials = [
+    { mult: 1, gain: 1.0, decay: 1.0 },
+    { mult: 2, gain: 0.32, decay: 0.5 },
+    { mult: 3, gain: 0.12, decay: 0.35 },
+  ];
+  partials.forEach(p => {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq * p.mult;
+    const g = ctx.createGain();
+    const dur = duration * p.decay;
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(peak * p.gain, start + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    osc.connect(g).connect(out);
+    osc.start(start);
+    osc.stop(start + dur + 0.1);
+  });
+}
+
+/* Metallic bell: inharmonic partials (real bell ratios) for clang */
+function metalChime(freq, start, duration, peak, reverbAmt = 0.1) {
+  const out = ctx.createGain();
+  out.connect(master);
+  reverbSend(out, reverbAmt);
+  const partials = [
+    { mult: 1.00, gain: 1.00, decay: 1.00 },
+    { mult: 2.76, gain: 0.45, decay: 0.60 },
+    { mult: 5.40, gain: 0.20, decay: 0.40 },
+    { mult: 8.93, gain: 0.08, decay: 0.25 },
+  ];
+  partials.forEach(p => {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq * p.mult;
+    const g = ctx.createGain();
+    const dur = duration * p.decay;
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(peak * p.gain, start + 0.003);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    osc.connect(g).connect(out);
+    osc.start(start);
+    osc.stop(start + dur + 0.1);
+  });
+}
+
+/* ---------- Filtered noise burst (from the motion lab) ---------- */
+function noise({ t, dur, vol = 0.2, type = 'bandpass', f0 = 1500, f1, q = 1, out = master, attack = 0.005 }) {
+  const s = ctx.createBufferSource();
+  s.buffer = noiseBuffer;
+  const f = ctx.createBiquadFilter();
+  f.type = type;
+  f.Q.value = q;
+  f.frequency.setValueAtTime(f0, t);
+  if (f1) f.frequency.exponentialRampToValueAtTime(f1, t + dur);
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + attack);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  s.connect(f).connect(g).connect(out);
+  s.start(t, Math.random() * 1.5);
+  s.stop(t + dur + 0.05);
+}
+
+/* ---------- Enveloped oscillator with optional pitch glide ---------- */
+function tone({ t, freq, dur = 0.3, vol = 0.2, type = 'sine', glide, attack = 0.005, out = master }) {
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, t);
+  if (glide) o.frequency.exponentialRampToValueAtTime(glide, t + dur);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + attack);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g).connect(out);
+  o.start(t);
+  o.stop(t + dur + 0.05);
+}
+
+/* ============================================================
+   From SFX Lab v3 — Button Hover
+   ============================================================ */
+function sfxHover() {
+  const t = now();
+  const pitchVar = 0.9 + Math.random() * 0.2;
+
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer;
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = 3800 * pitchVar;
+  bp.Q.value = 2.8;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(0.07, t + 0.001);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.022);
+  src.connect(bp).connect(g).connect(master);
+  src.start(t, Math.random() * 1.5);
+  src.stop(t + 0.04);
+}
+
+/* ============================================================
+   From SFX Lab v3 — Button Press
+   ============================================================ */
+function sfxPress() {
+  const t = now();
+  const pitchVar = 0.94 + Math.random() * 0.12;
+
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer;
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = 3200 * pitchVar;
+  bp.Q.value = 1.2;
+  const g1 = ctx.createGain();
+  g1.gain.setValueAtTime(0.0001, t);
+  g1.gain.exponentialRampToValueAtTime(0.28, t + 0.001);
+  g1.gain.exponentialRampToValueAtTime(0.0001, t + 0.032);
+  src.connect(bp).connect(g1).connect(master);
+  src.start(t, Math.random() * 1.5);
+  src.stop(t + 0.05);
+
+  const osc = ctx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(380 * pitchVar, t);
+  osc.frequency.exponentialRampToValueAtTime(570 * pitchVar, t + 0.06);
+  const g2 = ctx.createGain();
+  g2.gain.setValueAtTime(0.0001, t);
+  g2.gain.exponentialRampToValueAtTime(0.22, t + 0.002);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+  osc.connect(g2).connect(master);
+  osc.start(t);
+  osc.stop(t + 0.1);
+}
+
+/* ============================================================
+   From SFX Lab v1 — Incorrect Attempt
+   Two triangle-wave notes with a falling lowpass, plus a low thump.
+   ============================================================ */
+function sfxIncorrect() {
+  const t = now();
+
+  // Low thump
+  const thump = ctx.createOscillator();
+  thump.type = 'sine';
+  thump.frequency.setValueAtTime(140, t);
+  thump.frequency.exponentialRampToValueAtTime(70, t + 0.15);
+  const tg = ctx.createGain();
+  tg.gain.setValueAtTime(0.0001, t);
+  tg.gain.exponentialRampToValueAtTime(0.18, t + 0.005);
+  tg.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+  thump.connect(tg).connect(master);
+  thump.start(t);
+  thump.stop(t + 0.22);
+
+  // Descending notes
+  function wah(startFreq, endFreq, start, duration, peak, lpStart, lpEnd) {
+    const osc = ctx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(startFreq, start);
+    osc.frequency.exponentialRampToValueAtTime(endFreq, start + duration);
+
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.setValueAtTime(lpStart, start);
+    lp.frequency.exponentialRampToValueAtTime(lpEnd, start + duration);
+    lp.Q.value = 2;
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(peak, start + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+
+    osc.connect(lp).connect(g);
+    g.connect(master);
+    reverbSend(g, 0.1);
+
+    osc.start(start);
+    osc.stop(start + duration + 0.05);
+  }
+
+  wah(392.00, 370.00, t + 0.02, 0.15, 0.13, 1400, 700); // G4
+  wah(311.13, 260.00, t + 0.17, 0.40, 0.14, 900, 450);  // Eb4
+}
+
+/* ============================================================
+   From SFX Lab v3 — Reminder Ping (dry)
+   ============================================================ */
+function sfxReminder() {
+  const t = now();
+  [783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
+    chime(freq, t + i * 0.09, 0.75, 0.14, 0.15);
+  });
+}
+
+/* ============================================================
+   From SFX Lab v3 — Reward Short · 2-Beat  (at 50% volume)
+   E6 -> G#6 major third, bright metallic "ding-DING!"
+   ============================================================ */
+function sfxRewardShort() {
+  const t = now();
+  metalChime(1318.51, t,        0.22, 0.070, 0.08); // 0.14 halved
+  metalChime(1661.22, t + 0.12, 0.48, 0.075, 0.10); // 0.15 halved
+}
+
+/* ============================================================
+   From SFX Lab v3 — Reward Fanfare · 3.5s continuous flow
+   Four phrases of 8 notes, 0.11s spacing = 3.52s total.
+   Each phrase ripples up then down. Chord progression: C - F - G - C.
+   ============================================================ */
+function sfxRewardFanfare() {
+  const t = now();
+
+  // Soft pad under each phrase (chord roots)
+  const padRoots = [130.81, 174.61, 196.00, 130.81]; // C3, F3, G3, C3
+  padRoots.forEach((freq, i) => {
+    const start = t + i * 0.88;
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, start);
+    g.gain.exponentialRampToValueAtTime(0.035, start + 0.08);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + 1.05);
+    osc.connect(g);
+    g.connect(master);
+    reverbSend(g, 0.3);
+    osc.start(start);
+    osc.stop(start + 1.15);
+  });
+
+  // Four waves of notes, up-then-down pattern per phrase
+  const phrases = [
+    [523.25, 659.25, 783.99, 1046.50, 783.99, 659.25, 783.99, 1046.50], // C: C5 E5 G5 C6 G5 E5 G5 C6
+    [698.46, 880.00, 1046.50, 1396.91, 1046.50, 880.00, 1046.50, 1396.91], // F: F5 A5 C6 F6 C6 A5 C6 F6
+    [783.99, 987.77, 1174.66, 1567.98, 1174.66, 987.77, 1174.66, 1567.98], // G: G5 B5 D6 G6 D6 B5 D6 G6
+    [1046.50, 1318.51, 1567.98, 2093.00, 1567.98, 1318.51, 1567.98, 2093.00], // C: C6 E6 G6 C7 G6 E6 G6 C7
+  ];
+
+  phrases.forEach((phrase, phraseIdx) => {
+    const phraseStart = phraseIdx * 0.88;
+    phrase.forEach((freq, noteIdx) => {
+      chime(freq, t + phraseStart + noteIdx * 0.11, 0.28, 0.10, 0.25);
     });
-  }
-  const svg = '<svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
-    '<g>' + corner + '</g><g transform="rotate(180 50 70)">' + corner + '</g>' + body + '</svg>';
-  return (SVG_CACHE[key] = svg);
-}
-
-function makeCardEl(c) {
-  const el = document.createElement('div');
-  el.className = 'card ' + (isRed(c.suit) ? 'red' : 'black');
-  el.dataset.rank = c.rank;
-  el.dataset.suit = c.suit;
-  el.setAttribute('role', 'button');
-  el.tabIndex = 0;
-  el.setAttribute('aria-label', rankWord(c.rank) + ' of ' + SUIT_NAME[c.suit]);
-  el.innerHTML = cardSVG(c.rank, c.suit);
-  return el;
-}
-
-/* ==================================================================
-   8. THE FAN: keyed DOM, radial layout maths, hover / select physics
-   ================================================================== */
-const cardEls = new Map();   // "8♥" -> element (so unchanged cards keep their DOM and glide to new positions)
-let fanOrder  = [];          // card elements currently in hand, in hand order
-let fanGeom   = null;        // geometry of the last layout (used for hit-testing)
-let hoverEl   = null;        // card currently hovered / pressed
-let userPicked = false, cardsOff = false, prevTurn = null;      // the player chose a card/rank themselves (lets them pre-select while waiting)
-let lastLayoutW = 0;
-
-/** Reconcile the fan DOM with the hand: add new cards (animated in), fade removed cards out, then lay out. */
-function renderHand(hand) {
-  const fan = $('fan');
-  const wanted = new Set(hand.map(c => c.rank + c.suit));
-  for (const [k, el] of cardEls) {
-    if (!wanted.has(k)) {
-      cardEls.delete(k);
-      if (el === hoverEl) hoverEl = null;
-      el.classList.add('leave');
-      setTimeout(() => el.remove(), 380);
-    }
-  }
-  const fresh = [];
-  fanOrder = hand.map(c => {
-    const k = c.rank + c.suit;
-    let el = cardEls.get(k);
-    if (!el) {
-      el = makeCardEl(c);
-      el.classList.add('enter');
-      el.style.transitionDelay = (fresh.length * 70) + 'ms';
-      fan.appendChild(el);
-      cardEls.set(k, el);
-      fresh.push(el);
-    }
-    return el;
-  });
-  $('fanEmpty').classList.toggle('hidden', hand.length > 0 || dealHide.size > 0);
-  layoutFan();
-  if (fresh.length) {
-    void fan.offsetWidth;                                   // commit the 'enter' state first
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      fresh.forEach((el, i) => {
-        el.classList.remove('enter');
-        setTimeout(() => { el.style.transitionDelay = ''; }, 500 + i * 70);
-      });
-    }));
-  }
-}
-
-/**
- * Radial fan maths.
- * - Cards sit on a circular arc of radius R; card i is rotated by its angle theta_i (like real cards pivoting about a point below the hand).
- * - The horizontal half-span is limited so the outermost (rotated, lifted) card never leaves the container,
- *   which keeps even 15+ card hands inside a phone screen: the overlap simply gets tighter.
- */
-function layoutFan() {
-  const fan = $('fan'), wrap = $('fanWrap');
-  const W = wrap.clientWidth;
-  if (!W) return;                                           // hidden screen: ResizeObserver will call us again
-  lastLayoutW = W;
-  const n = fanOrder.length;
-  const vh = window.innerHeight || 700;
-  const vFrac = vh < 520 ? 0.21 : 0.27;                                              // sideways phones: smaller cards
-  const cw = Math.round(Math.max(44, Math.min(104, W * 0.2, (vh * vFrac) / 1.4)));   // card width scales with screen
-  const ch = Math.round(cw * 1.4);
-  const lh = Math.round(ch * 0.17);        // hover lift
-  const ls = Math.round(ch * 0.27);        // selected lift
-  const topPad = Math.round(ch * 0.34);     // room above the fan for lifted cards
-
-  let thMax = 0, R = 0;
-  if (n > 1) {
-    const totalDeg = Math.min(7 * (n - 1), 54);                       // total fan angle
-    thMax = (totalDeg / 2) * Math.PI / 180;
-    const ext = (cw / 2) * Math.cos(thMax) + (ch / 2) * Math.sin(thMax) + ls * Math.sin(thMax); // half-width of the outer card
-    const maxHalf = W / 2 - ext - 3;                                  // how far its centre may sit from the middle
-    const wantHalf = (n - 1) * cw * 0.30;                             // preferred overlap: step ~ 0.6 card widths
-    const xMax = Math.max((n - 1) * 4, Math.min(wantHalf, maxHalf));
-    R = xMax / Math.sin(thMax);
-  }
-  const drop = n > 1 ? R * (1 - Math.cos(thMax)) : 0;
-  const height = topPad + ch + Math.max(drop + 0.5 * cw * Math.sin(thMax), ch * 0.2) + 8;
-
-  fan.style.height = Math.round(height) + 'px';
-  fan.style.setProperty('--cw', cw + 'px');
-  fan.style.setProperty('--ch', ch + 'px');
-  fan.style.setProperty('--lh', lh + 'px');
-  fan.style.setProperty('--ls', ls + 'px');
-  fan.style.setProperty('--top', topPad + 'px');
-
-  const items = [];
-  fanOrder.forEach((el, i) => {
-    const t = n > 1 ? (i - (n - 1) / 2) / ((n - 1) / 2) : 0;        // -1 .. +1
-    const th = t * thMax;
-    const x = n > 1 ? R * Math.sin(th) : 0;
-    const y = n > 1 ? R * (1 - Math.cos(th)) : 0;
-    el.style.setProperty('--x', x.toFixed(2) + 'px');
-    el.style.setProperty('--y', y.toFixed(2) + 'px');
-    el.style.setProperty('--r', (th * 180 / Math.PI).toFixed(2) + 'deg');
-    items.push({ cx: W / 2 + x, cy: topPad + ch / 2 + y, th });
-  });
-  fanGeom = { n, cw, ch, ls, items, sel: new Array(n).fill(false) };
-  applySel();
-}
-
-/** Is the "selected card" visual active? Always on my turn; otherwise only if I picked a card myself (pre-selection). */
-function selActive() {
-  return !cardsOff && !!lastState && lastState.phase === 'playing' && (lastState.turnId === myId || userPicked);
-}
-/** Mirror the rank dropdown onto the cards (raised + gold ring) and refresh stacking order. */
-function applySel() {
-  const r = $('selRank').value;
-  const on = selActive();
-  fanOrder.forEach((el, i) => {
-    const s = on && el.dataset.rank === r;
-    el.classList.toggle('sel', s);
-    el.style.zIndex = i + 1;                       // hand order == stacking order, always
-    if (fanGeom && fanGeom.sel) fanGeom.sel[i] = s;
   });
 }
-function setHover(idx) {
-  const el = idx >= 0 ? fanOrder[idx] : null;
-  $('fan').style.cursor = el ? 'pointer' : 'default';
-  if (el === hoverEl) return;
-  if (hoverEl) hoverEl.classList.remove('hov');
-  hoverEl = el;
-  if (el) el.classList.add('hov');
-  applySel();
-}
-/** Which card is on top at fan-local point (px, py)? Uses rotated-rectangle tests in visual stacking order. */
-function hitTest(px, py) {
-  const g = fanGeom;
-  if (!g) return -1;
-  const order = [];
-  for (let i = g.n - 1; i >= 0; i--) order.push(i);                    // selected cards stay in their own layer
-  for (const i of order) {
-    const it = g.items[i];
-    let cx = it.cx, cy = it.cy;
-    if (g.sel[i]) { cx += g.ls * Math.sin(it.th); cy -= g.ls * Math.cos(it.th); }
-    const dx = px - cx, dy = py - cy, c = Math.cos(it.th), s = Math.sin(it.th);
-    const lx = dx * c + dy * s, ly = -dx * s + dy * c;                // rotate point into the card's own frame
-    if (Math.abs(lx) <= g.cw / 2 && Math.abs(ly) <= g.ch / 2) return i;
+
+/* ============================================================
+   From SFX Lab v1 — Drum Roll Build-Up
+   ============================================================ */
+function sfxDrumroll() {
+  const t = now();
+  const hits = 45;
+  const startInterval = 0.085;
+  const endInterval = 0.013;
+
+  let time = t;
+  for (let i = 0; i < hits; i++) {
+    const p = i / (hits - 1);
+    const interval = startInterval + (endInterval - startInterval) * p;
+    const peak = 0.05 + 0.09 * p; // crescendo
+    drumHit(time, peak);
+    time += interval;
   }
-  return -1;
-}
-/** Choose a card = choose its rank (keeps the dropdown in sync). */
-function pickCard(idx) {
-  const el = fanOrder[idx];
-  if (!el) return;
-  const sel = $('selRank');
-  if (selActive() && sel.value === el.dataset.rank) { cardsOff = true; applySel(); updateAsk(); return; }   // tap a selected card again = unselect
-  if ([...sel.options].some(o => o.value === el.dataset.rank)) {
-    sel.value = el.dataset.rank;
-    updateCountOptions();
-    userPicked = true; cardsOff = false;
-    applySel(); updateAsk();
-  }
-}
-function fanPoint(e) {
-  const r = $('fan').getBoundingClientRect();
-  return [e.clientX - r.left, e.clientY - r.top];
+  // Final accent
+  drumHit(time, 0.2);
 }
 
-/* ==================================================================
-   9. ANNOUNCEMENT SYSTEM (replaces the old text log)
-   Events are queued so a 3.5s splash never gets trampled by the next announcement.
-   ================================================================== */
+function drumHit(t, peak) {
+  // Noise body
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer;
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.value = 1800;
+  bp.Q.value = 0.7;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(peak, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.055);
+  src.connect(bp).connect(g);
+  g.connect(master);
+  reverbSend(g, 0.12);
+  src.start(t, Math.random() * 1.5);
+  src.stop(t + 0.07);
+
+  // Tonal body
+  const osc = ctx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(190, t);
+  osc.frequency.exponentialRampToValueAtTime(110, t + 0.04);
+  const g2 = ctx.createGain();
+  g2.gain.setValueAtTime(peak * 0.7, t);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t + 0.06);
+  osc.connect(g2).connect(master);
+  osc.start(t);
+  osc.stop(t + 0.08);
+}
+
+/* ============================================================
+   From SFX Lab v3 — Game Start
+   Card-deal swoosh + rising C-major arpeggio over a low pad.
+   ============================================================ */
+function sfxGameStart() {
+  const t = now();
+
+  const src = ctx.createBufferSource();
+  src.buffer = noiseBuffer;
+  const bp = ctx.createBiquadFilter();
+  bp.type = 'bandpass';
+  bp.frequency.setValueAtTime(700, t);
+  bp.frequency.exponentialRampToValueAtTime(4200, t + 0.32);
+  bp.Q.value = 1.6;
+  const ng = ctx.createGain();
+  ng.gain.setValueAtTime(0.0001, t);
+  ng.gain.exponentialRampToValueAtTime(0.07, t + 0.16);
+  ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.38);
+  src.connect(bp).connect(ng);
+  ng.connect(master);
+  reverbSend(ng, 0.3);
+  src.start(t, Math.random() * 1.5);
+  src.stop(t + 0.42);
+
+  [130.81, 196.00].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const g = ctx.createGain();
+    const peak = i === 0 ? 0.07 : 0.04;
+    g.gain.setValueAtTime(0.0001, t + 0.05);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.5);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 2.5);
+    osc.connect(g);
+    g.connect(master);
+    reverbSend(g, 0.4);
+    osc.start(t + 0.05);
+    osc.stop(t + 2.6);
+  });
+
+  chime(261.63, t + 0.12, 0.70, 0.13, 0.40);
+  chime(329.63, t + 0.21, 0.70, 0.13, 0.40);
+  chime(392.00, t + 0.30, 0.70, 0.13, 0.40);
+  chime(523.25, t + 0.39, 1.50, 0.13, 0.45);
+  chime(1046.50, t + 0.48, 1.80, 0.05, 0.60);
+}
+
+/* ============================================================
+   From the Motion Lab — Menu Open / Menu Close
+   ============================================================ */
+function sfxMenuWhoosh(open) {
+  const t = now();
+  noise({ t, dur: 0.3, vol: 0.18, f0: open ? 300 : 2600, f1: open ? 2600 : 300, q: 1.2 });
+  tone({ t, freq: open ? 400 : 1100, glide: open ? 1100 : 300, dur: 0.2, vol: 0.04 });
+}
+
+/* ============================================================
+   From the Motion Lab — Toggle On / Toggle Off
+   ============================================================ */
+function sfxUiToggle(on) {
+  const t = now();
+  tone({ t, freq: on ? 700 : 1100, dur: 0.06, vol: 0.15 });
+  tone({ t: t + 0.06, freq: on ? 1100 : 700, dur: 0.06, vol: 0.15 });
+  noise({ t, dur: 0.02, vol: 0.08, type: 'highpass', f0: 4000 });
+}
+
+
+const apply=()=>{if(master)master.gain.value=muted?0:vol};
+return{
+ hover(){if(ctx&&ctx.state==='running')sfxHover()},hoverTest(){initAudio();sfxHover()},
+ click(){initAudio();sfxPress()},tick(on){initAudio();sfxUiToggle(on)},on(){initAudio();sfxUiToggle(true)},off(){initAudio();sfxUiToggle(false)},
+ open(){initAudio();sfxMenuWhoosh(true)},close(){initAudio();sfxMenuWhoosh(false)},
+ start(){initAudio();sfxGameStart()},wrong(){initAudio();sfxIncorrect()},reward(){initAudio();sfxRewardShort()},turn(){initAudio();sfxReminder()},
+ roll(){initAudio();sfxDrumroll()},victory(){initAudio();sfxRewardFanfare()},
+ setVol(v){vol=v;apply()},toggle(){muted=!muted;apply();return muted},
+ ROLL:45*(.085+.013)/2,FAN:3.52}})();
+
 const evQ = [];
 let evBusy = false, lastSeq = 0, splashT1 = null, splashT2 = null, statusKey = '';
 
@@ -1447,125 +1609,69 @@ function showSplash(e, done) {
   }, 3500);
 }
 
-/* ---------- flying cards (pure presentation, driven by the event queue) ---------- */
-const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-function seatEl(name) { return [...document.querySelectorAll('#seats .seat')].find(x => x.dataset.name === name) || null; }
-function endpoint(name) {
-  const s = lastState, me = s && s.players.find(q => q.id === s.you.id);
-  return me && me.name === name ? $('fanWrap') : seatEl(name);
-}
-function fly(from, to, n, delay, dur) {
-  if (REDUCED || !from || !to || !from.animate) return;
-  const a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
-  for (let i = 0; i < n; i++) {
-    const d = document.createElement('div'); d.className = 'fly'; document.body.appendChild(d);
-    const fx = a.left + a.width / 2 - 18, fy = a.top + a.height / 2 - 25;
-    const tx = b.left + b.width / 2 - 18 + (i - (n - 1) / 2) * 12, ty = b.top + b.height / 2 - 25;
-    const mx = (fx + tx) / 2, my = Math.min(fy, ty) - 60;
-    d.animate([
-      { transform: 'translate(' + fx + 'px,' + fy + 'px) rotate(0deg)', opacity: 0 },
-      { opacity: 1, offset: .12 },
-      { transform: 'translate(' + mx + 'px,' + my + 'px) rotate(' + ((i - (n - 1) / 2) * 16) + 'deg)', offset: .5 },
-      { transform: 'translate(' + tx + 'px,' + ty + 'px) rotate(0deg)', opacity: .9 }
-    ], { duration: dur || 650, delay: delay + i * 90, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'both' }).onfinish = () => d.remove();
-  }
-}
-function seatFx(name, cls) { const el = seatEl(name); if (el) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); } }
-const shake = name => seatFx(name, 'nope'), pop = name => seatFx(name, 'bk');
 
-/* ---------- dealing: cards fly from the deck one at a time; your own cards appear as each one lands ---------- */
-let dealHide = new Set(), dealShown = {}, dealRemain = 0, everRendered = false;
-function prepDeal(st) {                               // runs BEFORE the first render of a deal, so nothing flashes in early
-  if (st.phase === 'lobby') return;
-  const evs = st.events || [], maxSeq = Math.max(0, ...evs.map(x => x.seq));
-  if (!everRendered && maxSeq) {                      // joining straight into a running game: skip history, but play my own join deal
-    const mine = evs.find(x => x.t === 'joined' && x.pid === st.you.id && x.seq === maxSeq);
-    lastSeq = mine ? maxSeq - 1 : maxSeq;
-  }
-  evs.forEach(x => {
-    if (x.seq <= lastSeq) return;
-    if (x.t === 'start') {
-      dealShown = {}; st.players.forEach(q => { dealShown[q.id] = 0; });
-      dealHide = new Set(st.you.hand.map(c => c.rank + c.suit)); dealRemain = (x.order || []).length;
-    } else if (x.t === 'joined' && x.pid !== undefined) {
-      dealShown[x.pid] = 0; dealRemain += x.n || 0;
-      if (x.pid === st.you.id) dealHide = new Set(st.you.hand.map(c => c.rank + c.suit));
-    }
-  });
-}
-function endDeal() {
-  dealHide.clear(); dealShown = {}; dealRemain = 0;
-  if (lastState && lastState.phase !== 'lobby') renderGame(lastState);
-}
-function runDeal(e, cb) {
-  const order = e.order || [], s = lastState;
-  if (!s || !order.length || REDUCED) { endDeal(); return cb(); }
-  const mine = (s.you.deal || []).slice();
-  order.forEach((pid, i) => {
-    const pl = s.players.find(q => q.id === pid); if (!pl) return;
-    const t = i * e.gap;
-    fly($('deckIcon'), endpoint(pl.name), 1, t, e.dur);
-    setTimeout(() => {                                // this card has landed
-      dealRemain = Math.max(0, dealRemain - 1); dealShown[pid] = (dealShown[pid] || 0) + 1;
-      if (pid === lastState.you.id) { const k = mine.shift(); if (k) dealHide.delete(k); }
-      renderGame(lastState);
-    }, t + e.dur);
-  });
-  setTimeout(() => { endDeal(); cb(); }, (order.length - 1) * e.gap + e.dur + 120);
-}
+/* ---------- the announcement queue, now driving the 3D table ---------- */
 function enqueueEvents(list) { list.forEach(e => evQ.push(e)); pump(); }
 function pump() {
   if (evBusy) return;
   const e = evQ.shift();
-  if (!e) { applyStatus(); return; }              // nothing left to announce: show the persistent status line
+  if (!e) { applyStatus(); if (V) V.settle(() => lastState, () => !evBusy && !evQ.length, updateAsk); else updateAsk(); return; }
   evBusy = true;
   playEvent(e, () => { evBusy = false; pump(); });
 }
 function playEvent(e, done) {
+  const idle = f => V ? V.whenIdle(f) : f();
   switch (e.t) {
     case 'start':
-      setAsk(''); clearExtras();
+      A.start(); setAsk(''); clearExtras();
       setOutcome('🎴 Dealing the cards…', 'sys');
-      return runDeal(e, () => { setOutcome('🎴 Game on! Everyone was dealt ' + HAND_SIZE + ' cards.', 'sys'); done(); });
-    case 'success':                              // big wavy splash first, then the result text
+      if (V) V.deal(e.order || [], e.gap, e._deal);
+      return idle(() => { setOutcome('🎴 Game on! Everyone was dealt ' + HAND_SIZE + ' cards.', 'sys'); done(); });
+    case 'success':                              // fanfare + big wavy splash (3.5s), then the cards travel
+      A.victory();
       return showSplash(e, () => {
         setAsk(askText(e));
         setOutcome(fillName(PULL_PHRASES[e.phrase % PULL_PHRASES.length], e.name), 'good');
         clearExtras();
-        fly(endpoint(e.tname), endpoint(e.name), e.count, 0);      // the cards fly once the splash is over
-        setTimeout(done, 750 + e.count * 90);
+        if (V) V.success(e);
+        idle(done);
       });
-    case 'ask':
-      clearExtras(); setAsk('');                       // while waiting: the ask is the big text
+    case 'ask':                                  // drum roll while the host waits ASK_DELAY
+      clearExtras(); setAsk('');
       setOutcome(askText(e), 'sys');
+      A.roll();
       return done();
     case 'timeout':
       clearExtras(); setAsk('');
       setOutcome('⏰ ' + e.name + ' ran out of time!', 'bad');
       return done();
     case 'fail':
+      A.wrong();
       setAsk(askText(e));
       setOutcome(fillName(FAIL_PHRASES[e.phrase % FAIL_PHRASES.length], e.name), 'bad');
       clearExtras();
-      shake(e.tname);
+      if (V) V.shake(e.tname);
       return done();
     case 'fish':
       clearExtras();
       if (!e.drew) addExtra('🎣 The deck is empty, so ' + e.name + ' draws nothing', 'info');
       if (e.lucky) setOutcome('🍀 Lucky catch! ' + e.name + ' fished the exact rank they asked for and goes again!', 'good');
-      return done();
+      if (V) V.fish(e);
+      return idle(done);
     case 'book':
-      pop(e.name);
+      A.reward();
       addExtra('📚 ' + e.name + ' completed a book of ' + bookName(e.rank) + '!', 'book');
-      return done();
+      if (V) V.book(e);
+      return idle(done);
     case 'refill':
-      fly($('deckIcon'), endpoint(e.name), Math.min(e.n || 5, 5), 0);
       addExtra('🃏 ' + e.name + ' is out of cards and draws a fresh hand of ' + e.n, 'info');
-      return done();
+      if (V) V.refill(e);
+      return idle(done);
     case 'empty':
       addExtra(e.drew ? '🃏 ' + e.name + ' had no cards, drew 1, and the turn passes'
                       : '🃏 ' + e.name + ' has no cards and the deck is empty. Turn passes', 'info');
-      return done();
+      if (V) V.fish(e);
+      return idle(done);
     case 'skip':
       addExtra('⏭ ' + e.name + ' is offline, so their turn is skipped', 'info');
       return done();
@@ -1574,10 +1680,13 @@ function playEvent(e, done) {
       return done();
     case 'wait': addExtra('📡 ' + e.name + ' dropped. Waiting 20s for them to return…', 'info'); return done();
     case 'back': addExtra('✅ ' + e.name + ' is back!', 'info'); return done();
-    case 'joined': addExtra('👋 ' + e.name + ' joined mid-game with ' + (e.n || HAND_SIZE) + ' cards', 'info');
-      return runDeal({ order: Array(e.n || HAND_SIZE).fill(e.pid), gap: 250, dur: 450 }, done);
+    case 'joined':
+      addExtra('👋 ' + e.name + ' joined mid-game with ' + (e.n || HAND_SIZE) + ' cards', 'info');
+      if (V) V.deal(Array(e.n || HAND_SIZE).fill(e.pid), 250, e._deal);
+      return idle(done);
     case 'kick': addExtra('🥾 ' + e.name + ' was kicked; ' + e.n + ' cards went back into the deck (' + e.deck + ' now)', 'info'); return done();
     case 'over':
+      A.victory();
       setAsk('');
       setOutcome('🏆 ' + (e.names.length > 1 ? 'Tie: ' + e.names.join(' & ') : e.names[0] + ' wins') + ' with ' + e.max + ' book' + (e.max === 1 ? '' : 's') + '!', 'book');
       if (e.stalled) addExtra('No connected player has cards left, so the game ended early.', 'info');
@@ -1616,6 +1725,11 @@ function applyStatus() {
     el.textContent = txt;
     el.className = 'ab-status ' + cls;
     retrigger(el, 'pop');
+    clearTimeout(remT);
+    if (cls === 'st-mine') {                           // your turn: chime now, and a gentle reminder if you dawdle
+      A.turn();
+      remT = setTimeout(() => { const q = lastState; if (q && q.phase === 'playing' && q.turnId === q.you.id && !q.busy && !asking) A.turn(); }, 45000);
+    }
   }
   // final results panel
   const over = s.phase === 'over';
@@ -1630,9 +1744,7 @@ function applyStatus() {
   }
 }
 
-/* ==================================================================
-   10. RENDERING (same code path for host and guests)
-   ================================================================== */
+
 function setStatus(msg, isErr) {
   const el = $('setupStatus'); el.textContent = msg || ''; el.className = isErr ? 'err' : '';
 }
@@ -1648,19 +1760,34 @@ function showOverlay(title, msg) {
   $('overlayTitle').textContent = title; $('overlayMsg').textContent = msg; $('overlay').classList.remove('hidden');
 }
 
+let V = null, handCounts = {}, tgt = null, cnt = null, selR = null, prevHandKeys = [], prevTurn = null, everRendered = false, remT = null;
 const graceAt = {};
-function render(state) {
-  lastState = state;
-  state.players.forEach(p => { graceAt[p.id] = p.graceLeft ? Date.now() + p.graceLeft : 0; });
-  myId = state.you.id;
-  if (state.phase === 'lobby') renderLobby(state); else renderGame(state);
+/** Skip the history of a game we are joining midway, but still play our own join deal. */
+function prepEvents(st) {
+  if (st.phase === 'lobby') return;
+  const evs = st.events || [], maxSeq = Math.max(0, ...evs.map(x => x.seq));
+  if (!everRendered && maxSeq) {
+    const mine = evs.find(x => x.t === 'joined' && x.pid === st.you.id && x.seq === maxSeq);
+    lastSeq = mine ? maxSeq - 1 : maxSeq;
+  }
 }
-
+function render(st) {
+  if (st.handSize) HAND_SIZE = st.handSize;
+  prepEvents(st);
+  lastState = st;
+  st.players.forEach(p => { graceAt[p.id] = p.graceLeft ? Date.now() + p.graceLeft : 0; });
+  myId = st.you.id;
+  if (st.phase === 'lobby') renderLobby(st); else renderGame(st);
+  everRendered = true;
+  document.body.classList.toggle('ingame', st.phase !== 'lobby');
+  turnEndAt = st.turnLeft ? Date.now() + st.turnLeft : 0;
+  placeFab();
+}
 function renderLobby(state) {
   show('screen-lobby');
   // leaving a finished game: wipe the board and the hand
   resetBoard();
-  cardEls.forEach(el => el.remove()); cardEls.clear(); fanOrder = []; fanGeom = null; hoverEl = null; userPicked = false;
+  if (V) V.reset(); prevHandKeys = []; selR = null;
   lastSeq = Math.max(lastSeq, ...(state.events || []).map(e => e.seq), 0);
   $('lobbyCode').textContent = state.roomCode;
   $('lobbyCount').textContent = state.players.length;
@@ -1672,89 +1799,91 @@ function renderLobby(state) {
   $('hostOnly').classList.toggle('hidden', !isHost);
   document.querySelectorAll('.hsb').forEach(b => { b.classList.toggle('on', Number(b.dataset.hs) === state.handSize); b.disabled = !isHost; });
   $('btnStart').classList.toggle('hidden', !isHost);
-  $('btnStart').disabled = state.players.length < 2;
+  $('btnStart').disabled = state.players.length < 4;
   $('lobbyHint').textContent = isHost
-    ? (state.players.length < 2 ? 'Waiting for at least one more player…' : 'Ready when you are!')
+    ? (state.players.length < 4 ? 'Need ' + (4 - state.players.length) + ' more player' + (state.players.length === 3 ? '' : 's') + ' (4 to 8 can play)…' : 'Ready when you are!')
     : 'Waiting for the host to start the game…';
 }
 
 function renderGame(state) {
   show('screen-game');
+  if (!V) { V = make3D({ onCard: pickRank, onSeat: pickSeat, onKick: askKick, onClear: clearPicks, isHost: () => isHost }); V.fit(); }
   asking = false;
-  const me = state.you.id;
-
-  // --- top bar ---
-  $('deckCount').textContent = state.deckCount + dealRemain;
+  $('deckCount').textContent = state.deckCount;
   $('roomTag').textContent = state.roomCode;
-
-  // --- seats = target buttons, in turn order starting after me ---
-  const iMe = state.players.findIndex(p => p.id === me);
-  const ordered = state.players.slice(iMe + 1).concat(state.players.slice(0, iMe + 1));
-  $('deckIcon').style.setProperty('--dk', Math.min(1, (state.deckCount + dealRemain) / 52));
+  $('deckIcon').style.setProperty('--dk', Math.min(1, state.deckCount / 52));
   $('hostOnly').classList.toggle('hidden', !isHost);
-  $('seats').innerHTML = ordered.map(p => {
-    const isTurn = state.phase === 'playing' && p.id === state.turnId;
-    const chips = p.books.map(b => '<span class="chip">' + esc(b) + '</span>').join('');
-    const initial = esc((Array.from(p.name)[0] || '?').toUpperCase());
-    const can = p.id !== me && p.cardCount > 0;
-    const k = dealShown[p.id] !== undefined ? Math.min(p.cardCount, dealShown[p.id]) : p.cardCount, step = k > 1 ? Math.min(7, 50 / (k - 1)) : 0, spread = k > 1 ? Math.min(9, 64 / (k - 1)) : 0;
-    const backs = Array.from({ length: k }, (_, i) => '<i class="mb" style="--r:' + ((i - (k - 1) / 2) * spread) + 'deg;--o:' + (i * step) + 'px"></i>').join('');
-    return '<div class="seat' + (isTurn ? ' turn' : '') + (p.id === me ? ' me' : (can ? ' clickable' : ' dis')) + (p.id === tgt ? ' pick' : '') + '" data-pid="' + p.id + '" data-name="' + esc(p.name) + '">' +
-      (isHost && p.id !== 0 ? '<button class="kick" data-kick="' + p.id + '">✖</button>' : '') +
-      '<div class="s-main"><div class="s-name">' + esc(p.name) + (p.id === me ? ' (you)' : '') + (p.id === state.hostId ? ' 👑' : '') +
-      (p.connected ? '' : ' <span class="off">offline</span>') + '</div>' +
-      '<div class="s-stats"><span>📚 ' + p.books.length + '</span></div>' +
-      (chips ? '<div class="chips">' + chips + '</div>' : '') + '</div>' +
-      (p.id !== me ? '<div class="fanm" title="' + p.cardCount + ' cards">' + backs + '</div>' : '') + '</div>';
-  }).join('');
   $('allowMid').checked = state.allowMid !== false;
-
-  if (state.turnId !== prevTurn) { prevTurn = state.turnId; cardsOff = false; }
-  // --- action form first (it decides which rank is selected), then the fan ---
+  V.syncSeats(state);
+  if (state.turnId !== prevTurn) prevTurn = state.turnId;
   refreshForm(state);
   $('note').textContent = state.you.note || '';
-  renderHand(state.you.hand.filter(c => !dealHide.has(c.rank + c.suit)));   // cards still 'in the air' stay hidden
-
-  // --- announcements: queue only events we haven't seen yet (de-duplicated by seq) ---
+  // announcements: queue only events we haven't seen yet (de-duplicated by seq)
   const fresh = (state.events || []).filter(e => e.seq > lastSeq);
   fresh.forEach(e => { lastSeq = Math.max(lastSeq, e.seq); });
+  V.prepare(state, fresh, prevHandKeys);                       // works out which of MY cards each event moves
+  prevHandKeys = state.you.hand.map(c => c.rank + c.suit);
   if (fresh.length) enqueueEvents(fresh); else pump();
 }
 
-/** Replace a <select>'s options but keep the previous selection when it is still valid. */
-function fillSelect(sel, options) {
-  const prev = sel.value;
-  sel.innerHTML = options.map(o => '<option value="' + esc(o.value) + '">' + esc(o.label) + '</option>').join('');
-  if (options.some(o => o.value === prev)) sel.value = prev;
-}
-let handCounts = {}, tgt = null, cnt = null;
+/* ---------- the ask form: tap a card (rank), tap a player, pick a count ---------- */
+const uiIdle = () => !evBusy && !evQ.length && (!V || V.idle());
 function refreshForm(state) {
   const me = state.you.id;
   handCounts = {};
   state.you.hand.forEach(c => handCounts[c.rank] = (handCounts[c.rank] || 0) + 1);
-  fillSelect($('selRank'), RANKS.filter(r => handCounts[r]).map(r => ({ value: r, label: rankWord(r) + '  (you hold ' + handCounts[r] + ')' })));
-  if (!state.players.some(p => p.id === tgt && p.id !== me && p.cardCount > 0)) tgt = null;
+  if (selR && !handCounts[selR]) { selR = null; if (V) V.setSel(null); }
+  if (!state.players.some(p => p.id === tgt && p.id !== me && p.cardCount > 0)) { tgt = null; if (V) V.setTarget(null); }
   updateCountOptions();
 }
-/** 1/2/3 buttons. You hold >=1, so the opponent has at most 4-own: grey out the rest, and drop a now-invalid pick to the highest valid. */
+/** 1/2/3 buttons. You must hold >=1, so the opponent has at most 4-own: grey out the rest. */
 function updateCountOptions() {
-  const own = handCounts[$('selRank').value] || 0, max = own ? 4 - own : 0;
+  const own = selR ? (handCounts[selR] || 0) : 0, max = own ? 4 - own : 0;
   if (cnt > max) cnt = max || null;
   $('cntRow').innerHTML = [1, 2, 3].map(n => '<button class="cb' + (cnt === n ? ' on' : '') + '" data-n="' + n + '"' + (n > max ? ' disabled' : '') + '>' + n + '</button>').join('');
+  $('askRank').innerHTML = selR ? '<b>' + esc(rankWord(selR)) + '</b> · you hold ' + own : 'Tap a card in your hand';
   updateAsk();
 }
 function updateAsk() {
   const s = lastState; if (!s) return;
-  const t = s.players.find(p => p.id === tgt), r = $('selRank').value;
-  const myTurn = s.phase === 'playing' && s.turnId === s.you.id && !asking && !s.busy;
-  const ok = myTurn && t && r && cnt && !cardsOff;
-  $('btnAsk').disabled = !ok;
-  $('btnAsk').textContent = ok ? 'Ask ' + t.name + ' for exactly ' + rankPhrase(r, cnt) : (myTurn ? (cardsOff ? 'Pick a card to ask for' : 'Pick a player and a count') : 'Ask!');
-  $('selRank').disabled = !myTurn;
+  const t = s.players.find(p => p.id === tgt);
+  const mine = s.phase === 'playing' && s.turnId === s.you.id;
+  const myTurn = mine && !asking && !s.busy && uiIdle();
+  const ok = myTurn && t && selR && cnt;
+  const b = $('btnAsk');
+  b.disabled = !ok;
+  b.textContent = ok ? 'Ask ' + t.name + ' for exactly ' + rankPhrase(selR, cnt)
+    : (s.phase !== 'playing' ? 'Ask!' : (!mine ? 'Waiting for your turn' : (!selR ? 'Pick a card' : (!t ? 'Pick a player' : (!cnt ? 'Pick a count' : 'Ask!')))));
+  $('tlabel').textContent = t ? 'Asking ' + t.name : 'Tap a player’s cards (or name)';
 }
+function pickRank(r) { if (asking || !handCounts[r]) return; selR = selR === r ? null : r; V.setSel(selR); updateCountOptions(); }
+function pickSeat(pid) {
+  const s = lastState; if (!s || asking) return;
+  const p = s.players.find(x => x.id === pid);
+  if (!p || pid === s.you.id || p.cardCount < 1) return;
+  tgt = tgt === pid ? null : pid; V.setTarget(tgt); updateAsk();
+}
+function clearPicks() { selR = null; tgt = null; V.setSel(null); V.setTarget(null); updateCountOptions(); }
+function askKick(pid) { if (confirm('Kick this player? Their cards go back into the deck.')) kickPlayer(pid); }
+
+/* ---------- send my move (guest -> host over the network; host -> its own engine directly) ---------- */
+function sendMove(move) {
+  asking = true; selR = null; tgt = cnt = null;
+  if (V) { V.setSel(null); V.setTarget(null); }
+  updateCountOptions();
+  if (isHost) {
+    const err = handleMove(myId, move);
+    if (err) { toast(err); unlockAsk(); }
+  } else if (hostConn && hostConn.open) {
+    hostConn.send(move);
+  } else {
+    toast('Not connected to host.'); unlockAsk();
+  }
+}
+function unlockAsk() { asking = false; if (lastState) refreshForm(lastState); }
 
 /* ==================================================================
-   11. UI EVENT WIRING
+   UI EVENT WIRING
    ================================================================== */
 $('btnCreate').onclick = createRoom;
 $('btnJoin').onclick   = () => joinRoom();
@@ -1766,20 +1895,11 @@ $('btnCopy').onclick   = () => {
   if (navigator.clipboard) navigator.clipboard.writeText(code).then(() => toast('Room ID copied!'), () => toast('Room ID: ' + code));
   else toast('Room ID: ' + code);
 };
-$('selRank').onchange = () => { cardsOff = false; updateCountOptions(); userPicked = true; applySel(); };
 $('cntRow').addEventListener('click', e => { const b = e.target.closest('.cb'); if (b && !b.disabled) { cnt = Number(b.dataset.n); updateCountOptions(); } });
 $('btnAsk').onclick = () => {
-  if (asking || tgt === null || !cnt) return;
-  sendMove({ type: 'move', target: tgt, rank: $('selRank').value, count: cnt });
+  if (asking || tgt === null || !cnt || !selR) return;
+  sendMove({ type: 'move', target: tgt, rank: selR, count: cnt });
 };
-$('seats').addEventListener('click', e => {
-  const k = e.target.closest('[data-kick]');
-  if (k) { if (confirm('Kick this player? Their cards go back into the deck.')) kickPlayer(Number(k.dataset.kick)); return; }
-  const seat = e.target.closest('.seat.clickable'); if (!seat) return;
-  tgt = Number(seat.dataset.pid);
-  document.querySelectorAll('.seat').forEach(x => x.classList.toggle('pick', x === seat));
-  updateAsk();
-});
 $('lobbyPlayers').addEventListener('click', e => { const k = e.target.closest('[data-kick]'); if (k) kickPlayer(Number(k.dataset.kick)); });
 setInterval(() => {                                   // live countdown while waiting for a dropped player
   const s = lastState; if (!s || s.phase !== 'playing' || evBusy) return;
@@ -1790,42 +1910,18 @@ setInterval(() => {                                   // live countdown while wa
   }
 }, 500);
 
-// Card path: hover (mouse/pen), tap/click (everything), keyboard.
-(function wireFan() {
-  const fan = $('fan');
-  fan.addEventListener('pointermove', e => {
-    if (e.pointerType === 'touch') return;
-    const [x, y] = fanPoint(e);
-    setHover(hitTest(x, y));
-  });
-  fan.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') setHover(-1); });
-  let touchPickAt = 0;
-  fan.addEventListener('pointerup', e => {            // touch: select the moment the finger lifts, no hover animation first
-    if (e.pointerType !== 'touch') return;
-    const [x, y] = fanPoint(e);
-    const idx = hitTest(x, y);
-    if (idx >= 0) { touchPickAt = Date.now(); setHover(-1); pickCard(idx); }
-  });
-  fan.addEventListener('click', e => {
-    if (Date.now() - touchPickAt < 600) return;       // already handled by pointerup
-    const [x, y] = fanPoint(e);
-    const idx = hitTest(x, y);
-    if (idx >= 0) pickCard(idx);
-  });
-  fan.addEventListener('keydown', e => {
-    const el = e.target.closest && e.target.closest('.card');
-    if (el && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pickCard(fanOrder.indexOf(el)); }
-  });
-  fan.addEventListener('focusin',  e => { const el = e.target.closest && e.target.closest('.card'); if (el) setHover(fanOrder.indexOf(el)); });
-  fan.addEventListener('focusout', () => setHover(-1));
+/* ---------- sound effects: hover only for real mice (touch has no hover), press for everyone ---------- */
+let lastBtn = null;
+document.addEventListener('pointerover', e => {
+  if (e.pointerType !== 'mouse') return;
+  const b = e.target.closest && e.target.closest('button');
+  if (b && b !== lastBtn && !b.disabled) A.hover();
+  lastBtn = b || null;
+});
+document.addEventListener('pointerdown', e => { const b = e.target.closest && e.target.closest('button'); if (b && !b.disabled) A.click(); }, true);
+$('sfxVol').value = getLS('gf_sfx', 70); A.setVol(Number($('sfxVol').value) / 100);
+$('sfxVol').oninput = e => { A.setVol(e.target.value / 100); setLS('gf_sfx', e.target.value); };
 
-  // Re-fan whenever the available width changes (rotation, window resize, keyboard, etc.)
-  if ('ResizeObserver' in window) {
-    new ResizeObserver(() => { if ($('fanWrap').clientWidth !== lastLayoutW) layoutFan(); }).observe($('fanWrap'));
-  }
-  window.addEventListener('resize', () => layoutFan());
-  window.addEventListener('orientationchange', () => setTimeout(layoutFan, 250));
-})();
 
 /* ==================================================================
    12. CHAT + SETTINGS DRAWER, INVITE LINK, REJOIN PROMPT
@@ -1920,11 +2016,270 @@ function placeFab() {
   else if (!inGame && f.parentNode !== document.body) { document.body.appendChild(f); f.classList.remove('intop'); }
   $('fabChat').style.display = lastState ? '' : 'none';
 }
-const _render0 = render; render = function (st) { if (st.handSize) HAND_SIZE = st.handSize; prepDeal(st); _render0(st); everRendered = true; document.body.classList.toggle('ingame', st.phase !== 'lobby'); turnEndAt = st.turnLeft ? Date.now() + st.turnLeft : 0; placeFab(); };
 placeFab();
 let evSince = 0;
-setInterval(() => { if (evBusy) { if (!evSince) evSince = Date.now(); else if (Date.now() - evSince > 9000) { evBusy = false; evSince = 0; pump(); } } else evSince = 0; }, 1500);
+setInterval(() => { if (evBusy) { if (!evSince) evSince = Date.now(); else if (Date.now() - evSince > 15000) { evBusy = false; evSince = 0; pump(); } } else evSince = 0; }, 1500);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && evQ.length > 3) evQ.splice(0, evQ.length - 2); });
+
+function make3D(cb){
+const T=THREE,RK=RANKS,SU=SUITS;
+const W=1,H=1.45,CT=.0048,FO=.001,R=3.2,CLEAR=.04;
+let RX=7.6,RZ=4.9,camK=1,camKT=1;
+const L=h=>new T.Color(h).convertSRGBToLinear();
+const rd=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+rd.setPixelRatio(Math.min(devicePixelRatio,2));rd.outputEncoding=T.sRGBEncoding;rd.physicallyCorrectLights=true;
+rd.shadowMap.enabled=true;rd.shadowMap.type=T.VSMShadowMap;$('stage').appendChild(rd.domElement);
+const AN=rd.capabilities.getMaxAnisotropy();
+const sc=new T.Scene();sc.background=L(0x070a0f);sc.fog=new T.Fog(L(0x070a0f),30,58);
+const cam=new T.PerspectiveCamera(45,1,2,80);
+function fit(){rd.setSize(innerWidth,innerHeight);place()}
+function place(){const w=innerWidth,h=innerHeight;cam.aspect=w/h;const d=13.6*camK*Math.max(1,1.62/cam.aspect),p=.76;
+ cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.lookAt(0,-.3,.3);const ins=innerWidth<=640?$('askp').offsetHeight+6:0;if(ins)cam.setViewOffset(w,h,0,ins,w,h);else cam.clearViewOffset();cam.updateProjectionMatrix()}
+addEventListener('resize',fit);fit();
+// lighting (same rig as the reference build)
+sc.add(new T.AmbientLight(L(0xb6c8e4),.42),new T.HemisphereLight(L(0x9fc0ff),L(0x2c1f14),.55));
+const key=new T.SpotLight(L(0xfff1d9),2.2,0,.98,.8,0);key.position.set(0,13.5,3);key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);key.shadow.camera.near=2;key.shadow.camera.far=34;key.shadow.bias=-.0004;key.shadow.radius=6;key.shadow.blurSamples=16;sc.add(key,key.target);
+const rim=new T.PointLight(L(0x5f9bff),34,0,2);rim.position.set(-10,6.5,-7);
+const warm=new T.PointLight(L(0xffb066),22,0,2);warm.position.set(9,5.5,8);sc.add(rim,warm);
+// table
+function woodTex(){const W=1024,H=512,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');let sd=11;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;
+ const B=8,bh=H/B,wave=(yy,A,k1,k2,ph,wd,col)=>{g.beginPath();for(let x=0;x<=W;x+=8){const y=yy+A*Math.sin(x/W*6.2832*k1+ph)+.6*A*Math.sin(x/W*6.2832*k2+ph*2);x?g.lineTo(x,y):g.moveTo(x,y)}g.strokeStyle=col;g.lineWidth=wd;g.stroke()};
+ for(let j=0;j<B;j++){const y0=j*bh;g.fillStyle='hsl('+(20+rnd()*7)+','+(42+rnd()*14)+'%,'+(23+rnd()*13)+'%)';g.fillRect(0,y0,W,bh);
+  for(let k=0;k<10;k++)wave(y0+rnd()*bh,3+rnd()*5,1+Math.floor(rnd()*3),3+Math.floor(rnd()*3),rnd()*6.28,7+rnd()*12,rnd()>.5?'rgba(30,12,4,'+(.05+rnd()*.05)+')':'rgba(255,200,140,'+(.04+rnd()*.05)+')');
+  for(let k=0;k<26;k++)wave(y0+rnd()*bh,1+rnd()*3,1+Math.floor(rnd()*4),3+Math.floor(rnd()*5),rnd()*6.28,.8+rnd()*1.6,rnd()>.4?'rgba(32,13,4,'+(.12+rnd()*.2)+')':'rgba(255,215,165,'+(.07+rnd()*.1)+')');
+  if(rnd()>.55){const kx=80+rnd()*(W-160),ky=y0+bh*(.35+rnd()*.3);for(let r=6;r>0;r--){g.beginPath();g.ellipse(kx,ky,r*9,r*3,0,0,6.2832);g.strokeStyle='rgba(28,11,3,'+(.08+.05*(7-r))+')';g.lineWidth=1.6;g.stroke()}}
+  g.fillStyle='rgba(18,7,2,.65)';g.fillRect(0,y0,W,4);g.fillStyle='rgba(255,205,145,.14)';g.fillRect(0,y0+4,W,2)}
+ const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.encoding=T.sRGBEncoding;t.anisotropy=AN;return t}
+function felt(){const S=256,c=document.createElement('canvas');c.width=c.height=S;const g=c.getContext('2d');g.fillStyle='#1c5a3b';g.fillRect(0,0,S,S);
+ for(let i=0;i<16000;i++){g.fillStyle=Math.random()>.5?'rgba(255,255,255,.05)':'rgba(0,0,0,.07)';g.fillRect(Math.random()*S,Math.random()*S,1.4,1.4)}
+ const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(7,5);t.encoding=T.sRGBEncoding;t.anisotropy=AN;return t}
+const tableG=new T.Group();sc.add(tableG);const WOOD=woodTex(),FELT=felt();
+function buildTable(kk){RX=7.6*kk;RZ=4.9*kk;FELT.repeat.set(7*kk,5*kk);
+ while(tableG.children.length){const o=tableG.children.pop();o.geometry.dispose()}
+function cyl(rx,rz,y,mat){const g=new T.CylinderGeometry(1,1,.62,96);g.scale(rx,1,rz);const m=new T.Mesh(g,mat);m.position.y=y;m.receiveShadow=true;tableG.add(m);return m}
+{const top=.06,bot=-.3,w=.7,ri=.1,ro=.16,K=8,pr=[{r:0,y:bot,nr:-1,ny:0},{r:0,y:top-ri,nr:-1,ny:0}];
+ for(let i=1;i<K;i++){const q=i/K*Math.PI/2;pr.push({r:ri-ri*Math.cos(q),y:top-ri+ri*Math.sin(q),nr:-Math.cos(q),ny:Math.sin(q)})}
+ pr.push({r:ri,y:top,nr:0,ny:1},{r:w-ro,y:top,nr:0,ny:1});
+ for(let i=1;i<K;i++){const q=i/K*Math.PI/2;pr.push({r:w-ro+ro*Math.sin(q),y:top-ro+ro*Math.cos(q),nr:Math.sin(q),ny:Math.cos(q)})}
+ pr.push({r:w,y:top-ro,nr:1,ny:0},{r:w,y:bot,nr:1,ny:0});
+ const M=pr.length,vc=[0];for(let k=1;k<M;k++)vc.push(vc[k-1]+Math.hypot(pr[k].r-pr[k-1].r,pr[k].y-pr[k-1].y));
+ const N=360,NT=10,VT=1.1,sj=[0];
+ for(let j=1;j<=N;j++){const p=j/N*6.2832,q=(j-1)/N*6.2832;sj.push(sj[j-1]+Math.hypot(RX*(Math.cos(p)-Math.cos(q)),RZ*(Math.sin(p)-Math.sin(q))))}
+ const pos=[],nor=[],uv=[],idx=[];
+ for(let j=0;j<=N;j++){const f=j/N*6.2832,nl=Math.hypot(RZ*Math.cos(f),RX*Math.sin(f)),nx=RZ*Math.cos(f)/nl,nz=RX*Math.sin(f)/nl;
+  for(let k=0;k<M;k++){const e=pr[k];pos.push(RX*Math.cos(f)+nx*e.r,e.y,RZ*Math.sin(f)+nz*e.r);nor.push(nx*e.nr,e.ny,nz*e.nr);uv.push(sj[j]/sj[N]*NT,vc[k]/VT)}}
+ for(let j=0;j<N;j++)for(let k=0;k<M-1;k++){const a0=j*M+k,b0=(j+1)*M+k;idx.push(a0,b0,a0+1,b0,b0+1,a0+1)}
+ const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(pos,3));g.setAttribute('normal',new T.Float32BufferAttribute(nor,3));g.setAttribute('uv',new T.Float32BufferAttribute(uv,2));g.setIndex(idx);
+ {const t=(M-1)>>1,i0=t,i1=M+t,i2=t+1,A=new T.Vector3().fromArray(pos,i0*3),B=new T.Vector3().fromArray(pos,i1*3),C=new T.Vector3().fromArray(pos,i2*3);
+  if(B.sub(A).cross(C.sub(A)).dot(new T.Vector3().fromArray(nor,i0*3))<0)for(let i=0;i<idx.length;i+=3){const t2=idx[i+1];idx[i+1]=idx[i+2];idx[i+2]=t2}g.setIndex(idx)}
+ const wm=new T.Mesh(g,new T.MeshStandardMaterial({color:0xffffff,map:WOOD,roughness:.5,metalness:.04}));wm.castShadow=true;wm.receiveShadow=true;tableG.add(wm)}
+cyl(RX,RZ,-.31,new T.MeshStandardMaterial({color:0xffffff,map:FELT,roughness:.97}));
+
+const ag=new T.CircleGeometry(1,64);ag.rotateX(-Math.PI/2);ag.scale(RX+1.6,1,RZ+1.6);
+const ao=new T.Mesh(ag,new T.MeshBasicMaterial({color:0,transparent:true,opacity:.42,depthWrite:false}));ao.position.y=-.56;tableG.add(ao);}
+// card geometry: real-thickness body (63×88 mm ratio, ~0.3 mm) + face/back sheets
+const sh=new T.Shape(),x0=-W/2,y0=-H/2,r=.07;
+sh.moveTo(x0+r,y0);sh.lineTo(-x0-r,y0);sh.quadraticCurveTo(-x0,y0,-x0,y0+r);sh.lineTo(-x0,-y0-r);sh.quadraticCurveTo(-x0,-y0,-x0-r,-y0);
+sh.lineTo(x0+r,-y0);sh.quadraticCurveTo(x0,-y0,x0,-y0-r);sh.lineTo(x0,y0+r);sh.quadraticCurveTo(x0,y0,x0+r,y0);
+const bodyG=new T.ExtrudeGeometry(sh,{depth:CT,bevelEnabled:false,curveSegments:8});bodyG.translate(0,0,-CT/2);
+const faceG=new T.ShapeGeometry(sh,8);{const p=faceG.attributes.position,u=new Float32Array(p.count*2);
+ for(let i=0;i<p.count;i++){u[i*2]=(p.getX(i)+W/2)/W;u[i*2+1]=(p.getY(i)+H/2)/H}faceG.setAttribute('uv',new T.BufferAttribute(u,2))}
+const tex=c=>{const t=new T.CanvasTexture(c);t.encoding=T.sRGBEncoding;t.anisotropy=AN;return t};
+const po={};
+function aoMat(m){m.onBeforeCompile=s=>{
+ s.vertexShader=s.vertexShader.replace('#include <common>','#include <common>\nvarying vec2 vP;varying float vU;').replace('#include <begin_vertex>','#include <begin_vertex>\nvP=position.xy;vU=abs(normalize(mat3(modelMatrix)*normal).y);');
+ s.fragmentShader=s.fragmentShader.replace('#include <common>','#include <common>\nvarying vec2 vP;varying float vU;').replace('#include <dithering_fragment>','#include <dithering_fragment>\nfloat kk=1.-smoothstep(.92,.98,vU);float aoV=mix(.6,1.,smoothstep(-.725,.3,vP.y))*mix(.88,1.,smoothstep(0.,.08,.5-abs(vP.x)));gl_FragColor.rgb*=mix(1.,aoV,kk);')};return m}
+function faceMat(r,s){const c=document.createElement('canvas');c.width=512;c.height=738;const g=c.getContext('2d');
+ g.fillStyle='#fbfaf4';g.fillRect(0,0,512,738);g.strokeStyle='rgba(20,30,50,.12)';g.lineWidth=6;g.strokeRect(10,10,492,718);
+ g.fillStyle=(s==1||s==2)?'#c8202e':'#191b20';g.textAlign='center';g.textBaseline='middle';
+ const cn=()=>{g.font='bold 108px Georgia,serif';g.fillText(RK[r],80,100);g.font='100px Georgia,serif';g.fillText(SU[s],80,205)};
+ cn();g.save();g.translate(512,738);g.rotate(Math.PI);cn();g.restore();g.font='300px Georgia,serif';g.fillText(SU[s],256,375);
+ const m=tex(c);return new T.MeshStandardMaterial({map:m,emissive:0xffffff,emissiveMap:m,emissiveIntensity:.24,roughness:.62,metalness:.02,...po})}
+const backMat=(()=>{const c=document.createElement('canvas');c.width=512;c.height=738;const g=c.getContext('2d');
+ g.fillStyle='#fbfaf4';g.fillRect(0,0,512,738);g.fillStyle='#1d3a8a';g.fillRect(28,28,456,682);g.save();g.beginPath();g.rect(28,28,456,682);g.clip();
+ g.strokeStyle='rgba(255,255,255,.22)';g.lineWidth=4;for(let i=-740;i<1260;i+=40){g.beginPath();g.moveTo(i,0);g.lineTo(i+740,738);g.moveTo(i+740,0);g.lineTo(i,738);g.stroke()}g.restore();
+ g.strokeStyle='#f2c14e';g.lineWidth=7;g.strokeRect(58,58,396,622);
+ return new T.MeshStandardMaterial({map:tex(c),roughness:.55,metalness:.06,...po})})();
+const bodyMat=new T.MeshStandardMaterial({color:L(0xf2eee2),roughness:.88});
+const cards=[];
+for(let s=0;s<4;s++)for(let r=0;r<13;r++){
+ const g=new T.Group(),bo=new T.Mesh(bodyG,bodyMat),f=new T.Mesh(faceG,faceMat(r,s)),b=new T.Mesh(faceG,backMat);
+ f.position.z=CT/2+FO;b.position.z=-CT/2-FO;b.rotation.y=Math.PI;bo.castShadow=true;[bo,f,b].forEach(m=>{m.receiveShadow=false;m.frustumCulled=false});g.add(bo,f,b);
+ const c={r,s,g,fly:null,pend:false,meshes:[bo,f,b],fm:f.material,jx:Math.random()-.5,jz:Math.random()-.5,jr:Math.random()-.5};
+ bo.userData.c=f.userData.c=b.userData.c=c;cards.push(c);sc.add(g)}
+// ---------- seats: one per player in the room, me at the bottom, turn order runs clockwise ----------
+const deck={cards:[],deck:true,gaps:[],gs:[],ne:0};
+const hands={},byPid={},meta={};let byName={},you=null,opps=[],NP=0,tableN=-1,seatSig='',cur={turnId:null,phase:'lobby'};
+let sel=null,hov=null,hovH=null,tgtPid=null,idleCbs=[];
+cards.sort(()=>Math.random()-.5).forEach(c=>deck.cards.push(c));
+const key2obj={};cards.forEach(c=>{key2obj[RK[c.r]+SU[c.s]]=c});
+const live=h=>h===deck||h===you||opps.includes(h)||(you&&you.set===h)||opps.some(o=>o.set===h);
+function relayoutSets(h,m){if(!m)return;m.books.forEach((R,k)=>{const p0=(Math.random()-.5)*.25;SU.forEach((s,i)=>{const c=key2obj[R+s];if(h.set.cards.includes(c)){c.setting=true;c.tt=setTT(h,k,i,p0)}})});h.setN=m.books.length}
+function buildSeats(list){
+ const n=list.length,old={};
+ for(const k in hands){old[hands[k].pid]=hands[k];hands[k].l.remove();delete hands[k]}
+ for(const k in byPid)delete byPid[k];
+ if(n!==tableN){tableN=n;const kk=1+(Math.max(n,4)-4)*.09;buildTable(kk);camKT=kk}
+ NP=n;const SX=RX-.9,SZ=RZ-1,sc2=Math.min(.9,Math.max(.68,.85-(n-4)*.035));
+ list.forEach((p,i)=>{const psi=i/n*Math.PI*2,x=-SX*Math.sin(psi),z=SZ*Math.cos(psi),nx=x/(SX*SX),nz=z/(SZ*SZ),nl=Math.hypot(nx,nz),ox=nx/nl,oz=nz/nl,rot=Math.atan2(ox,oz),me=i===0,key=me?'you':'p'+p.id;
+  const g=new T.Object3D();g.position.set(x,0,z);g.rotation.order='YXZ';g.rotation.set(me?-.9:.52,rot,0);g.scale.setScalar(me?1.1:sc2);g.updateMatrixWorld(true);
+  const l=document.createElement('div');l.className='lab';const t=document.createElement('span');l.appendChild(t);
+  const h={k:key,pid:p.id,name:p.name,cards:[],g,l,t,txt:'',lift:0,gaps:[],gs:[],ne:0,rot,set:{cards:[],tab:true},setN:0,lp:new T.Vector3(x+ox*1.5,.6,z+oz*1.5)};
+  if(!me){l.onclick=()=>cb.onSeat(p.id);if(cb.isHost()){const kb=document.createElement('button');kb.className='kick';kb.textContent='✖';kb.onclick=e=>{e.stopPropagation();cb.onKick(p.id)};l.appendChild(kb)}}
+  $('stage').appendChild(l);hands[key]=h;byPid[p.id]=h});
+ you=hands.you;opps=list.slice(1).map(p=>byPid[p.id]);
+ list.forEach(p=>{const nh=byPid[p.id],oh=old[p.id];if(oh){nh.cards=oh.cards;nh.set.cards=oh.set.cards;nh.setN=oh.setN;nh.lift=oh.lift}});
+ for(const pid in old)if(!byPid[pid]){old[pid].set.cards.forEach(c=>{c.setting=false;c.tt=null});deck.cards.push(...old[pid].cards,...old[pid].set.cards)}
+ cards.forEach(c=>{c.mv=null;c.fly=null;c.pend=false});moving.length=0;deck.gaps=[];
+ list.forEach(p=>relayoutSets(byPid[p.id],meta[p.id]));
+ if(tgtPid!==null&&!byPid[tgtPid])tgtPid=null}
+function syncSeats(st){
+ const iMe=Math.max(0,st.players.findIndex(p=>p.id===st.you.id)),ordered=st.players.slice(iMe).concat(st.players.slice(0,iMe));
+ for(const k in meta)delete meta[k];byName={};
+ st.players.forEach(p=>{meta[p.id]={name:p.name,books:p.books.slice(),connected:p.connected,cardCount:p.cardCount,host:p.id===st.hostId};byName[p.name]=p.id});
+ cur={turnId:st.turnId,phase:st.phase};
+ const sig=ordered.map(p=>p.id+':'+p.name).join('|');
+ if(sig!==seatSig){seatSig=sig;buildSeats(ordered)}}
+// layout: cards keep their layer; gaps open where cards leave/arrive
+const m4=new T.Matrix4(),loc=new T.Matrix4(),v=new T.Vector3(),q=new T.Quaternion(),q2=new T.Quaternion(),one=new T.Vector3(1,1,1),Z=new T.Vector3(0,0,1),X=new T.Vector3(1,0,0),Y=new T.Vector3(0,1,0);
+const tp=new T.Vector3(),tq=new T.Quaternion(),ts=new T.Vector3(),cmp=(a,b)=>a.r-b.r||a.s-b.s,SL=1.66,SLI=1.66,moving=[];
+function prep(h){let t=0;h.gs=h.gaps.map(g=>{t+=g.w;return{g,at:h.cards.filter(x=>cmp(x,g.c)<0).length}});h.ne=h.cards.length+t}
+const uI=(h,j)=>{let u=j;for(const o of h.gs)if(o.at<=j)u+=o.g.w;return u};
+const uS=(h,o)=>{let u=o.at+(o.g.w-1)/2;for(const p of h.gs)if(p!==o&&p.at<=o.at)u+=p.g.w;return u};
+function lay(c,u,ne,h,sl,lift){
+ if(h.deck){tp.set(c.jx*.05,.02+u*.0075,c.jz*.05);tq.setFromAxisAngle(Y,c.jr*.25).multiply(q2.setFromAxisAngle(X,Math.PI/2));ts.set(1,1,1);return}
+ const op=h!==you,step=Math.min(.17,1.5/Math.max(ne,1)),th=((ne-1)/2-u)*step;
+ q.setFromAxisAngle(Z,th);if(op)q.multiply(q2.setFromAxisAngle(Y,.45*th)); // opponents: fan also curls (yaw) around their side
+ loc.compose(v.set(-(R+sl)*Math.sin(th),(R+sl)*Math.cos(th)-R+0,u*(op?.042:.01)+(op?.225*R*th*th:0)),q,one);
+ m4.multiplyMatrices(h.g.matrixWorld,loc);m4.decompose(tp,tq,ts);tp.y+=lift}
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function glide(c,dt,a){const g=c.g,f=c.fly;
+ if(f){f.t+=dt/f.d;const k=ease(Math.min(1,f.t));g.position.lerpVectors(f.p,tp,k);g.position.y+=Math.sin(Math.PI*k)*f.h;g.quaternion.slerpQuaternions(f.q,tq,k);g.scale.lerp(ts,k);if(f.t>=1)c.fly=null}
+ else{g.position.lerp(tp,a);g.quaternion.slerp(tq,a);g.scale.lerp(ts,a)}}
+function start(c){const m=c.mv,g=c.g;m.st='fly';c.sl=SLI;if(m.g1)m.g1.wt=0;if(!m.to.tab){m.g2={c,w:0,wt:1};m.to.gaps.push(m.g2)}
+ c.fly={t:0,d:.95,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}}
+function known(c){const f=c.fly,m=c.mv,pf=f&&(m||c.pf),pub=t=>t===you||(t&&t.tab);
+ if(pf)return pub(pf.to)?(pub(pf.from)||f.t>=.5):(pf.from===you&&f.t<.5);
+ if(m)return m.st==='out'?m.from===you:pub(m.to);
+ return you.cards.includes(c)||you.set.cards.includes(c)||opps.some(o=>o.set.cards.includes(c))}
+function tick(dt){if(!you)return;const a=1-Math.exp(-dt*12);if(Math.abs(camKT-camK)>.001){camK+=(camKT-camK)*(1-Math.exp(-dt*2.5));place()}
+ for(const h of [you,...opps,deck]){
+  if(!h.deck)h.cards.sort(cmp);
+  for(const g of h.gaps)g.w+=(g.wt-g.w)*a;
+  h.gaps=h.gaps.filter(g=>!(g.wt===0&&g.w<.01));prep(h);
+  if(!h.deck){let mn=1e9;const n=h.cards.length;
+   h.cards.forEach((c,i)=>{lay(c,uI(h,i),h.ne,h,0,0);const e=m4.elements;mn=Math.min(mn,e[13]-Math.abs(e[1])*W/2-Math.abs(e[5])*H/2)});
+   if(n)h.lift+=(CLEAR-mn-h.lift)*a}
+  h.cards.forEach((c,i)=>{const sl=h===you?(sel!==null&&c.r===sel?.6:hov===c?.15:0):(h.pid===tgtPid?.28:h===hovH?.12:0);lay(c,h.deck?i:uI(h,i),h.ne,h,sl,h.lift);glide(c,dt,a)})}
+ for(const h of [you,...opps])for(const c of h.set.cards){if(!c.tt)continue;tp.copy(c.tt.p);tq.copy(c.tt.q);ts.copy(c.tt.s);glide(c,dt,a)}
+ for(const c of moving.slice()){const m=c.mv;
+  if(m.to.tab&&m.st==='fly'){tp.copy(c.tt.p);tq.copy(c.tt.q);ts.copy(c.tt.s);glide(c,dt,a);if(!c.fly){m.to.cards.push(c);c.mv=null;c.pend=false;moving.splice(moving.indexOf(c),1)}continue}
+  const h=m.st==='out'?m.from:m.to,o=h.gs.find(x=>x.g===(m.st==='out'?m.g1:m.g2));if(!o){m.bad=(m.bad||0)+dt;if(m.bad>1.2){(live(m.to)?m.to:deck).cards.push(c);c.mv=null;c.fly=null;c.pend=false;moving.splice(moving.indexOf(c),1)}continue}
+  if(m.st==='in')c.sl+=(0-c.sl)*a;else if(m.st==='out')c.sl+=(SL-c.sl)*a;
+  lay(c,uS(h,o),h.ne,h,c.sl,h.lift);glide(c,dt,a);
+  if(m.st==='out'){m.t+=dt;if(m.t>=.5)start(c)}
+  else if(m.st==='fly'&&!c.fly)m.st='in';
+  else if(m.st==='in'&&c.sl<.02){m.to.cards.push(c);m.to.gaps=m.to.gaps.filter(g=>g!==m.g2);c.mv=null;c.pend=false;moving.splice(moving.indexOf(c),1);if(m.to===you)A.reward()}}
+ for(const c of cards)c.meshes[1].visible=known(c);
+ for(const k in hands){const h=hands[k],m=meta[h.pid];v.copy(h.lp).project(cam);h.l.style.left=(v.x*.5+.5)*innerWidth+'px';h.l.style.top=(-v.y*.5+.5)*innerHeight+'px';
+  if(m){const me=h===you,txt=(m.host?'👑 ':'')+(me?'You':m.name)+' · '+h.cards.length+(h.cards.length===1?' card':' cards')+' · 📚 '+m.books.length+(m.connected?'':' · offline');if(txt!==h.txt){h.txt=txt;h.t.textContent=txt}
+   h.l.classList.toggle('turn',cur.phase==='playing'&&cur.turnId===h.pid);h.l.classList.toggle('pick',tgtPid===h.pid);h.l.classList.toggle('off',!m.connected);h.l.classList.toggle('clk',!me&&m.cardCount>0)}}
+ if(idleCbs.length&&idle()){const l=idleCbs;idleCbs=[];l.forEach(f=>{try{f()}catch(x){console.error(x)}})}}
+// give: the source fan opens a gap, the card slides out, flies, the destination fan opens a gap, the card slides in
+function give(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(!from){c.pend=false;return}if(!live(to))to=deck;
+ from.cards.splice(from.cards.indexOf(c),1);c.sl=0;const g1=from.deck?null:{c,w:1,wt:1.7};if(g1)from.gaps.push(g1);
+ c.mv={st:'out',t:0,from,to,g1,g2:null};moving.push(c);if(!g1)start(c)},delay)}
+function owner(c){return [you,...opps,deck,...[you,...opps].filter(Boolean).map(h=>h.set)].find(h=>h&&h.cards.includes(c))}
+function send(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
+ const g=c.g;c.fly={t:0,d:.95,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
+function setTT(h,k,i,p0){const rot=h.rot,SS=NP<=4?.75:NP<=6?.68:.6,cols=NP<=4?6:NP<=6?4:3,r=.72*SS,col=k%cols,row=Math.floor(k/cols),dc=(h.k==='you'?1.95:2.3)+row*1.2,lat=(col-(cols-1)/2)*1.6*SS/.75,
+ ox=Math.sin(rot),oz=Math.cos(rot),lx=Math.cos(rot),lz=-Math.sin(rot),
+ cx=h.g.position.x-ox*dc+lx*lat+(Math.random()-.5)*.1,cz=h.g.position.z-oz*dc+lz*lat+(Math.random()-.5)*.1,a0=rot+p0,
+ px=cx+Math.sin(a0)*r,pz=cz+Math.cos(a0)*r,al=a0-(i-1.5)*.26+(Math.random()-.5)*.04;
+ return{p:new T.Vector3(px-Math.sin(al)*r,.016+i*.012,pz-Math.cos(al)*r),q:new T.Quaternion().setFromAxisAngle(Y,al).multiply(new T.Quaternion().setFromAxisAngle(X,-Math.PI/2)),s:new T.Vector3(SS,SS,SS)}}
+/*VM-BEGIN*/
+const isStatic=c=>!c.fly&&!c.mv&&!c.pend;
+const anonC=h=>h===deck||(!!h&&h!==you&&!h.tab);
+function deckTop(){for(let i=deck.cards.length-1;i>=0;i--){const c=deck.cards[i];if(isStatic(c))return c}return null}
+function swapObj(a,b){const X=owner(a),Y=owner(b);if(!X||!Y||a===b)return false;
+ const ia=X.cards.indexOf(a),ib=Y.cards.indexOf(b);X.cards[ia]=b;Y.cards[ib]=a;
+ const ga=a.g,gb=b.g,p=ga.position.clone(),q=ga.quaternion.clone(),s=ga.scale.clone();
+ ga.position.copy(gb.position);ga.quaternion.copy(gb.quaternion);ga.scale.copy(gb.scale);gb.position.copy(p);gb.quaternion.copy(q);gb.scale.copy(s);return true}
+// make object `want` physically sit in anonymous container `dst` by trading places with a hidden card there (both are face-down, so nobody can tell)
+function bring(want,dst,keep){const cur=owner(want);if(!cur||!isStatic(want)||cur===dst||!anonC(cur)||!anonC(dst))return want;
+ const pool=dst.cards.filter(c=>isStatic(c)&&!c.setting&&!(keep&&keep.includes(c)));if(!pool.length)return want;
+ swapObj(want,dst===deck?pool[pool.length-1]:pool[Math.random()*pool.length|0]);return want}
+function fromDeck(want){if(!want)return deckTop();bring(want,deck);const top=deckTop();if(owner(want)===deck&&isStatic(want)&&top&&top!==want)swapObj(want,top);return want}
+function anyFrom(h,not){const p=h.cards.filter(c=>isStatic(c)&&!c.setting&&!(not&&not.includes(c)));return p.length?p[Math.random()*p.length|0]:null}
+// ---- work out WHICH of my cards each event moves (the events only say rank/count; the final state tells us the suits) ----
+function prepare(st,fresh,prevKeys){const me=st.players.find(p=>p.id===st.you.id);if(!me)return;
+ const myName=me.name,H0=new Set(prevKeys||[]),H1=st.you.hand.map(c=>c.rank+c.suit),rk=k=>k.slice(0,-1),booked=[],deals=new Set();
+ fresh.forEach(e=>{if(e.t==='book'&&e.name===myName)SU.forEach(s=>booked.push(e.rank+s));
+  if(e.t==='start'||(e.t==='joined'&&e.pid===st.you.id))(st.you.deal||[]).forEach(k=>deals.add(k))});
+ const pool=[...new Set(H1.concat(booked))].filter(k=>!H0.has(k)&&!deals.has(k));
+ const take=(f,n)=>{const o=[];for(let i=0;i<pool.length&&o.length<n;){if(f(pool[i])){o.push(pool[i]);pool.splice(i,1)}else i++}return o};
+ fresh.forEach(e=>{
+  if(e.t==='start'||e.t==='joined'){e._deal=(st.you.deal||[]).slice();return}
+  if(e.name!==myName)return;
+  if(e.t==='success')e._ids=take(k=>rk(k)===e.rank,e.count);
+  else if(e.t==='fish'&&e.drew){const need=new Set();fresh.forEach(b=>{if(b.t==='book'&&b.name===myName){let n=0;H0.forEach(k=>{if(rk(k)===b.rank)n++});if(n===3)need.add(b.rank)}});
+   let g=take(k=>need.has(rk(k)),1);if(!g.length)g=take(()=>true,1);e._ids=g}
+  else if(e.t==='refill')e._ids=take(()=>true,e.n);
+  else if(e.t==='empty'&&e.drew)e._ids=take(()=>true,1)})}
+// ---- the physical animations for each kind of event ----
+function deal(order,gap,mineKeys){const mine=(mineKeys||[]).slice();
+ order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap)})}
+function success(e){const A_=byPid[byName[e.name]],T_=byPid[byName[e.tname]];if(!A_||!T_)return;let objs=[];
+ if(T_===you)objs=you.cards.filter(c=>RK[c.r]===e.rank&&isStatic(c)).slice(0,e.count);
+ else{if(A_===you){const w=(e._ids||[]).map(k=>key2obj[k]).filter(Boolean);objs=w.map(o=>bring(o,T_,w))}
+  while(objs.length<e.count){const x=anyFrom(T_,objs);if(!x)break;objs.push(x)}}
+ objs.forEach((c,i)=>give(c,A_,i*260))}
+function drawCards(e,n){const h=byPid[byName[e.name]];if(!h)return;
+ for(let i=0;i<n;i++){const k=h===you&&e._ids&&e._ids[i];const c=fromDeck(k?key2obj[k]:null);if(c)give(c,h,i*250)}}
+const fish=e=>{if(e.drew!==false)drawCards(e,1)};
+const refill=e=>drawCards(e,e.n||1);
+function book(e){const h=byPid[byName[e.name]];if(!h)return;const objs=SU.map(s=>key2obj[e.rank+s]);
+ if(h!==you)objs.forEach(o=>bring(o,h,objs));
+ const k=h.setN++,p0=(Math.random()-.5)*.25;
+ objs.forEach((c,i)=>{c.setting=true;c.tt=setTT(h,k,i,p0);give(c,h.set,i*450)})}
+// ---- safety net: after the announcements finish, make the table match the host's truth exactly ----
+function reconcile(st){if(!you)return false;let moved=false;const S=(c,to,d)=>{send(c,to,d);moved=true};
+ st.players.forEach(p=>{const h=byPid[p.id];if(!h)return;const want=new Set();p.books.forEach(R=>SU.forEach(s=>want.add(key2obj[R+s])));
+  h.set.cards.filter(c=>!want.has(c)&&isStatic(c)).forEach((c,i)=>{c.setting=false;c.tt=null;S(c,deck,i*40)});
+  p.books.forEach((R,k)=>{const objs=SU.map(s=>key2obj[R+s]);if(objs.every(c=>h.set.cards.includes(c)))return;const p0=(Math.random()-.5)*.25;
+   objs.forEach((c,i)=>{if(h.set.cards.includes(c)||!isStatic(c))return;c.setting=true;c.tt=setTT(h,k,i,p0);S(c,h.set,i*90)})});h.setN=p.books.length});
+ const wantMine=new Set(st.you.hand.map(c=>key2obj[c.rank+c.suit]));
+ you.cards.filter(c=>!wantMine.has(c)&&isStatic(c)).forEach((c,i)=>S(c,deck,i*60));
+ let d=0;wantMine.forEach(c=>{const o=owner(c);if(!you.cards.includes(c)&&isStatic(c)&&!(o&&o.tab))S(c,you,d+=90)});
+ st.players.forEach(p=>{const h=byPid[p.id];if(!h||h===you)return;const have=h.cards.filter(c=>isStatic(c)&&!c.setting);
+  for(let i=have.length;i>p.cardCount;i--){const x=anyFrom(h);if(x)S(x,deck,i*50)}
+  for(let i=have.length;i<p.cardCount;i++){const x=deckTop();if(!x)break;S(x,h,i*80)}});
+ return moved}
+/*VM-END*/
+// ---------- picking: mouse hovers, touch taps (no hover on touch screens) ----------
+const ray=new T.Raycaster(),mp=new T.Vector2(),cv=rd.domElement;
+function pick(e){const r=cv.getBoundingClientRect();mp.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(mp,cam);
+ const all=[you,...opps].filter(Boolean).flatMap(h=>h.cards).flatMap(c=>c.meshes),hit=ray.intersectObjects(all)[0];return hit?hit.object.userData.c:null}
+function tap(e){const c=pick(e);if(!c){if(e.pointerType==='mouse')cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
+let down=null;
+cv.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'){hov=null;hovH=null;return}hov=pick(e);const ho=hov&&owner(hov);hovH=ho&&ho!==you?ho:null;cv.style.cursor=hov?'pointer':'default'});
+cv.addEventListener('pointerleave',()=>{hov=null;hovH=null});
+cv.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')tap(e);else down={x:e.clientX,y:e.clientY,t:Date.now()}});
+cv.addEventListener('pointerup',e=>{if(e.pointerType!=='mouse'&&down){if(Math.hypot(e.clientX-down.x,e.clientY-down.y)<14&&Date.now()-down.t<700)tap(e);down=null;hov=null;hovH=null}});
+cv.addEventListener('pointercancel',()=>{down=null});
+const idle=()=>cards.every(c=>!c.fly&&!c.mv&&!c.pend);
+let settling=false;
+function settle(getSt,ok,done){if(settling)return;settling=true;idleCbs.push(()=>{settling=false;const st=getSt();let m=false;if(st&&st.phase!=='lobby'&&ok())m=reconcile(st);if(m)idleCbs.push(()=>done&&done());else done&&done()})}
+function reset(){for(const k in hands){const h=hands[k];deck.cards.push(...h.cards,...h.set.cards);h.cards=[];h.set.cards=[];h.setN=0}
+ cards.forEach(c=>{c.mv=null;c.fly=null;c.pend=false;c.setting=false;c.tt=null});moving.length=0;deck.gaps=[];seatSig='';sel=null;tgtPid=null;idleCbs=[];settling=false}
+const clk=new T.Clock();
+(function loop(){requestAnimationFrame(loop);const dt=Math.min(clk.getDelta(),.05);if($('screen-game').classList.contains('hidden'))return;tick(dt);rd.render(sc,cam)})();
+return{snap:()=>({you:you.cards.map(c=>RK[c.r]+SU[c.s]).sort(),opp:opps.map(h=>[h.pid,h.cards.length,h.set.cards.map(c=>RK[c.r]).sort().join('')]),deck:deck.cards.length,sets:you.set.cards.length}),fit,syncSeats,prepare,deal,success,fish,refill,book,reconcile,settle,reset,idle,
+ whenIdle:f=>{idleCbs.push(f)},setSel:r=>{sel=r?RK.indexOf(r):null},setTarget:p=>{tgtPid=p},
+ shake:name=>{const h=byPid[byName[name]];if(h){h.l.classList.remove('nope');void h.l.offsetWidth;h.l.classList.add('nope')}}}
+}
+
 </script>
 </body>
 </html>
