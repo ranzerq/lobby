@@ -412,6 +412,25 @@
   .conf { position: absolute; top: -16px; width: 8px; height: 14px; opacity: .9; animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
   @keyframes bob { 50% { transform: translateY(-5px); } }
+  /* ----- round 3 tweaks ----- */
+  #roomTag { background: none; border: 0; box-shadow: none; border-radius: 0; padding: 2px 6px; min-height: 0; color: #fff;
+    text-shadow: 0 2px 3px #000, 0 0 8px #000, 0 3px 14px #000, 0 0 24px rgba(0,0,0,.95); }
+  .lab.clk::after { content: ''; position: absolute; inset: -14px -18px; }
+  #board .ab-ask, #board .ab-outcome { overflow: hidden; text-overflow: clip; white-space: nowrap; }
+  #board .ab-ask span, #board .ab-outcome span { display: inline-block; }
+  .marq { animation: marq 7s ease-in-out infinite alternate; }
+  @keyframes marq { 0%, 15% { transform: translateX(0); } 85%, 100% { transform: translateX(var(--sc)); } }
+  #askp { width: 208px; gap: 6px; padding: 8px; }
+  #askp .askrow { display: flex; align-items: center; gap: 8px; }
+  #askRank { flex: 0 0 auto; min-width: 36px; font-size: 1rem; font-weight: 800; color: #fff; }
+  #cntRow { flex: 1; display: flex; gap: 6px; }
+  #cntRow .cb { flex: 1; min-height: 36px; padding: 0; font-size: 1rem; border-radius: 10px; }
+  #btnAsk { width: 100%; min-height: 38px; font-size: .88rem; padding: 4px 8px; flex: none; }
+  @media (max-height: 520px) { #askp { width: 188px; padding: 6px; gap: 5px; } #cntRow .cb { min-height: 32px; } #btnAsk { min-height: 34px; font-size: .8rem; } }
+  @media (max-width: 640px), (orientation: portrait) {
+    #askp { left: 8px; right: 8px; width: auto; flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+    #askRank { flex: 0 0 auto; } #cntRow { flex: 1; } #btnAsk { flex: none; width: 100%; }
+  }
 </style>
 
 <!-- ================= SETUP SCREEN ================= -->
@@ -464,9 +483,7 @@
   <div class="board hidden" id="board"><div class="ab-ask" id="abAsk"></div><div class="ab-outcome" id="abOutcome"></div></div>
   <div id="turnbox" class="hidden"></div>
   <div id="askp">
-    <div class="tlabel" id="tlabel"></div>
-    <div id="askRank"></div>
-    <div id="cntRow"></div>
+    <div class="askrow"><div id="askRank"></div><div id="cntRow"></div></div>
     <button id="btnAsk">Ask!</button>
   </div>
   <div id="overBanner" class="hidden">
@@ -643,7 +660,7 @@ function startGame() {
   G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; p.stats = { asks: 0, hits: 0, best: 0, lucky: 0 }; });
   G.phase = 'playing';
   // One card at a time, round-robin. The gap shrinks only for big tables so a deal never takes more than ~8s.
-  const total = G.players.length * HAND_SIZE, gap = Math.min(250, Math.floor(8000 / total)), dur = 1000, order = [];
+  const total = G.players.length * HAND_SIZE, gap = Math.min(380, Math.floor(10000 / total)), dur = 1300, order = [];
   for (let r = 0; r < HAND_SIZE; r++) G.players.forEach(p => order.push(p.id));
   emit({ t: 'start', order, gap, dur });
   G.players.forEach(p => { p.hand = G.deck.splice(-HAND_SIZE); p.dealt = p.hand.map(c => c.rank + c.suit); sortHand(p); });
@@ -680,11 +697,11 @@ function passTurn() {
   G.turn = (G.turn + 1) % G.players.length;
 }
 
-/** The game ends when all 13 books exist, or when nobody can make a move any more. */
+/** The game ends when all 13 books exist, or when 1 (or 0) players still hold cards: a lone player has nobody to ask, and the draw pile is simply ignored. */
 function checkOver() {
   if (G.phase !== 'playing') return G.phase === 'over';
   const total = G.players.reduce((s, p) => s + p.books.length, 0), holders = G.players.filter(p => p.hand.length > 0);
-  const stalled = total < 13 && (holders.length === 0 || (holders.length === 1 && G.deck.length === 0) || (G.deck.length === 0 && !holders.some(p => p.connected)));
+  const stalled = total < 13 && (holders.length <= 1 || (G.deck.length === 0 && !holders.some(p => p.connected)));
   if (total < 13 && !stalled) return false;
 
   G.phase = 'over';
@@ -698,22 +715,12 @@ function checkOver() {
 /**
  * Called after every state change. Makes sure the current player is able to act:
  *  - checks for game over
- *  - if only ONE player still holds cards, nobody is left to ask: they draw out the pile
  *  - skips disconnected players, and players who are out of cards (they never get cards back)
  */
 function advance() {
   let guard = 0;
   while (G.phase === 'playing' && guard++ < 200) {
     if (checkOver()) break;
-    const holders = G.players.filter(q => q.hand.length > 0);
-    if (holders.length === 1 && G.deck.length > 0 && holders[0].connected) {
-      const q = holders[0], c = G.deck.pop();
-      q.hand.push(c); sortHand(q);
-      q.note = 'Nobody else has cards, so you drew ' + cardStr(c) + '.';
-      emit({ t: 'solo', name: q.name, drew: true, deck: G.deck.length });
-      settle(q);
-      continue;
-    }
     const p = curPlayer();
     if (!p.connected) {
       if (p.grace) {                                   // first turn after dropping: wait 20s, others see a countdown
@@ -1617,19 +1624,23 @@ function showSplash(e, done) {
 }
 
 
-/* ---------- announcement board: at most two short lines (what was asked / what happened) ---------- */
-let boardT = null;
-function boardVis() {
-  const b = $('board'), has = $('abAsk').textContent || $('abOutcome').textContent;
-  b.classList.toggle('hidden', !has); b.classList.remove('fade');
-  clearTimeout(boardT);
-  if (has) boardT = setTimeout(() => b.classList.add('fade'), 7000);
+/* ---------- announcement board: two short lines. Top = the last ask (stays until the next ask), bottom = what happened (fades). Long text scrolls. ---------- */
+let outT = null;
+function setLine(el, text) {
+  el.textContent = '';
+  if (!text) return;
+  const sp = document.createElement('span'); sp.textContent = text; el.appendChild(sp);
+  requestAnimationFrame(() => {                         // too long for one line? slide it back and forth
+    const over = sp.scrollWidth - el.clientWidth;
+    if (over > 4) { sp.style.setProperty('--sc', -(over + 12) + 'px'); sp.classList.add('marq'); }
+  });
 }
-function setAsk(t) { $('abAsk').textContent = t; boardVis(); }
+function boardVis() { $('board').classList.toggle('hidden', !($('abAsk').textContent || $('abOutcome').textContent)); }
+function setAsk(t) { setLine($('abAsk'), t); boardVis(); }
 function setOutcome(text, kind) {
-  const el = $('abOutcome');
-  el.textContent = text; el.className = 'ab-outcome k-' + kind;
-  if (text) retrigger(el, 'pop');
+  const el = $('abOutcome'); clearTimeout(outT);
+  setLine(el, text); el.className = 'ab-outcome k-' + kind;
+  if (text) { retrigger(el, 'pop'); outT = setTimeout(() => { setLine(el, ''); boardVis(); }, 8000); }
   boardVis();
 }
 function clearExtras() {}
@@ -1639,7 +1650,7 @@ function resetBoard() {
   evQ.length = 0; evBusy = false;
   clearTimeout(splashT1); clearTimeout(splashT2);
   $('splash').className = 'splash hidden';
-  setAsk(''); setOutcome('', 'sys');
+  clearTimeout(outT); setAsk(''); setOutcome('', 'sys');
   $('turnbox').className = 'hidden'; statusKey = '';
   $('overBanner').classList.add('hidden'); overFor = '';
 }
@@ -1648,6 +1659,7 @@ function resetBoard() {
 function enqueueEvents(list) { list.forEach(e => evQ.push(e)); pump(); }
 function pump() {
   if (evBusy) return;
+  if (evQ.length && V && !V.idle()) { evBusy = true; V.whenIdle(() => { evBusy = false; pump(); }); return; }   // never start an announcement while cards are still travelling
   const e = evQ.shift();
   if (!e) { applyStatus(); if (V) V.settle(() => lastState, () => !evBusy && !evQ.length, updateAsk); else updateAsk(); return; }
   evBusy = true;
@@ -1670,11 +1682,11 @@ function playEvent(e, done) {
         idle(done);
       });
     case 'ask':                                  // drum roll while the host waits ASK_DELAY
-      setAsk(''); setOutcome(askText(e), 'sys');
+      setAsk(askText(e)); setOutcome('', 'sys');          // the ask stays on the top line until the next ask
       A.roll();
       return done();
     case 'timeout':
-      setAsk(''); setOutcome('⏰ ' + e.name + ' ran out of time!', 'bad');
+      setOutcome('⏰ ' + e.name + ' ran out of time!', 'bad');
       return done();
     case 'fail':
       A.wrong();
@@ -1685,10 +1697,6 @@ function playEvent(e, done) {
     case 'fish':
       if (!e.drew) setOutcome('🎣 The deck is empty, so ' + e.name + ' draws nothing', 'info');
       if (e.lucky) setOutcome('🍀 Lucky catch! ' + e.name + ' fished the exact rank they asked for and goes again!', 'good');
-      if (V) V.fish(e);
-      return idle(done);
-    case 'solo':
-      setAsk(''); setOutcome('🃏 Nobody else has cards, so ' + e.name + ' draws the rest of the pile', 'info');
       if (V) V.fish(e);
       return idle(done);
     case 'book':                                 // a finished book replaces both lines: the pull / the ask no longer matter
@@ -1868,7 +1876,7 @@ function updateCountOptions() {
   const own = selR ? (handCounts[selR] || 0) : 0, max = own ? 4 - own : 0;
   if (cnt > max) cnt = max || null;
   $('cntRow').innerHTML = [1, 2, 3].map(n => '<button class="cb' + (cnt === n ? ' on' : '') + '" data-n="' + n + '"' + (n > max ? ' disabled' : '') + '>' + n + '</button>').join('');
-  $('askRank').innerHTML = selR ? '<b>' + esc(rankWord(selR)) + '</b> · you hold ' + own : 'Tap a card in your hand';
+  $('askRank').textContent = selR ? rankWord(selR) : '—';
   updateAsk();
 }
 function updateAsk() {
@@ -1881,7 +1889,6 @@ function updateAsk() {
   b.disabled = !ok;
   b.textContent = ok ? 'Ask ' + t.name + ' for exactly ' + rankPhrase(selR, cnt)
     : (s.phase !== 'playing' ? 'Ask!' : (!mine ? 'Waiting for your turn' : (!selR ? 'Pick a card' : (!t ? 'Pick a player' : (!cnt ? 'Pick a count' : 'Ask!')))));
-  $('tlabel').textContent = t ? 'Asking ' + t.name : 'Tap a player’s cards (or name)';
 }
 function pickRank(r) { if (asking || !handCounts[r]) return; selR = selR === r ? null : r; V.setSel(selR); updateCountOptions(); }
 function pickSeat(pid) {
@@ -2073,7 +2080,7 @@ function felt(){const S=256,c=document.createElement('canvas');c.width=c.height=
  for(let i=0;i<16000;i++){g.fillStyle=Math.random()>.5?'rgba(255,255,255,.05)':'rgba(0,0,0,.07)';g.fillRect(Math.random()*S,Math.random()*S,1.4,1.4)}
  const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(7,5);t.encoding=T.sRGBEncoding;t.anisotropy=AN;return t}
 const tableG=new T.Group();sc.add(tableG);const WOOD=woodTex(),FELT=felt();
-function buildTable(kk){RX=(por?4.9:7.6)*kk;RZ=(por?7.6:4.9)*kk;FELT.repeat.set(RX*.92,RZ*.92);
+function buildTable(kk){RX=7.6*kk;RZ=4.9*kk;FELT.repeat.set(7*kk,5*kk);
  while(tableG.children.length){const o=tableG.children.pop();o.geometry.dispose()}
 function cyl(rx,rz,y,mat){const g=new T.CylinderGeometry(1,1,.62,96);g.scale(rx,1,rz);const m=new T.Mesh(g,mat);m.position.y=y;m.receiveShadow=true;tableG.add(m);return m}
 {const top=.06,bot=-.3,w=.7,ri=.1,ro=.16,K=8,pr=[{r:0,y:bot,nr:-1,ny:0},{r:0,y:top-ri,nr:-1,ny:0}];
@@ -2127,37 +2134,47 @@ for(let s=0;s<4;s++)for(let r=0;r<13;r++){
  const c={r,s,g,fly:null,pend:false,meshes:[bo,f,b],fm:f.material,jx:Math.random()-.5,jz:Math.random()-.5,jr:Math.random()-.5};
  bo.userData.c=f.userData.c=b.userData.c=c;cards.push(c);sc.add(g)}
 // ---------- camera framing: fit the real geometry into whatever screen this is (phone, tablet, desktop; portrait or landscape) ----------
-let por=false,YS=1.1,youSpread=1.5,camInit=false,needFrame=true,lastAh=-1,lastSt=null,fcount=0;
+let por=false,YS=1.1,youSpread=1.5,camInit=false,needFrame=true,lastAh=-1,lastSt=null,fcount=0,probe=null;
 const camC={d:13.6,sx:0,sy:0,p:.76},camT={d:13.6,sx:0,sy:0,p:.76};
 const narrow=()=>innerWidth<=640||innerHeight>innerWidth;
+function insets(){                                     // iOS notch / home bar, in px
+ if(typeof getComputedStyle!=='function')return{t:0,r:0,b:0,l:0};
+ if(!probe){probe=document.createElement('div');probe.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';document.body.appendChild(probe)}
+ const cs=getComputedStyle(probe);return{t:parseFloat(cs.paddingTop)||0,r:parseFloat(cs.paddingRight)||0,b:parseFloat(cs.paddingBottom)||0,l:parseFloat(cs.paddingLeft)||0}}
 function place(){const w=innerWidth,h=innerHeight;cam.aspect=w/h;cam.near=Math.max(2,camC.d*.2);cam.far=camC.d+70;
  cam.position.set(0,Math.sin(camC.p)*camC.d,Math.cos(camC.p)*camC.d);cam.lookAt(0,-.3,.3);cam.setViewOffset(w,h,-camC.sx,-camC.sy,w,h);cam.updateProjectionMatrix()}
 function fit(){rd.setSize(innerWidth,innerHeight);needFrame=true}
 function frameCam(){
- const w=innerWidth,h=innerHeight,nar=narrow(),askH=nar?($('askp').offsetHeight||100)+8:0;
- document.documentElement.style.setProperty('--askh',askH+'px');lastAh=$('askp').offsetHeight;
- const p=por?.95:.76,top=por?104:58,bot=nar?askH+4:8,side=8;
- YS=por?(w<=480?2.3:w<=760?1.8:1.3):(h<=430?1.8:h<=620?1.45:1.1);
- const Wmax=.82*2*RX;youSpread=Math.max(.5,Math.min(1.5,2*Math.asin(Math.min(.99,Math.max(0,(Wmax/YS-1)/(2*R))))));
- const pts=[],ex=RX+.8,ez=RZ+.8;for(let i=0;i<28;i++){const a=i/28*Math.PI*2;pts.push([ex*Math.cos(a),.1,ez*Math.sin(a)])}
- const SZ=RZ-1,fh=(R*Math.sin(youSpread/2)+.55)*YS;
- pts.push([-fh,.1,SZ+.6*YS],[fh,.1,SZ+.6*YS],[-fh*.9,.9*YS,SZ-.5*YS],[fh*.9,.9*YS,SZ-.5*YS]);
+ const w=innerWidth,h=innerHeight,nar=narrow(),ap=$('askp'),askH=nar?(ap.offsetHeight||90):0,ins=insets();
+ document.documentElement.style.setProperty('--askh',(askH+ins.b)+'px');lastAh=ap.offsetHeight;
+ por=h>w;
+ const top=Math.max(por?104:(h<=430?48:58),ins.t+44),bot=(nar?askH+10:0)+ins.b+8,sl=8+ins.l,sr=8+ins.r;
+ YS=por?(w<=480?3:w<=760?2.4:1.6):(h<=430?1.8:h<=620?1.45:1.1);
+ const Wmax=.84*2*RX;youSpread=Math.max(.5,Math.min(1.5,2*Math.asin(Math.min(.99,Math.max(0,(Wmax/YS-1)/(2*R))))));
  if(you){const o=.6*YS+.95;you.lp.set(you.g.position.x+Math.sin(you.rot)*o,.6,you.g.position.z+Math.cos(you.rot)*o)}
- for(const k in hands){const l=hands[k].lp;pts.push([l.x-1.3,l.y,l.z],[l.x+1.3,l.y,l.z])}
+ // points that must stay on screen (x,y,z, pixel padding for the HTML pills)
+ const pts=[],ex=RX+.8,ez=RZ+.8;for(let i=0;i<28;i++){const a=i/28*Math.PI*2;pts.push([ex*Math.cos(a),.1,ez*Math.sin(a),4,4])}
+ const SZ=RZ-1,fh=(R*Math.sin(youSpread/2)+.55)*YS;
+ pts.push([-fh,.1,SZ+.6*YS,4,4],[fh,.1,SZ+.6*YS,4,4],[-fh*.9,.9*YS,SZ-.5*YS,4,4],[fh*.9,.9*YS,SZ-.5*YS,4,4]);
+ for(const k in hands){const l=hands[k].lp;pts.push([l.x,l.y,l.z,62,17])}
  const v3=new T.Vector3(),tgt=new T.Vector3(0,-.3,.3);cam.aspect=w/h;cam.clearViewOffset();
- const ext=d=>{cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.near=Math.max(2,d*.2);cam.far=d+70;cam.lookAt(tgt);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);
-  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const q of pts){v3.set(q[0],q[1],q[2]).project(cam);const px=(v3.x*.5+.5)*w,py=(-v3.y*.5+.5)*h;x0=Math.min(x0,px);x1=Math.max(x1,px);y0=Math.min(y0,py);y1=Math.max(y1,py)}return{x0,x1,y0,y1}};
- let lo=5,hi=110;for(let i=0;i<26;i++){const d=(lo+hi)/2,e=ext(d);if(e.x1-e.x0<=w-2*side&&e.y1-e.y0<=h-top-bot)hi=d;else lo=d}
- const e=ext(hi);camT.d=hi;camT.p=p;camT.sx=w/2-(e.x0+e.x1)/2;camT.sy=(top+h-bot)/2-(e.y0+e.y1)/2;
- if(!camInit){Object.assign(camC,camT);camInit=true;place()}
- sc.fog.near=hi+18;sc.fog.far=hi+48;
+ const ext=(d,p)=>{cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.near=Math.max(2,d*.2);cam.far=d+70;cam.lookAt(tgt);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const q of pts){v3.set(q[0],q[1],q[2]).project(cam);const px=(v3.x*.5+.5)*w,py=(-v3.y*.5+.5)*h;x0=Math.min(x0,px-q[3]);x1=Math.max(x1,px+q[3]);y0=Math.min(y0,py-q[4]);y1=Math.max(y1,py+q[4])}return{x0,x1,y0,y1}};
+ // try several camera pitches and keep the one that lets the table be biggest (a lower camera suits wide, short phone screens)
+ const pref=por?.9:.76,cands=por?[.9,.8,1.0]:[.76,.7,.65,.6,.55,.5];let best=null;
+ for(const p of cands){let lo=5,hi=130;for(let i=0;i<26;i++){const d=(lo+hi)/2,e=ext(d,p);if(e.x1-e.x0<=w-sl-sr&&e.y1-e.y0<=h-top-bot)hi=d;else lo=d}
+  const sc=hi+Math.abs(p-pref)*.03;if(!best||sc<best.sc)best={sc,d:hi,p}}
+ const e=ext(best.d,best.p);camT.d=best.d;camT.p=best.p;camT.sx=(sl+w-sr)/2-(e.x0+e.x1)/2;camT.sy=top+(h-bot-top)*(por?.58:.5)-(e.y0+e.y1)/2;
+ if(!camInit){Object.assign(camC,camT);camInit=true}
+ place();                                                // always restore the real camera + view offset after probing
+ sc.fog.near=best.d+18;sc.fog.far=best.d+48;
  if(you){you.g.scale.setScalar(YS);you.g.updateMatrixWorld(true);for(const k in hands)relayoutSets(hands[k],meta[hands[k].pid])}}
 // ---------- shadows: soft blurred (VSM) where the GPU copes, simple (PCF) on touch devices, or off ----------
 function applyShadow(mode){const coarse=matchMedia('(pointer:coarse)').matches,eff=mode==='auto'?(coarse?'simple':'soft'):mode;
  rd.shadowMap.enabled=eff!=='off';rd.shadowMap.type=eff==='soft'?T.VSMShadowMap:T.PCFSoftShadowMap;key.castShadow=eff!=='off';key.shadow.bias=eff==='soft'?-.0004:-.0009;
  sc.traverse(o=>{if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{m.needsUpdate=true})});rd.shadowMap.needsUpdate=true}
 applyShadow(cb.getShadow?cb.getShadow():'auto');
-addEventListener('resize',()=>{fit();if(lastSt&&(innerHeight>innerWidth)!==por)syncSeats(lastSt)});
+addEventListener('resize',fit);
 fit();
 // ---------- seats: one per player in the room, me at the bottom, turn order runs clockwise ----------
 const deck={cards:[],deck:true,gaps:[],gs:[],ne:0};
@@ -2171,7 +2188,7 @@ function buildSeats(list){
  const n=list.length,old={};
  for(const k in hands){old[hands[k].pid]=hands[k];hands[k].l.remove();hands[k].bk.remove();delete hands[k]}
  for(const k in byPid)delete byPid[k];
- const tk=n+(por?'p':'l');if(tk!==tableKey){tableKey=tk;buildTable(1+(Math.max(n,4)-4)*.09)}
+ if(n!==tableN){tableN=n;buildTable(1+(Math.max(n,4)-4)*.09)}
  NP=n;const SX=RX-.9,SZ=RZ-1,sc2=Math.min(.9,Math.max(.68,.85-(n-4)*.035));
  list.forEach((p,i)=>{const psi=i/n*Math.PI*2,x=-SX*Math.sin(psi),z=SZ*Math.cos(psi),nx=x/(SX*SX),nz=z/(SZ*SZ),nl=Math.hypot(nx,nz),ox=nx/nl,oz=nz/nl,rot=Math.atan2(ox,oz),me=i===0,key=me?'you':'p'+p.id;
   const g=new T.Object3D();g.position.set(x,0,z);g.rotation.order='YXZ';g.rotation.set(me?-.9:.52,rot,0);g.scale.setScalar(me?YS:sc2);g.updateMatrixWorld(true);
@@ -2186,12 +2203,12 @@ function buildSeats(list){
  list.forEach(p=>relayoutSets(byPid[p.id],meta[p.id]));
  if(tgtPid!==null&&!byPid[tgtPid])tgtPid=null;needFrame=true}
 function syncSeats(st){
- lastSt=st;por=innerHeight>innerWidth;
+ lastSt=st;
  const iMe=Math.max(0,st.players.findIndex(p=>p.id===st.you.id)),ordered=st.players.slice(iMe).concat(st.players.slice(0,iMe));
  for(const k in meta)delete meta[k];byName={};
  st.players.forEach(p=>{meta[p.id]={name:p.name,books:p.books.slice(),connected:p.connected,cardCount:p.cardCount,host:p.id===st.hostId,out:st.phase==='playing'&&p.cardCount===0};byName[p.name]=p.id});
  cur={turnId:st.turnId,phase:st.phase};
- const sig=ordered.map(p=>p.id+':'+p.name).join('|')+(por?'P':'L');
+ const sig=ordered.map(p=>p.id+':'+p.name).join('|');
  if(sig!==seatSig){seatSig=sig;buildSeats(ordered)}}
 // layout: cards keep their layer; gaps open where cards leave/arrive
 const m4=new T.Matrix4(),loc=new T.Matrix4(),v=new T.Vector3(),q=new T.Quaternion(),q2=new T.Quaternion(),one=new T.Vector3(1,1,1),Z=new T.Vector3(0,0,1),X=new T.Vector3(1,0,0),Y=new T.Vector3(0,1,0);
@@ -2236,7 +2253,7 @@ function tick(dt){if(!you)return;const a=1-Math.exp(-dt*12);if(needFrame){needFr
  for(const c of cards)c.meshes[1].visible=known(c);
  for(const k in hands){const h=hands[k],m=meta[h.pid];if(!m)continue;const me=h===you;
   v.copy(h.lp).project(cam);h.l.style.left=(v.x*.5+.5)*innerWidth+'px';h.l.style.top=(-v.y*.5+.5)*innerHeight+'px';
-  const ib=me?.5*YS+.75:1;v.set(h.g.position.x-Math.sin(h.rot)*ib,.3,h.g.position.z-Math.cos(h.rot)*ib).project(cam);h.bk.style.left=(v.x*.5+.5)*innerWidth+'px';h.bk.style.top=(-v.y*.5+.5)*innerHeight+'px';
+  (me?v.set(h.lp.x+Math.cos(h.rot)*1.9,.6,h.lp.z-Math.sin(h.rot)*1.9):v.set(h.g.position.x-Math.sin(h.rot)*1,.3,h.g.position.z-Math.cos(h.rot)*1)).project(cam);h.bk.style.left=(v.x*.5+.5)*innerWidth+'px';h.bk.style.top=(-v.y*.5+.5)*innerHeight+'px';
   const txt=(m.host?'👑 ':'')+(me?'You':m.name)+(m.connected?'':' · offline')+(m.out?' · out':'');if(txt!==h.txt){h.txt=txt;h.t.textContent=txt}
   const bt='📚 '+m.books.length;if(bt!==h.btxt){h.btxt=bt;h.bk.textContent=bt}
   h.bk.classList.toggle('zero',!m.books.length);
@@ -2247,8 +2264,8 @@ function give(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(!
  from.cards.splice(from.cards.indexOf(c),1);c.sl=0;const g1=from.deck?null:{c,w:1,wt:1.7};if(g1)from.gaps.push(g1);
  c.mv={st:'out',t:0,from,to,g1,g2:null};moving.push(c);if(!g1)start(c)},delay)}
 function owner(c){return [you,...opps,deck,...[you,...opps].filter(Boolean).map(h=>h.set)].find(h=>h&&h.cards.includes(c))}
-function send(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
- const g=c.g;c.fly={t:0,d:.95,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
+function send(c,to,delay=0,dur=.95){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
+ const g=c.g;c.fly={t:0,d:dur,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
 function setTT(h,k,i,p0){const me=h.k==='you',SS=(NP<=4?.75:NP<=6?.68:.6)*(me?Math.min(1.5,1+(YS-1.1)*.3):1),r=.72*SS,cols=NP<=4?5:NP<=6?4:3,slot=k%cols,row=Math.floor(k/cols),
  sp=1.4*SS/.75,lat=(slot===0?0:(slot%2?1:-1)*Math.ceil(slot/2))*sp,dc=(me?.55+.95*YS:1.85)+row*1.2,rot=h.rot,ox=Math.sin(rot),oz=Math.cos(rot),lx=Math.cos(rot),lz=-Math.sin(rot);
  let cx=h.g.position.x-ox*dc+lx*lat+(Math.random()-.5)*.1,cz=h.g.position.z-oz*dc+lz*lat+(Math.random()-.5)*.1;
@@ -2282,10 +2299,10 @@ function prepare(st,fresh,prevKeys){const me=st.players.find(p=>p.id===st.you.id
   if(e.t==='success')e._ids=take(k=>rk(k)===e.rank,e.count);
   else if(e.t==='fish'&&e.drew){const need=new Set();fresh.forEach(b=>{if(b.t==='book'&&b.name===myName){let n=0;H0.forEach(k=>{if(rk(k)===b.rank)n++});if(n===3)need.add(b.rank)}});
    let g=take(k=>need.has(rk(k)),1);if(!g.length)g=take(()=>true,1);e._ids=g}
-  else if(e.t==='solo'&&e.drew)e._ids=take(()=>true,1)})}
+  })}
 // ---- the physical animations for each kind of event ----
 function deal(order,gap,mineKeys){const mine=(mineKeys||[]).slice();
- order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap)})}
+ order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap,1.25)})}
 function success(e){const A_=byPid[byName[e.name]],T_=byPid[byName[e.tname]];if(!A_||!T_)return;let objs=[];
  if(T_===you)objs=you.cards.filter(c=>RK[c.r]===e.rank&&isStatic(c)).slice(0,e.count);
  else{if(A_===you){const w=(e._ids||[]).map(k=>key2obj[k]).filter(Boolean);objs=w.map(o=>bring(o,T_,w))}
@@ -2316,7 +2333,9 @@ function reconcile(st){if(!you)return false;let moved=false;const S=(c,to,d)=>{s
 const ray=new T.Raycaster(),mp=new T.Vector2(),cv=rd.domElement;
 function pick(e){const r=cv.getBoundingClientRect();mp.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(mp,cam);
  const all=[you,...opps].filter(Boolean).flatMap(h=>h.cards).flatMap(c=>c.meshes),hit=ray.intersectObjects(all)[0];return hit?hit.object.userData.c:null}
-function tap(e){const c=pick(e);if(!c){if(e.pointerType==='mouse')cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
+// touch: if you miss a fan by a finger-width, still pick the nearest opponent
+function nearSeat(e){const r=cv.getBoundingClientRect();let best=null,bd=70;for(const h of opps){v.copy(h.g.position);v.y=.5;v.project(cam);const dx=(v.x*.5+.5)*r.width+r.left-e.clientX,dy=(-v.y*.5+.5)*r.height+r.top-e.clientY,d=Math.hypot(dx,dy);if(d<bd){bd=d;best=h}}return best}
+function tap(e){const c=pick(e);if(!c){if(e.pointerType!=='mouse'){const h=nearSeat(e);if(h)cb.onSeat(h.pid)}else cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
 let down=null;
 cv.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'){hov=null;hovH=null;return}hov=pick(e);const ho=hov&&owner(hov);hovH=ho&&ho!==you?ho:null;cv.style.cursor=hov?'pointer':'default'});
 cv.addEventListener('pointerleave',()=>{hov=null;hovH=null});
