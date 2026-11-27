@@ -345,30 +345,19 @@
   #screen-game { position: fixed; inset: 0; max-width: none; margin: 0; padding: 0; display: block; height: auto; }
   #stage { position: absolute; inset: 0; overflow: hidden; background: #070a0f; }
   #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; -webkit-user-select: none; user-select: none; }
-  .lab { position: absolute; transform: translate(-50%,-50%); pointer-events: none; font-size: 12px; font-weight: 700; background: rgba(0,0,0,.58); color: #fff; padding: 3px 10px; border-radius: 99px; white-space: nowrap; z-index: 5; }
+  .lab { position: absolute; transform: translate(-50%,-50%); pointer-events: none; font-size: 12px; font-weight: 600; background: rgba(0,0,0,.55); color: #fff; padding: 3px 10px; border-radius: 99px; white-space: nowrap; z-index: 5; }
   .lab.clk { pointer-events: auto; cursor: pointer; }
   .lab.turn { background: var(--gold); color: #2a1f00; }
   .lab.pick { outline: 2px solid var(--sky); box-shadow: 0 0 14px var(--sky); }
-  .lab.off, .lab.out { opacity: .55; }
+  .lab.off { opacity: .55; }
   .lab.nope { animation: nope .45s; }
   .lab .kick { position: static; pointer-events: auto; margin-left: 6px; min-height: 18px; padding: 0 6px; font-size: .7rem; border-radius: 6px; }
-  .bk { position: absolute; transform: translate(-50%,-50%); pointer-events: none; z-index: 4; font-size: 12px; font-weight: 800; color: var(--gold); background: rgba(0,0,0,.5); padding: 1px 8px; border-radius: 99px; white-space: nowrap; }
-  .bk.zero { opacity: .5; }
-  .topbar { position: absolute; top: calc(6px + env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 20; margin: 0; padding: 0; background: none; border: 0; box-shadow: none; display: flex; justify-content: space-between; align-items: flex-start; pointer-events: none; }
-  .topbar > * { pointer-events: auto; }
-  #roomTag { font: inherit; font-weight: 800; letter-spacing: .14em; color: #fff; background: rgba(6,16,12,.74); border: 1px solid var(--panel-border); border-radius: 10px; padding: 4px 12px; min-height: 34px; box-shadow: 0 6px 18px rgba(0,0,0,.9), 0 2px 4px #000; }
-  .fab.intop { margin: 0; }
-  .fab.intop button { box-shadow: 0 6px 18px rgba(0,0,0,.9), 0 2px 4px #000; border: 1px solid var(--panel-border); }
-  #tbar { position: fixed; top: 0; left: 0; right: 0; height: 4px; margin: 0; border-radius: 0; z-index: 300; background: rgba(0,0,0,.35); }
-  #board { position: absolute; top: calc(8px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: max-content; max-width: min(56vw, 640px); min-height: 0; flex: none; pointer-events: none; padding: 5px 14px; gap: 0;
-    background: rgba(6,16,12,.64); backdrop-filter: blur(4px); border: 1px solid var(--panel-border); border-radius: 12px; z-index: 15; text-align: center; transition: opacity .6s; }
-  #board.fade { opacity: 0; }
-  #board .ab-ask { font-size: clamp(11px, 1.9vw, 13px); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 0; }
-  #board .ab-outcome { font-size: clamp(14px, 2.6vw, 19px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 0; }
-  #board .ab-ask:empty, #board .ab-outcome:empty { display: none; }
-  #turnbox { position: absolute; left: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 20; padding: 7px 14px; border-radius: 12px; font-weight: 700; font-size: clamp(13px, 2.4vw, 16px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.8); backdrop-filter: blur(4px); max-width: 46vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #turnbox.hidden { display: none; }
+  .topbar { position: absolute; top: calc(8px + env(safe-area-inset-top)); left: 8px; right: 8px; z-index: 20; margin: 0; background: rgba(10,24,18,.72); backdrop-filter: blur(6px); }
+  .topbar .fab { pointer-events: auto; }
+  #board { position: absolute; top: calc(62px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: min(94vw, 700px); min-height: 0; flex: none; pointer-events: none; padding: 8px 12px; background: rgba(6,16,12,.55); backdrop-filter: blur(4px); z-index: 15; border-radius: 14px; }
+  #board .ab-outcome { font-size: clamp(15px, 3.2vw, 26px); }
+  #board .ab-status { font-size: clamp(13px, 2.6vw, 17px); padding: 5px 12px; }
+  #overBanner { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 40; min-width: min(90vw, 420px); }
   #askp { position: absolute; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); width: 220px; z-index: 20; display: flex; flex-direction: column; gap: 7px;
     background: rgba(10,24,18,.82); border: 1px solid var(--panel-border); border-radius: 14px; padding: 10px; backdrop-filter: blur(6px); }
   #askp .tlabel { font-size: .75rem; color: var(--muted); }
@@ -376,61 +365,9 @@
   #cntRow { display: flex; gap: 6px; }
   #cntRow .cb { flex: 1; }
   #btnAsk { width: 100%; min-height: 40px; line-height: 1.15; padding: 6px 10px; }
-  @media (max-height: 520px) { #askp { width: 190px; padding: 6px 8px; gap: 5px; } .topbar button { min-height: 30px; } }
-  @media (orientation: portrait) { #board { top: calc(46px + env(safe-area-inset-top)); max-width: 94vw; } }
-  @media (max-width: 640px), (orientation: portrait) {
-    #askp { left: 8px; right: 8px; width: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
-    #askp .tlabel { display: none; } #askRank { flex: 1 1 100%; } #cntRow { flex: none; } #btnAsk { flex: 1; width: auto; }
-    #turnbox { bottom: calc(var(--askh, 110px) + 14px + env(safe-area-inset-bottom)); max-width: 70vw; }
-    #roomTag { min-height: 28px; padding: 2px 9px; font-size: .8rem; } .fab.intop button { min-height: 30px; padding: 2px 9px; }
-  }
-  /* ----- final leaderboard ----- */
-  #overBanner { position: fixed; inset: 0; z-index: 400; display: flex; align-items: center; justify-content: center; padding: 10px; margin: 0; border: 0; background: rgba(3,8,6,.8); backdrop-filter: blur(6px); }
-  #overBanner.hidden { display: none; }
-  .lbcard { position: relative; width: min(94vw, 560px); max-height: 94vh; overflow: auto; text-align: center; padding: 18px 16px; border: 2px solid var(--gold); border-radius: 20px;
-    background: linear-gradient(180deg, rgba(18,40,30,.97), rgba(8,20,15,.97)); box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(255,213,74,.18); }
-  .lbtitle { font-size: clamp(22px, 5vw, 32px); font-weight: 900; color: var(--gold); text-shadow: 0 2px 14px rgba(255,213,74,.5); }
-  .lbsub { color: var(--muted); font-size: .88rem; margin: 4px 0 12px; }
-  .podium { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin: 6px 0 14px; }
-  .pod { flex: 1; max-width: 150px; display: flex; flex-direction: column; align-items: center; min-width: 0; }
-  .pod .pn { font-weight: 800; font-size: .95rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .pod .pb { font-size: .8rem; color: var(--muted); }
-  .pod .bar { width: 100%; margin-top: 6px; border-radius: 12px 12px 0 0; display: flex; justify-content: center; padding-top: 6px; font-size: 1.9rem; border: 1px solid rgba(255,255,255,.18); background: linear-gradient(180deg, #2e9c6c, #1b5e43); }
-  .pod.p1 .bar { height: 112px; background: linear-gradient(180deg, #ffd54a, #c99a16); box-shadow: 0 0 28px rgba(255,213,74,.45); }
-  .pod.p2 .bar { height: 84px; background: linear-gradient(180deg, #e1e6ea, #8c98a2); }
-  .pod.p3 .bar { height: 62px; background: linear-gradient(180deg, #e0a06a, #9a5f2d); }
-  .pod .crown { font-size: 1.6rem; animation: bob 1.4s ease-in-out infinite; }
-  .lbrow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 7px 10px; margin-top: 6px; border-radius: 10px; background: rgba(255,255,255,.05); text-align: left; }
-  .lbrow.me { outline: 2px solid var(--sky); background: rgba(143,211,255,.1); }
-  .lbrow .rk { width: 24px; font-weight: 900; color: var(--gold); }
-  .lbrow .nm { flex: 1; min-width: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .lbrow .ch { display: flex; gap: 3px; flex-wrap: wrap; justify-content: flex-end; }
-  .lbrow .ch i { font-style: normal; font-size: .7rem; font-weight: 800; background: #fff; color: #222; border-radius: 4px; padding: 1px 4px; }
-  .lbrow .stt { width: 100%; font-size: .72rem; color: var(--muted); padding-left: 32px; }
-  .lbme { margin: 12px 0 10px; font-weight: 800; }
-  #confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-  .conf { position: absolute; top: -16px; width: 8px; height: 14px; opacity: .9; animation: fall linear forwards; }
-  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
-  @keyframes bob { 50% { transform: translateY(-5px); } }
-  /* ----- round 3 tweaks ----- */
-  #roomTag { background: none; border: 0; box-shadow: none; border-radius: 0; padding: 2px 6px; min-height: 0; color: #fff;
-    text-shadow: 0 2px 3px #000, 0 0 8px #000, 0 3px 14px #000, 0 0 24px rgba(0,0,0,.95); }
-  .lab.clk::after { content: ''; position: absolute; inset: -14px -18px; }
-  #board .ab-ask, #board .ab-outcome { overflow: hidden; text-overflow: clip; white-space: nowrap; }
-  #board .ab-ask span, #board .ab-outcome span { display: inline-block; }
-  .marq { animation: marq 7s ease-in-out infinite alternate; }
-  @keyframes marq { 0%, 15% { transform: translateX(0); } 85%, 100% { transform: translateX(var(--sc)); } }
-  #askp { width: 208px; gap: 6px; padding: 8px; }
-  #askp .askrow { display: flex; align-items: center; gap: 8px; }
-  #askRank { flex: 0 0 auto; min-width: 36px; font-size: 1rem; font-weight: 800; color: #fff; }
-  #cntRow { flex: 1; display: flex; gap: 6px; }
-  #cntRow .cb { flex: 1; min-height: 36px; padding: 0; font-size: 1rem; border-radius: 10px; }
-  #btnAsk { width: 100%; min-height: 38px; font-size: .88rem; padding: 4px 8px; flex: none; }
-  @media (max-height: 520px) { #askp { width: 188px; padding: 6px; gap: 5px; } #cntRow .cb { min-height: 32px; } #btnAsk { min-height: 34px; font-size: .8rem; } }
-  @media (max-width: 640px), (orientation: portrait) {
-    #askp { left: 8px; right: 8px; width: auto; flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
-    #askRank { flex: 0 0 auto; } #cntRow { flex: 1; } #btnAsk { flex: none; width: 100%; }
-  }
+  #note { position: absolute; left: 50%; bottom: calc(6px + env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 15; color: var(--gold); font-size: .85rem; text-shadow: 0 1px 4px #000; pointer-events: none; max-width: 56vw; text-align: center; margin: 0; min-height: 0; }
+  @media (max-height: 520px) { #askp { width: 190px; padding: 6px 8px; gap: 5px; } #board { top: calc(46px + env(safe-area-inset-top)); padding: 4px 10px; } #board .ab-outcome { font-size: clamp(14px, 3vw, 20px); } .topbar { padding: 2px 10px; } }
+  @media (max-width: 640px) { #askp { left: 8px; right: 8px; width: auto; flex-direction: row; flex-wrap: wrap; align-items: center; } #askp .tlabel { display: none; } #askRank { flex: 1 1 100%; } #cntRow { flex: none; } #btnAsk { flex: 1; width: auto; } #note { bottom: auto; top: calc(48px + env(safe-area-inset-top)); max-width: 90vw; } }
 </style>
 
 <!-- ================= SETUP SCREEN ================= -->
@@ -478,25 +415,29 @@
 <!-- ================= GAME SCREEN (3D table) ================= -->
 <div id="screen-game" class="hidden">
   <div id="stage"></div>
-  <div id="tbar" class="hidden"><i></i></div>
-  <div class="topbar"><button id="roomTag" title="Tap to copy the room code"></button></div>
-  <div class="board hidden" id="board"><div class="ab-ask" id="abAsk"></div><div class="ab-outcome" id="abOutcome"></div></div>
-  <div id="turnbox" class="hidden"></div>
+  <div class="topbar">
+    <div>Room: <b id="roomTag"></b></div>
+    <div class="deckbox"><div class="deck-icon" id="deckIcon" title="Draw pile"></div><span><b id="deckCount">52</b> in the deck</span></div>
+  </div>
+  <div class="board" id="board">
+    <div class="ab-ask" id="abAsk"></div>
+    <div class="ab-outcome" id="abOutcome"></div>
+    <div class="ab-extras" id="abExtras"></div>
+    <div class="ab-status" id="abStatus"></div>
+    <div id="tbar" class="hidden"><i></i></div>
+  </div>
+  <div id="overBanner" class="panel hidden">
+    <h2 id="overTitle"></h2>
+    <div id="overDetail" class="muted"></div>
+    <div class="row" style="justify-content:center;margin-top:12px"><button id="btnAgain" class="hidden">Play Again (back to lobby)</button></div>
+  </div>
   <div id="askp">
-    <div class="askrow"><div id="askRank"></div><div id="cntRow"></div></div>
+    <div class="tlabel" id="tlabel"></div>
+    <div id="askRank"></div>
+    <div id="cntRow"></div>
     <button id="btnAsk">Ask!</button>
   </div>
-  <div id="overBanner" class="hidden">
-    <div id="confetti"></div>
-    <div class="lbcard">
-      <div class="lbtitle" id="overTitle"></div>
-      <div class="lbsub" id="overDetail"></div>
-      <div class="podium" id="podium"></div>
-      <div id="lbList"></div>
-      <div class="lbme" id="lbMe"></div>
-      <div class="row" style="justify-content:center"><button id="btnAgain" class="hidden">Play Again (back to lobby)</button><div id="lbWait" class="muted hidden">Waiting for the host to start a new game…</div></div>
-    </div>
-  </div>
+  <div id="note"></div>
 </div>
 
 
@@ -516,7 +457,6 @@
     <div class="row"><input id="bgColor" type="color" value="#0f4d33"><button id="bgReset" class="secondary">Reset</button></div>
     <label class="small" for="vol">Music volume</label><input id="vol" type="range" min="0" max="100" value="25">
     <label class="small" for="sfxVol">Sound effects volume</label><input id="sfxVol" type="range" min="0" max="100" value="70">
-    <label class="small" for="shadowSel">Shadows (pick Simple or Off if the felt flickers)</label><select id="shadowSel"><option value="auto">Auto</option><option value="soft">Soft (best looking)</option><option value="simple">Simple (compatible)</option><option value="off">Off (fastest)</option></select>
     <div id="hostOnly" class="hidden">
       <label class="small" for="mp3">Host: play an MP3 for everyone (max 6 MB)</label><input id="mp3" type="file" accept="audio/*">
       <label class="chk"><input id="allowMid" type="checkbox" checked> Allow joining mid-game</label>
@@ -631,7 +571,7 @@ let asking    = false;      // UI lock to prevent double-submitting a move
    ================================================================== */
 function newPlayer(id, name, conn) {
   const token = Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2, '0')).join('');
-  return { id, name, conn, token, hand: [], books: [], connected: true, note: '', grace: false, graceEnd: 0, stash: [], chat: [], mute: 0, stats: { asks: 0, hits: 0, best: 0, lucky: 0 } };
+  return { id, name, conn, token, hand: [], books: [], connected: true, note: '', grace: false, graceEnd: 0, stash: [], chat: [], mute: 0 };
 }
 function uniqueName(raw) {
   const base = (String(raw || '').trim().slice(0, 16)) || 'Player';
@@ -657,10 +597,10 @@ function startGame() {
   if (G.players.length < 4) { toast('You need at least 4 players (4 to 8) to start.'); return; }
   G.deck = shuffle(makeDeck());
   G.events = []; G.winners = [];
-  G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; p.stats = { asks: 0, hits: 0, best: 0, lucky: 0 }; });
+  G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; });
   G.phase = 'playing';
   // One card at a time, round-robin. The gap shrinks only for big tables so a deal never takes more than ~8s.
-  const total = G.players.length * HAND_SIZE, gap = Math.min(380, Math.floor(10000 / total)), dur = 1300, order = [];
+  const total = G.players.length * HAND_SIZE, gap = Math.min(250, Math.floor(8000 / total)), dur = 1000, order = [];
   for (let r = 0; r < HAND_SIZE; r++) G.players.forEach(p => order.push(p.id));
   emit({ t: 'start', order, gap, dur });
   G.players.forEach(p => { p.hand = G.deck.splice(-HAND_SIZE); p.dealt = p.hand.map(c => c.rank + c.suit); sortHand(p); });
@@ -686,9 +626,20 @@ function extractBooks(p) {
   return formed;
 }
 
-/** Lay down finished books. A player who runs out of cards is OUT for good: no refill, no draw. */
+/**
+ * Rule 5 + 7a: lay down books; if that empties the hand, draw a fresh hand of 5
+ * (or whatever is left). Loops because a fresh hand could itself contain a book.
+ */
 function settle(p) {
-  extractBooks(p);
+  let guard = 0;
+  while (guard++ < 20) {
+    if (!extractBooks(p)) break;
+    if (p.hand.length === 0 && G.deck.length > 0) {
+      const k = Math.min(HAND_SIZE, G.deck.length);
+      p.hand.push(...G.deck.splice(-k));
+      emit({ t: 'refill', name: p.name, n: k, deck: G.deck.length });
+    } else break;
+  }
   sortHand(p);
 }
 
@@ -697,11 +648,11 @@ function passTurn() {
   G.turn = (G.turn + 1) % G.players.length;
 }
 
-/** The game ends when all 13 books exist, or when 1 (or 0) players still hold cards: a lone player has nobody to ask, and the draw pile is simply ignored. */
+/** Rule 8: the game ends when all 13 books exist (or nobody online can possibly act). */
 function checkOver() {
   if (G.phase !== 'playing') return G.phase === 'over';
-  const total = G.players.reduce((s, p) => s + p.books.length, 0), holders = G.players.filter(p => p.hand.length > 0);
-  const stalled = total < 13 && (holders.length <= 1 || (G.deck.length === 0 && !holders.some(p => p.connected)));
+  const total = G.players.reduce((s, p) => s + p.books.length, 0);
+  const stalled = total < 13 && G.deck.length === 0 && !G.players.some(p => p.connected && p.hand.length > 0);
   if (total < 13 && !stalled) return false;
 
   G.phase = 'over';
@@ -715,11 +666,12 @@ function checkOver() {
 /**
  * Called after every state change. Makes sure the current player is able to act:
  *  - checks for game over
- *  - skips disconnected players, and players who are out of cards (they never get cards back)
+ *  - skips disconnected players
+ *  - Rule 7b: a player with 0 cards on their turn draws 1 card and the turn passes
  */
 function advance() {
   let guard = 0;
-  while (G.phase === 'playing' && guard++ < 200) {
+  while (G.phase === 'playing' && guard++ < 100) {
     if (checkOver()) break;
     const p = curPlayer();
     if (!p.connected) {
@@ -733,7 +685,18 @@ function advance() {
       passTurn();
       continue;
     }
-    if (p.hand.length === 0) { passTurn(); continue; }
+    if (p.hand.length === 0) {
+      if (G.deck.length > 0) {
+        const c = G.deck.pop();
+        p.hand.push(c); sortHand(p);
+        p.note = 'You had no cards, so you drew ' + cardStr(c) + '.';
+        emit({ t: 'empty', name: p.name, drew: true, deck: G.deck.length });
+      } else {
+        emit({ t: 'empty', name: p.name, drew: false, deck: 0 });
+      }
+      passTurn();
+      continue;
+    }
     break; // current player can act
   }
 }
@@ -749,7 +712,6 @@ function handleMove(pid, msg) {
   if (p.id !== pid) return 'It is not your turn.';
   const t = byId(Number(msg.target));
   if (!t || t === p) return 'Choose another player as your target.';
-  if (t.hand.length === 0) return 'That player has no cards left.';
   const rank = String(msg.rank);
   if (!RANKS.includes(rank)) return 'Invalid rank.';
   const own = p.hand.filter(c => c.rank === rank).length;
@@ -759,7 +721,6 @@ function handleMove(pid, msg) {
   if (count > 4 - own) return 'Impossible guess: you hold ' + own + ' of that rank, so they can have at most ' + (4 - own) + '.';
 
   // Announce the ask now; resolve it after ASK_DELAY so everyone can read it before the answer appears.
-  p.stats.asks++;
   emit({ t: 'ask', name: p.name, tname: t.name, rank, count });
   G.busy = 'ask'; G.busyWho = t.name;
   broadcast();
@@ -778,7 +739,6 @@ function resolveMove(p, t, rank, count) {
     p.hand.push(...theirs); sortHand(p);
     p.note = 'You received ' + theirs.map(cardStr).join(' ') + ' from ' + t.name + '.';
     t.note = p.name + ' took your ' + theirs.map(cardStr).join(' ') + '.';
-    p.stats.hits++; p.stats.best = Math.max(p.stats.best, count);
     emit({ t: 'success', name: p.name, tname: t.name, rank, count, phrase: randInt(PULL_PHRASES.length) });
     settle(p);
     advance();
@@ -800,7 +760,7 @@ function finishFish(p, rank) {
   let lucky = false;
   if (drew) {
     const c = G.deck.pop(); p.hand.push(c); sortHand(p);
-    lucky = mine && c.rank === rank; if (lucky) p.stats.lucky++;
+    lucky = mine && c.rank === rank;
     p.note = 'Go Fish! You drew ' + cardStr(c) + '.' + (lucky ? ' Lucky catch: go again!' : '');
   } else p.note = 'Go Fish! The deck is empty, so you drew nothing.';
   emit({ t: 'fish', name: p.name, rank, drew, lucky, deck: G.deck.length });
@@ -813,7 +773,7 @@ function finishFish(p, rank) {
 function resetToLobby() {
   if (!isHost || G.phase !== 'over') return;
   G.players = G.players.filter(p => p.connected);
-  G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; p.stats = { asks: 0, hits: 0, best: 0, lucky: 0 }; });
+  G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; });
   G.deck = []; G.events = []; G.winners = []; G.phase = 'lobby';
   broadcast();
 }
@@ -836,7 +796,7 @@ function buildStateFor(p) {
     allowMid: G.allowMid,
     handSize: G.handSize,
     busy: G.busy || '', busyWho: G.busyWho || '', turnLeft: G.turnEnd ? Math.max(0, G.turnEnd - Date.now()) : 0,
-    players: G.players.map(q => ({ id: q.id, name: q.name, cardCount: q.hand.length, books: q.books.slice(), connected: q.connected, stats: q.stats, graceLeft: Math.max(0, q.graceEnd - Date.now()) })),
+    players: G.players.map(q => ({ id: q.id, name: q.name, cardCount: q.hand.length, books: q.books.slice(), connected: q.connected, graceLeft: Math.max(0, q.graceEnd - Date.now()) })),
     events: G.events,
     winners: G.winners,
     you: { id: p.id, hand: p.hand, note: p.note, deal: p.dealt || [] }
@@ -1590,6 +1550,32 @@ function pullText(e) {
   return e.name + ' Pulled ' + what + '!';
 }
 function retrigger(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+function setAsk(t) { $('abAsk').textContent = t; }
+function setOutcome(text, kind) {
+  const el = $('abOutcome');
+  el.textContent = text;
+  el.className = 'ab-outcome k-' + kind;
+  retrigger(el, 'pop');
+}
+function clearExtras() { $('abExtras').innerHTML = ''; }
+function addExtra(text, kind) {
+  const box = $('abExtras');
+  const d = document.createElement('div');
+  d.className = 'ex k-' + kind;
+  d.textContent = text;                          // textContent => player names can't inject HTML
+  box.appendChild(d);
+  while (box.children.length > 4) box.removeChild(box.firstChild);
+}
+function resetBoard() {
+  evQ.length = 0; evBusy = false;
+  clearTimeout(splashT1); clearTimeout(splashT2);
+  $('splash').className = 'splash hidden';
+  setAsk(''); $('abOutcome').textContent = ''; $('abOutcome').className = 'ab-outcome';
+  clearExtras();
+  $('abStatus').textContent = ''; $('abStatus').className = 'ab-status'; statusKey = '';
+  $('overBanner').classList.add('hidden');
+}
+
 /** Build the wavy text: every letter is its own span with a staggered phase (see .wave .l in the CSS). */
 function buildWave(container, text) {
   container.innerHTML = '';
@@ -1624,42 +1610,10 @@ function showSplash(e, done) {
 }
 
 
-/* ---------- announcement board: two short lines. Top = the last ask (stays until the next ask), bottom = what happened (fades). Long text scrolls. ---------- */
-let outT = null;
-function setLine(el, text) {
-  el.textContent = '';
-  if (!text) return;
-  const sp = document.createElement('span'); sp.textContent = text; el.appendChild(sp);
-  requestAnimationFrame(() => {                         // too long for one line? slide it back and forth
-    const over = sp.scrollWidth - el.clientWidth;
-    if (over > 4) { sp.style.setProperty('--sc', -(over + 12) + 'px'); sp.classList.add('marq'); }
-  });
-}
-function boardVis() { $('board').classList.toggle('hidden', !($('abAsk').textContent || $('abOutcome').textContent)); }
-function setAsk(t) { setLine($('abAsk'), t); boardVis(); }
-function setOutcome(text, kind) {
-  const el = $('abOutcome'); clearTimeout(outT);
-  setLine(el, text); el.className = 'ab-outcome k-' + kind;
-  if (text) { retrigger(el, 'pop'); outT = setTimeout(() => { setLine(el, ''); boardVis(); }, 8000); }
-  boardVis();
-}
-function clearExtras() {}
-function addExtra() {}
-const sysChat = t => chatAdd('System', t, true);          // connection news goes to the chat, not the board
-function resetBoard() {
-  evQ.length = 0; evBusy = false;
-  clearTimeout(splashT1); clearTimeout(splashT2);
-  $('splash').className = 'splash hidden';
-  clearTimeout(outT); setAsk(''); setOutcome('', 'sys');
-  $('turnbox').className = 'hidden'; statusKey = '';
-  $('overBanner').classList.add('hidden'); overFor = '';
-}
-
 /* ---------- the announcement queue, now driving the 3D table ---------- */
 function enqueueEvents(list) { list.forEach(e => evQ.push(e)); pump(); }
 function pump() {
   if (evBusy) return;
-  if (evQ.length && V && !V.idle()) { evBusy = true; V.whenIdle(() => { evBusy = false; pump(); }); return; }   // never start an announcement while cards are still travelling
   const e = evQ.shift();
   if (!e) { applyStatus(); if (V) V.settle(() => lastState, () => !evBusy && !evQ.length, updateAsk); else updateAsk(); return; }
   evBusy = true;
@@ -1669,7 +1623,7 @@ function playEvent(e, done) {
   const idle = f => V ? V.whenIdle(f) : f();
   switch (e.t) {
     case 'start':
-      A.start(); setAsk('');
+      A.start(); setAsk(''); clearExtras();
       setOutcome('🎴 Dealing the cards…', 'sys');
       if (V) V.deal(e.order || [], e.gap, e._deal);
       return idle(() => { setOutcome('🎴 Game on! Everyone was dealt ' + HAND_SIZE + ' cards.', 'sys'); done(); });
@@ -1678,105 +1632,116 @@ function playEvent(e, done) {
       return showSplash(e, () => {
         setAsk(askText(e));
         setOutcome(fillName(PULL_PHRASES[e.phrase % PULL_PHRASES.length], e.name), 'good');
+        clearExtras();
         if (V) V.success(e);
         idle(done);
       });
     case 'ask':                                  // drum roll while the host waits ASK_DELAY
-      setAsk(askText(e)); setOutcome('', 'sys');          // the ask stays on the top line until the next ask
+      clearExtras(); setAsk('');
+      setOutcome(askText(e), 'sys');
       A.roll();
       return done();
     case 'timeout':
+      clearExtras(); setAsk('');
       setOutcome('⏰ ' + e.name + ' ran out of time!', 'bad');
       return done();
     case 'fail':
       A.wrong();
       setAsk(askText(e));
       setOutcome(fillName(FAIL_PHRASES[e.phrase % FAIL_PHRASES.length], e.name), 'bad');
+      clearExtras();
       if (V) V.shake(e.tname);
       return done();
     case 'fish':
-      if (!e.drew) setOutcome('🎣 The deck is empty, so ' + e.name + ' draws nothing', 'info');
+      clearExtras();
+      if (!e.drew) addExtra('🎣 The deck is empty, so ' + e.name + ' draws nothing', 'info');
       if (e.lucky) setOutcome('🍀 Lucky catch! ' + e.name + ' fished the exact rank they asked for and goes again!', 'good');
       if (V) V.fish(e);
       return idle(done);
-    case 'book':                                 // a finished book replaces both lines: the pull / the ask no longer matter
+    case 'book':
       A.reward();
-      setAsk(''); setOutcome('📚 ' + e.name + ' completed a book of ' + bookName(e.rank) + '!', 'book');
+      addExtra('📚 ' + e.name + ' completed a book of ' + bookName(e.rank) + '!', 'book');
       if (V) V.book(e);
       return idle(done);
-    case 'skip':   sysChat(e.name + ' is offline, so their turn was skipped.'); return done();
-    case 'left':   sysChat(e.name + ' disconnected.'); return done();
-    case 'wait':   sysChat(e.name + ' dropped. Waiting 20s for them to return…'); return done();
-    case 'back':   sysChat(e.name + ' is back!'); return done();
-    case 'kick':   sysChat(e.name + ' was kicked; ' + e.n + ' cards went back into the deck.'); return done();
+    case 'refill':
+      addExtra('🃏 ' + e.name + ' is out of cards and draws a fresh hand of ' + e.n, 'info');
+      if (V) V.refill(e);
+      return idle(done);
+    case 'empty':
+      addExtra(e.drew ? '🃏 ' + e.name + ' had no cards, drew 1, and the turn passes'
+                      : '🃏 ' + e.name + ' has no cards and the deck is empty. Turn passes', 'info');
+      if (V) V.fish(e);
+      return idle(done);
+    case 'skip':
+      addExtra('⏭ ' + e.name + ' is offline, so their turn is skipped', 'info');
+      return done();
+    case 'left':
+      addExtra('⚠ ' + e.name + ' disconnected', 'info');
+      return done();
+    case 'wait': addExtra('📡 ' + e.name + ' dropped. Waiting 20s for them to return…', 'info'); return done();
+    case 'back': addExtra('✅ ' + e.name + ' is back!', 'info'); return done();
     case 'joined':
-      sysChat(e.name + ' joined mid-game with ' + (e.n || HAND_SIZE) + ' cards.');
+      addExtra('👋 ' + e.name + ' joined mid-game with ' + (e.n || HAND_SIZE) + ' cards', 'info');
       if (V) V.deal(Array(e.n || HAND_SIZE).fill(e.pid), 250, e._deal);
       return idle(done);
+    case 'kick': addExtra('🥾 ' + e.name + ' was kicked; ' + e.n + ' cards went back into the deck (' + e.deck + ' now)', 'info'); return done();
     case 'over':
       A.victory();
       setAsk('');
       setOutcome('🏆 ' + (e.names.length > 1 ? 'Tie: ' + e.names.join(' & ') : e.names[0] + ' wins') + ' with ' + e.max + ' book' + (e.max === 1 ? '' : 's') + '!', 'book');
+      if (e.stalled) addExtra('No connected player has cards left, so the game ended early.', 'info');
       return done();
     default:
       return done();
   }
 }
 
-/* ---------- whose turn it is (bottom-left) + the final leaderboard ---------- */
-let overFor = '';
+/** Persistent instruction line, coloured by game state. Only updated once the announcement queue is idle. */
 function applyStatus() {
   const s = lastState;
   if (!s || s.phase === 'lobby') return;
-  const el = $('turnbox');
-  if (s.phase === 'over') { el.className = 'hidden'; statusKey = ''; }
-  else {
-    let txt, cls;
-    if (s.turnId === s.you.id) { txt = '🟢 Your turn!'; cls = 'st-mine'; }
-    else {
-      const who = s.players.find(p => p.id === s.turnId);
-      txt = who ? (who.connected ? '⏳ ' + who.name + '’s turn' : '📡 ' + who.name + ' is offline…') : '…'; cls = 'st-wait';
-    }
-    const key = cls + '|' + txt;
-    if (key !== statusKey) {
-      statusKey = key;
-      el.textContent = txt; el.className = cls;
-      retrigger(el, 'pop');
-      clearTimeout(remT);
-      if (cls === 'st-mine') {                          // your turn: chime now, and a gentle reminder if you dawdle
-        A.turn();
-        remT = setTimeout(() => { const q = lastState; if (q && q.phase === 'playing' && q.turnId === q.you.id && !q.busy && !asking) A.turn(); }, 45000);
-      }
+  const el = $('abStatus');
+  let txt, cls;
+  if (s.phase === 'over') {
+    txt = '🏁 Game over'; cls = 'st-over';
+  } else if (s.busy === 'deal') {
+    txt = '🎴 Dealing the cards…'; cls = 'st-wait';
+  } else if (s.busy === 'ask') {
+    txt = '🤔 ' + s.busyWho + ' is checking their hand…'; cls = 'st-wait';
+  } else if (s.busy) {
+    txt = '🎣 Fishing…'; cls = 'st-wait';
+  } else if (s.turnId === s.you.id) {
+    txt = '🟢 Your turn!'; cls = 'st-mine';
+  } else {
+    const who = s.players.find(p => p.id === s.turnId);
+    txt = who && !who.connected && graceAt[who.id] > Date.now()
+      ? '📡 Waiting ' + Math.ceil((graceAt[who.id] - Date.now()) / 1000) + 's for ' + who.name + ' to reconnect…'
+      : '⏳ ' + (who ? who.name : '…') + "'s turn";
+    cls = 'st-wait';
+  }
+  const key = cls + '|' + txt;
+  if (key !== statusKey) {
+    statusKey = key;
+    el.textContent = txt;
+    el.className = 'ab-status ' + cls;
+    retrigger(el, 'pop');
+    clearTimeout(remT);
+    if (cls === 'st-mine') {                           // your turn: chime now, and a gentle reminder if you dawdle
+      A.turn();
+      remT = setTimeout(() => { const q = lastState; if (q && q.phase === 'playing' && q.turnId === q.you.id && !q.busy && !asking) A.turn(); }, 45000);
     }
   }
-  renderOver(s);
-}
-const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 >> 3 ^ 1) && n % 10 < 4 ? n % 10 : 0]);
-function renderOver(s) {
-  const box = $('overBanner');
-  if (s.phase !== 'over') { box.classList.add('hidden'); overFor = ''; return; }
-  box.classList.remove('hidden');
-  $('btnAgain').classList.toggle('hidden', !isHost); $('lbWait').classList.toggle('hidden', isHost);
-  const none = { asks: 0, hits: 0, best: 0, lucky: 0 };
-  const sig = s.players.map(p => p.id + ':' + p.books.length + ':' + (p.stats || none).hits).join('|');
-  if (sig === overFor) return; overFor = sig;
-  const rows = s.players.map(p => ({ p, b: p.books.length, st: p.stats || none }))
-    .sort((a, b) => b.b - a.b || b.st.hits - a.st.hits || a.p.name.localeCompare(b.p.name));
-  let rk = 0, pb = -1; rows.forEach((r, i) => { if (r.b !== pb) { rk = i + 1; pb = r.b; } r.rank = rk; });
-  const win = rows.filter(r => r.rank === 1), total = rows.reduce((t, r) => t + r.b, 0);
-  $('overTitle').textContent = win.length > 1 ? '🤝 Tie: ' + win.map(r => r.p.name).join(' & ') : '🏆 ' + win[0].p.name + ' wins!';
-  $('overDetail').textContent = 'Winning score: ' + win[0].b + ' book' + (win[0].b === 1 ? '' : 's') + (total < 13 ? ' · the game ended early, nobody could make a move' : '');
-  const medal = r => r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : '';
-  const top = rows.slice(0, 3), order = top.length === 3 ? [top[1], top[0], top[2]] : top.length === 2 ? [top[1], top[0]] : top;
-  $('podium').innerHTML = order.map(r => '<div class="pod p' + Math.min(3, r.rank) + '">' + (r.rank === 1 ? '<div class="crown">👑</div>' : '') +
-    '<div class="pn">' + esc(r.p.name) + '</div><div class="pb">' + r.b + ' book' + (r.b === 1 ? '' : 's') + '</div><div class="bar">' + medal(r.rank) + '</div></div>').join('');
-  $('lbList').innerHTML = rows.map(r => '<div class="lbrow' + (r.p.id === s.you.id ? ' me' : '') + '"><div class="rk">' + r.rank + '</div><div class="nm">' + esc(r.p.name) + '</div>' +
-    '<div class="ch">' + (r.p.books.length ? r.p.books.map(b => '<i>' + esc(b) + '</i>').join('') : '<span class="muted">no books</span>') + '</div>' +
-    '<div class="stt">🎯 ' + r.st.hits + '/' + r.st.asks + ' pulls' + (r.st.best > 1 ? ' · best ×' + r.st.best : '') + (r.st.lucky ? ' · 🍀 ' + r.st.lucky : '') + '</div></div>').join('');
-  const me = rows.find(r => r.p.id === s.you.id);
-  $('lbMe').textContent = me ? 'You finished ' + ordinal(me.rank) + ' with ' + me.b + ' book' + (me.b === 1 ? '' : 's') : '';
-  const cf = $('confetti'); cf.innerHTML = '';
-  for (let i = 0; i < 44; i++) { const c = document.createElement('i'); c.className = 'conf'; c.style.left = Math.random() * 100 + '%'; c.style.background = ['#ffd54a', '#8fd3ff', '#ff8a8a', '#7be0a8', '#fff'][i % 5]; c.style.animationDuration = (2.6 + Math.random() * 2.4) + 's'; c.style.animationDelay = (Math.random() * 1.6) + 's'; cf.appendChild(c); }
+  // final results panel
+  const over = s.phase === 'over';
+  $('overBanner').classList.toggle('hidden', !over);
+  if (over) {
+    const names = s.players.filter(p => s.winners.includes(p.id)).map(p => p.name);
+    const max = Math.max(...s.players.map(p => p.books.length));
+    $('overTitle').textContent = names.length > 1 ? '🤝 Tie: ' + names.join(' & ') : '🏆 ' + names[0] + ' wins!';
+    $('overDetail').textContent = 'Winning score: ' + max + ' book' + (max === 1 ? '' : 's') + '. Final: ' +
+      s.players.map(p => p.name + ' ' + p.books.length).join(' · ');
+    $('btnAgain').classList.toggle('hidden', !isHost);
+  }
 }
 
 
@@ -1842,16 +1807,17 @@ function renderLobby(state) {
 
 function renderGame(state) {
   show('screen-game');
-  if (!V) { V = make3D({ onCard: pickRank, onSeat: pickSeat, onKick: askKick, onClear: clearPicks, isHost: () => isHost, getShadow: () => getLS('gf_shadow', 'auto') }); V.fit(); }
+  if (!V) { V = make3D({ onCard: pickRank, onSeat: pickSeat, onKick: askKick, onClear: clearPicks, isHost: () => isHost }); V.fit(); }
   asking = false;
+  $('deckCount').textContent = state.deckCount;
   $('roomTag').textContent = state.roomCode;
+  $('deckIcon').style.setProperty('--dk', Math.min(1, state.deckCount / 52));
   $('hostOnly').classList.toggle('hidden', !isHost);
   $('allowMid').checked = state.allowMid !== false;
   V.syncSeats(state);
   if (state.turnId !== prevTurn) prevTurn = state.turnId;
   refreshForm(state);
-  if (state.you.note && state.you.note !== lastNote) toast(state.you.note);
-  lastNote = state.you.note || '';
+  $('note').textContent = state.you.note || '';
   // announcements: queue only events we haven't seen yet (de-duplicated by seq)
   const fresh = (state.events || []).filter(e => e.seq > lastSeq);
   fresh.forEach(e => { lastSeq = Math.max(lastSeq, e.seq); });
@@ -1861,7 +1827,6 @@ function renderGame(state) {
 }
 
 /* ---------- the ask form: tap a card (rank), tap a player, pick a count ---------- */
-let lastNote = '';
 const uiIdle = () => !evBusy && !evQ.length && (!V || V.idle());
 function refreshForm(state) {
   const me = state.you.id;
@@ -1876,7 +1841,7 @@ function updateCountOptions() {
   const own = selR ? (handCounts[selR] || 0) : 0, max = own ? 4 - own : 0;
   if (cnt > max) cnt = max || null;
   $('cntRow').innerHTML = [1, 2, 3].map(n => '<button class="cb' + (cnt === n ? ' on' : '') + '" data-n="' + n + '"' + (n > max ? ' disabled' : '') + '>' + n + '</button>').join('');
-  $('askRank').textContent = selR ? rankWord(selR) : '—';
+  $('askRank').innerHTML = selR ? '<b>' + esc(rankWord(selR)) + '</b> · you hold ' + own : 'Tap a card in your hand';
   updateAsk();
 }
 function updateAsk() {
@@ -1889,6 +1854,7 @@ function updateAsk() {
   b.disabled = !ok;
   b.textContent = ok ? 'Ask ' + t.name + ' for exactly ' + rankPhrase(selR, cnt)
     : (s.phase !== 'playing' ? 'Ask!' : (!mine ? 'Waiting for your turn' : (!selR ? 'Pick a card' : (!t ? 'Pick a player' : (!cnt ? 'Pick a count' : 'Ask!')))));
+  $('tlabel').textContent = t ? 'Asking ' + t.name : 'Tap a player’s cards (or name)';
 }
 function pickRank(r) { if (asking || !handCounts[r]) return; selR = selR === r ? null : r; V.setSel(selR); updateCountOptions(); }
 function pickSeat(pid) {
@@ -1935,6 +1901,15 @@ $('btnAsk').onclick = () => {
   sendMove({ type: 'move', target: tgt, rank: selR, count: cnt });
 };
 $('lobbyPlayers').addEventListener('click', e => { const k = e.target.closest('[data-kick]'); if (k) kickPlayer(Number(k.dataset.kick)); });
+setInterval(() => {                                   // live countdown while waiting for a dropped player
+  const s = lastState; if (!s || s.phase !== 'playing' || evBusy) return;
+  const g = graceAt[s.turnId], el = $('abStatus');
+  if (g > Date.now() && s.turnId !== s.you.id && el.classList.contains('st-wait')) {
+    const w = s.players.find(p => p.id === s.turnId);
+    el.textContent = '📡 Waiting ' + Math.ceil((g - Date.now()) / 1000) + 's for ' + w.name + ' to reconnect…';
+  }
+}, 500);
+
 /* ---------- sound effects: hover only for real mice (touch has no hover), press for everyone ---------- */
 let lastBtn = null;
 document.addEventListener('pointerover', e => {
@@ -1944,9 +1919,6 @@ document.addEventListener('pointerover', e => {
   lastBtn = b || null;
 });
 document.addEventListener('pointerdown', e => { const b = e.target.closest && e.target.closest('button'); if (b && !b.disabled) A.click(); }, true);
-$('roomTag').onclick = () => { const code = lastState ? lastState.roomCode : ''; if (navigator.clipboard) navigator.clipboard.writeText(code).then(() => toast('Room code copied!'), () => toast('Room code: ' + code)); else toast('Room code: ' + code); };
-$('shadowSel').value = getLS('gf_shadow', 'auto');
-$('shadowSel').onchange = e => { setLS('gf_shadow', e.target.value); if (V) V.setShadows(e.target.value); };
 $('sfxVol').value = getLS('gf_sfx', 70); A.setVol(Number($('sfxVol').value) / 100);
 $('sfxVol').oninput = e => { A.setVol(e.target.value / 100); setLS('gf_sfx', e.target.value); };
 
@@ -2052,7 +2024,7 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden && ev
 function make3D(cb){
 const T=THREE,RK=RANKS,SU=SUITS;
 const W=1,H=1.45,CT=.0048,FO=.001,R=3.2,CLEAR=.04;
-let RX=7.6,RZ=4.9;
+let RX=7.6,RZ=4.9,camK=1,camKT=1;
 const L=h=>new T.Color(h).convertSRGBToLinear();
 const rd=new T.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
 rd.setPixelRatio(Math.min(devicePixelRatio,2));rd.outputEncoding=T.sRGBEncoding;rd.physicallyCorrectLights=true;
@@ -2060,7 +2032,10 @@ rd.shadowMap.enabled=true;rd.shadowMap.type=T.VSMShadowMap;$('stage').appendChil
 const AN=rd.capabilities.getMaxAnisotropy();
 const sc=new T.Scene();sc.background=L(0x070a0f);sc.fog=new T.Fog(L(0x070a0f),30,58);
 const cam=new T.PerspectiveCamera(45,1,2,80);
-
+function fit(){rd.setSize(innerWidth,innerHeight);place()}
+function place(){const w=innerWidth,h=innerHeight;cam.aspect=w/h;const d=13.6*camK*Math.max(1,1.62/cam.aspect),p=.76;
+ cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.lookAt(0,-.3,.3);const ins=innerWidth<=640?$('askp').offsetHeight+6:0;if(ins)cam.setViewOffset(w,h,0,ins,w,h);else cam.clearViewOffset();cam.updateProjectionMatrix()}
+addEventListener('resize',fit);fit();
 // lighting (same rig as the reference build)
 sc.add(new T.AmbientLight(L(0xb6c8e4),.42),new T.HemisphereLight(L(0x9fc0ff),L(0x2c1f14),.55));
 const key=new T.SpotLight(L(0xfff1d9),2.2,0,.98,.8,0);key.position.set(0,13.5,3);key.castShadow=true;
@@ -2133,80 +2108,36 @@ for(let s=0;s<4;s++)for(let r=0;r<13;r++){
  f.position.z=CT/2+FO;b.position.z=-CT/2-FO;b.rotation.y=Math.PI;bo.castShadow=true;[bo,f,b].forEach(m=>{m.receiveShadow=false;m.frustumCulled=false});g.add(bo,f,b);
  const c={r,s,g,fly:null,pend:false,meshes:[bo,f,b],fm:f.material,jx:Math.random()-.5,jz:Math.random()-.5,jr:Math.random()-.5};
  bo.userData.c=f.userData.c=b.userData.c=c;cards.push(c);sc.add(g)}
-// ---------- camera framing: fit the real geometry into whatever screen this is (phone, tablet, desktop; portrait or landscape) ----------
-let por=false,YS=1.1,youSpread=1.5,camInit=false,needFrame=true,lastAh=-1,lastSt=null,fcount=0,probe=null;
-const camC={d:13.6,sx:0,sy:0,p:.76},camT={d:13.6,sx:0,sy:0,p:.76};
-const narrow=()=>innerWidth<=640||innerHeight>innerWidth;
-function insets(){                                     // iOS notch / home bar, in px
- if(typeof getComputedStyle!=='function')return{t:0,r:0,b:0,l:0};
- if(!probe){probe=document.createElement('div');probe.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';document.body.appendChild(probe)}
- const cs=getComputedStyle(probe);return{t:parseFloat(cs.paddingTop)||0,r:parseFloat(cs.paddingRight)||0,b:parseFloat(cs.paddingBottom)||0,l:parseFloat(cs.paddingLeft)||0}}
-function place(){const w=innerWidth,h=innerHeight;cam.aspect=w/h;cam.near=Math.max(2,camC.d*.2);cam.far=camC.d+70;
- cam.position.set(0,Math.sin(camC.p)*camC.d,Math.cos(camC.p)*camC.d);cam.lookAt(0,-.3,.3);cam.setViewOffset(w,h,-camC.sx,-camC.sy,w,h);cam.updateProjectionMatrix()}
-function fit(){rd.setSize(innerWidth,innerHeight);needFrame=true}
-function frameCam(){
- const w=innerWidth,h=innerHeight,nar=narrow(),ap=$('askp'),askH=nar?(ap.offsetHeight||90):0,ins=insets();
- document.documentElement.style.setProperty('--askh',(askH+ins.b)+'px');lastAh=ap.offsetHeight;
- por=h>w;
- const top=Math.max(por?104:(h<=430?48:58),ins.t+44),bot=(nar?askH+10:0)+ins.b+8,sl=8+ins.l,sr=8+ins.r;
- YS=por?(w<=480?3:w<=760?2.4:1.6):(h<=430?1.8:h<=620?1.45:1.1);
- const Wmax=.84*2*RX;youSpread=Math.max(.5,Math.min(1.5,2*Math.asin(Math.min(.99,Math.max(0,(Wmax/YS-1)/(2*R))))));
- if(you){const o=.6*YS+.95;you.lp.set(you.g.position.x+Math.sin(you.rot)*o,.6,you.g.position.z+Math.cos(you.rot)*o)}
- // points that must stay on screen (x,y,z, pixel padding for the HTML pills)
- const pts=[],ex=RX+.8,ez=RZ+.8;for(let i=0;i<28;i++){const a=i/28*Math.PI*2;pts.push([ex*Math.cos(a),.1,ez*Math.sin(a),4,4])}
- const SZ=RZ-1,fh=(R*Math.sin(youSpread/2)+.55)*YS;
- pts.push([-fh,.1,SZ+.6*YS,4,4],[fh,.1,SZ+.6*YS,4,4],[-fh*.9,.9*YS,SZ-.5*YS,4,4],[fh*.9,.9*YS,SZ-.5*YS,4,4]);
- for(const k in hands){const l=hands[k].lp;pts.push([l.x,l.y,l.z,62,17])}
- const v3=new T.Vector3(),tgt=new T.Vector3(0,-.3,.3);cam.aspect=w/h;cam.clearViewOffset();
- const ext=(d,p)=>{cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.near=Math.max(2,d*.2);cam.far=d+70;cam.lookAt(tgt);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);
-  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const q of pts){v3.set(q[0],q[1],q[2]).project(cam);const px=(v3.x*.5+.5)*w,py=(-v3.y*.5+.5)*h;x0=Math.min(x0,px-q[3]);x1=Math.max(x1,px+q[3]);y0=Math.min(y0,py-q[4]);y1=Math.max(y1,py+q[4])}return{x0,x1,y0,y1}};
- // try several camera pitches and keep the one that lets the table be biggest (a lower camera suits wide, short phone screens)
- const pref=por?.9:.76,cands=por?[.9,.8,1.0]:[.76,.7,.65,.6,.55,.5];let best=null;
- for(const p of cands){let lo=5,hi=130;for(let i=0;i<26;i++){const d=(lo+hi)/2,e=ext(d,p);if(e.x1-e.x0<=w-sl-sr&&e.y1-e.y0<=h-top-bot)hi=d;else lo=d}
-  const sc=hi+Math.abs(p-pref)*.03;if(!best||sc<best.sc)best={sc,d:hi,p}}
- const e=ext(best.d,best.p);camT.d=best.d;camT.p=best.p;camT.sx=(sl+w-sr)/2-(e.x0+e.x1)/2;camT.sy=top+(h-bot-top)*(por?.58:.5)-(e.y0+e.y1)/2;
- if(!camInit){Object.assign(camC,camT);camInit=true}
- place();                                                // always restore the real camera + view offset after probing
- sc.fog.near=best.d+18;sc.fog.far=best.d+48;
- if(you){you.g.scale.setScalar(YS);you.g.updateMatrixWorld(true);for(const k in hands)relayoutSets(hands[k],meta[hands[k].pid])}}
-// ---------- shadows: soft blurred (VSM) where the GPU copes, simple (PCF) on touch devices, or off ----------
-function applyShadow(mode){const coarse=matchMedia('(pointer:coarse)').matches,eff=mode==='auto'?(coarse?'simple':'soft'):mode;
- rd.shadowMap.enabled=eff!=='off';rd.shadowMap.type=eff==='soft'?T.VSMShadowMap:T.PCFSoftShadowMap;key.castShadow=eff!=='off';key.shadow.bias=eff==='soft'?-.0004:-.0009;
- sc.traverse(o=>{if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{m.needsUpdate=true})});rd.shadowMap.needsUpdate=true}
-applyShadow(cb.getShadow?cb.getShadow():'auto');
-addEventListener('resize',fit);
-fit();
 // ---------- seats: one per player in the room, me at the bottom, turn order runs clockwise ----------
 const deck={cards:[],deck:true,gaps:[],gs:[],ne:0};
 const hands={},byPid={},meta={};let byName={},you=null,opps=[],NP=0,tableN=-1,seatSig='',cur={turnId:null,phase:'lobby'};
-let sel=null,hov=null,hovH=null,tgtPid=null,idleCbs=[],tableKey='';
+let sel=null,hov=null,hovH=null,tgtPid=null,idleCbs=[];
 cards.sort(()=>Math.random()-.5).forEach(c=>deck.cards.push(c));
 const key2obj={};cards.forEach(c=>{key2obj[RK[c.r]+SU[c.s]]=c});
 const live=h=>h===deck||h===you||opps.includes(h)||(you&&you.set===h)||opps.some(o=>o.set===h);
 function relayoutSets(h,m){if(!m)return;m.books.forEach((R,k)=>{const p0=(Math.random()-.5)*.25;SU.forEach((s,i)=>{const c=key2obj[R+s];if(h.set.cards.includes(c)){c.setting=true;c.tt=setTT(h,k,i,p0)}})});h.setN=m.books.length}
 function buildSeats(list){
  const n=list.length,old={};
- for(const k in hands){old[hands[k].pid]=hands[k];hands[k].l.remove();hands[k].bk.remove();delete hands[k]}
+ for(const k in hands){old[hands[k].pid]=hands[k];hands[k].l.remove();delete hands[k]}
  for(const k in byPid)delete byPid[k];
- if(n!==tableN){tableN=n;buildTable(1+(Math.max(n,4)-4)*.09)}
+ if(n!==tableN){tableN=n;const kk=1+(Math.max(n,4)-4)*.09;buildTable(kk);camKT=kk}
  NP=n;const SX=RX-.9,SZ=RZ-1,sc2=Math.min(.9,Math.max(.68,.85-(n-4)*.035));
  list.forEach((p,i)=>{const psi=i/n*Math.PI*2,x=-SX*Math.sin(psi),z=SZ*Math.cos(psi),nx=x/(SX*SX),nz=z/(SZ*SZ),nl=Math.hypot(nx,nz),ox=nx/nl,oz=nz/nl,rot=Math.atan2(ox,oz),me=i===0,key=me?'you':'p'+p.id;
-  const g=new T.Object3D();g.position.set(x,0,z);g.rotation.order='YXZ';g.rotation.set(me?-.9:.52,rot,0);g.scale.setScalar(me?YS:sc2);g.updateMatrixWorld(true);
-  const l=document.createElement('div');l.className='lab';const t=document.createElement('span');l.appendChild(t);const bk=document.createElement('div');bk.className='bk';
-  const h={k:key,pid:p.id,name:p.name,cards:[],g,l,t,bk,txt:'',btxt:'',lift:0,gaps:[],gs:[],ne:0,rot,set:{cards:[],tab:true},setN:0,lp:new T.Vector3(x+ox*1.5,.6,z+oz*1.5)};
+  const g=new T.Object3D();g.position.set(x,0,z);g.rotation.order='YXZ';g.rotation.set(me?-.9:.52,rot,0);g.scale.setScalar(me?1.1:sc2);g.updateMatrixWorld(true);
+  const l=document.createElement('div');l.className='lab';const t=document.createElement('span');l.appendChild(t);
+  const h={k:key,pid:p.id,name:p.name,cards:[],g,l,t,txt:'',lift:0,gaps:[],gs:[],ne:0,rot,set:{cards:[],tab:true},setN:0,lp:new T.Vector3(x+ox*1.5,.6,z+oz*1.5)};
   if(!me){l.onclick=()=>cb.onSeat(p.id);if(cb.isHost()){const kb=document.createElement('button');kb.className='kick';kb.textContent='✖';kb.onclick=e=>{e.stopPropagation();cb.onKick(p.id)};l.appendChild(kb)}}
-  $('stage').appendChild(l);$('stage').appendChild(bk);hands[key]=h;byPid[p.id]=h});
+  $('stage').appendChild(l);hands[key]=h;byPid[p.id]=h});
  you=hands.you;opps=list.slice(1).map(p=>byPid[p.id]);
  list.forEach(p=>{const nh=byPid[p.id],oh=old[p.id];if(oh){nh.cards=oh.cards;nh.set.cards=oh.set.cards;nh.setN=oh.setN;nh.lift=oh.lift}});
  for(const pid in old)if(!byPid[pid]){old[pid].set.cards.forEach(c=>{c.setting=false;c.tt=null});deck.cards.push(...old[pid].cards,...old[pid].set.cards)}
  cards.forEach(c=>{c.mv=null;c.fly=null;c.pend=false});moving.length=0;deck.gaps=[];
  list.forEach(p=>relayoutSets(byPid[p.id],meta[p.id]));
- if(tgtPid!==null&&!byPid[tgtPid])tgtPid=null;needFrame=true}
+ if(tgtPid!==null&&!byPid[tgtPid])tgtPid=null}
 function syncSeats(st){
- lastSt=st;
  const iMe=Math.max(0,st.players.findIndex(p=>p.id===st.you.id)),ordered=st.players.slice(iMe).concat(st.players.slice(0,iMe));
  for(const k in meta)delete meta[k];byName={};
- st.players.forEach(p=>{meta[p.id]={name:p.name,books:p.books.slice(),connected:p.connected,cardCount:p.cardCount,host:p.id===st.hostId,out:st.phase==='playing'&&p.cardCount===0};byName[p.name]=p.id});
+ st.players.forEach(p=>{meta[p.id]={name:p.name,books:p.books.slice(),connected:p.connected,cardCount:p.cardCount,host:p.id===st.hostId};byName[p.name]=p.id});
  cur={turnId:st.turnId,phase:st.phase};
  const sig=ordered.map(p=>p.id+':'+p.name).join('|');
  if(sig!==seatSig){seatSig=sig;buildSeats(ordered)}}
@@ -2218,7 +2149,7 @@ const uI=(h,j)=>{let u=j;for(const o of h.gs)if(o.at<=j)u+=o.g.w;return u};
 const uS=(h,o)=>{let u=o.at+(o.g.w-1)/2;for(const p of h.gs)if(p!==o&&p.at<=o.at)u+=p.g.w;return u};
 function lay(c,u,ne,h,sl,lift){
  if(h.deck){tp.set(c.jx*.05,.02+u*.0075,c.jz*.05);tq.setFromAxisAngle(Y,c.jr*.25).multiply(q2.setFromAxisAngle(X,Math.PI/2));ts.set(1,1,1);return}
- const op=h!==you,step=Math.min(.17,(op?1.5:youSpread)/Math.max(ne,1)),th=((ne-1)/2-u)*step;
+ const op=h!==you,step=Math.min(.17,1.5/Math.max(ne,1)),th=((ne-1)/2-u)*step;
  q.setFromAxisAngle(Z,th);if(op)q.multiply(q2.setFromAxisAngle(Y,.45*th)); // opponents: fan also curls (yaw) around their side
  loc.compose(v.set(-(R+sl)*Math.sin(th),(R+sl)*Math.cos(th)-R+0,u*(op?.042:.01)+(op?.225*R*th*th:0)),q,one);
  m4.multiplyMatrices(h.g.matrixWorld,loc);m4.decompose(tp,tq,ts);tp.y+=lift}
@@ -2232,7 +2163,7 @@ function known(c){const f=c.fly,m=c.mv,pf=f&&(m||c.pf),pub=t=>t===you||(t&&t.tab
  if(pf)return pub(pf.to)?(pub(pf.from)||f.t>=.5):(pf.from===you&&f.t<.5);
  if(m)return m.st==='out'?m.from===you:pub(m.to);
  return you.cards.includes(c)||you.set.cards.includes(c)||opps.some(o=>o.set.cards.includes(c))}
-function tick(dt){if(!you)return;const a=1-Math.exp(-dt*12);if(needFrame){needFrame=false;frameCam()}if(++fcount%24===0&&Math.abs($('askp').offsetHeight-lastAh)>4)needFrame=true;const ce=1-Math.exp(-dt*5);if(Math.abs(camT.d-camC.d)+Math.abs(camT.sx-camC.sx)+Math.abs(camT.sy-camC.sy)>.02||camC.p!==camT.p){camC.d+=(camT.d-camC.d)*ce;camC.sx+=(camT.sx-camC.sx)*ce;camC.sy+=(camT.sy-camC.sy)*ce;camC.p=camT.p;place()}
+function tick(dt){if(!you)return;const a=1-Math.exp(-dt*12);if(Math.abs(camKT-camK)>.001){camK+=(camKT-camK)*(1-Math.exp(-dt*2.5));place()}
  for(const h of [you,...opps,deck]){
   if(!h.deck)h.cards.sort(cmp);
   for(const g of h.gaps)g.w+=(g.wt-g.w)*a;
@@ -2251,26 +2182,21 @@ function tick(dt){if(!you)return;const a=1-Math.exp(-dt*12);if(needFrame){needFr
   else if(m.st==='fly'&&!c.fly)m.st='in';
   else if(m.st==='in'&&c.sl<.02){m.to.cards.push(c);m.to.gaps=m.to.gaps.filter(g=>g!==m.g2);c.mv=null;c.pend=false;moving.splice(moving.indexOf(c),1);if(m.to===you)A.reward()}}
  for(const c of cards)c.meshes[1].visible=known(c);
- for(const k in hands){const h=hands[k],m=meta[h.pid];if(!m)continue;const me=h===you;
-  v.copy(h.lp).project(cam);h.l.style.left=(v.x*.5+.5)*innerWidth+'px';h.l.style.top=(-v.y*.5+.5)*innerHeight+'px';
-  (me?v.set(h.lp.x+Math.cos(h.rot)*1.9,.6,h.lp.z-Math.sin(h.rot)*1.9):v.set(h.g.position.x-Math.sin(h.rot)*1,.3,h.g.position.z-Math.cos(h.rot)*1)).project(cam);h.bk.style.left=(v.x*.5+.5)*innerWidth+'px';h.bk.style.top=(-v.y*.5+.5)*innerHeight+'px';
-  const txt=(m.host?'👑 ':'')+(me?'You':m.name)+(m.connected?'':' · offline')+(m.out?' · out':'');if(txt!==h.txt){h.txt=txt;h.t.textContent=txt}
-  const bt='📚 '+m.books.length;if(bt!==h.btxt){h.btxt=bt;h.bk.textContent=bt}
-  h.bk.classList.toggle('zero',!m.books.length);
-  h.l.classList.toggle('turn',cur.phase==='playing'&&cur.turnId===h.pid);h.l.classList.toggle('pick',tgtPid===h.pid);h.l.classList.toggle('off',!m.connected);h.l.classList.toggle('out',!!m.out);h.l.classList.toggle('clk',!me&&m.cardCount>0)}
+ for(const k in hands){const h=hands[k],m=meta[h.pid];v.copy(h.lp).project(cam);h.l.style.left=(v.x*.5+.5)*innerWidth+'px';h.l.style.top=(-v.y*.5+.5)*innerHeight+'px';
+  if(m){const me=h===you,txt=(m.host?'👑 ':'')+(me?'You':m.name)+' · '+h.cards.length+(h.cards.length===1?' card':' cards')+' · 📚 '+m.books.length+(m.connected?'':' · offline');if(txt!==h.txt){h.txt=txt;h.t.textContent=txt}
+   h.l.classList.toggle('turn',cur.phase==='playing'&&cur.turnId===h.pid);h.l.classList.toggle('pick',tgtPid===h.pid);h.l.classList.toggle('off',!m.connected);h.l.classList.toggle('clk',!me&&m.cardCount>0)}}
  if(idleCbs.length&&idle()){const l=idleCbs;idleCbs=[];l.forEach(f=>{try{f()}catch(x){console.error(x)}})}}
 // give: the source fan opens a gap, the card slides out, flies, the destination fan opens a gap, the card slides in
 function give(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(!from){c.pend=false;return}if(!live(to))to=deck;
  from.cards.splice(from.cards.indexOf(c),1);c.sl=0;const g1=from.deck?null:{c,w:1,wt:1.7};if(g1)from.gaps.push(g1);
  c.mv={st:'out',t:0,from,to,g1,g2:null};moving.push(c);if(!g1)start(c)},delay)}
 function owner(c){return [you,...opps,deck,...[you,...opps].filter(Boolean).map(h=>h.set)].find(h=>h&&h.cards.includes(c))}
-function send(c,to,delay=0,dur=.95){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
- const g=c.g;c.fly={t:0,d:dur,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
-function setTT(h,k,i,p0){const me=h.k==='you',SS=(NP<=4?.75:NP<=6?.68:.6)*(me?Math.min(1.5,1+(YS-1.1)*.3):1),r=.72*SS,cols=NP<=4?5:NP<=6?4:3,slot=k%cols,row=Math.floor(k/cols),
- sp=1.4*SS/.75,lat=(slot===0?0:(slot%2?1:-1)*Math.ceil(slot/2))*sp,dc=(me?.55+.95*YS:1.85)+row*1.2,rot=h.rot,ox=Math.sin(rot),oz=Math.cos(rot),lx=Math.cos(rot),lz=-Math.sin(rot);
- let cx=h.g.position.x-ox*dc+lx*lat+(Math.random()-.5)*.1,cz=h.g.position.z-oz*dc+lz*lat+(Math.random()-.5)*.1;
- const ex=RX-1.15,ez=RZ-1.15,qq=(cx/ex)**2+(cz/ez)**2;if(qq>1){const f=1/Math.sqrt(qq);cx*=f;cz*=f}
- const a0=rot+p0,px=cx+Math.sin(a0)*r,pz=cz+Math.cos(a0)*r,al=a0-(i-1.5)*.26+(Math.random()-.5)*.04;
+function send(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
+ const g=c.g;c.fly={t:0,d:.95,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
+function setTT(h,k,i,p0){const rot=h.rot,SS=NP<=4?.75:NP<=6?.68:.6,cols=NP<=4?6:NP<=6?4:3,r=.72*SS,col=k%cols,row=Math.floor(k/cols),dc=(h.k==='you'?1.95:2.3)+row*1.2,lat=(col-(cols-1)/2)*1.6*SS/.75,
+ ox=Math.sin(rot),oz=Math.cos(rot),lx=Math.cos(rot),lz=-Math.sin(rot),
+ cx=h.g.position.x-ox*dc+lx*lat+(Math.random()-.5)*.1,cz=h.g.position.z-oz*dc+lz*lat+(Math.random()-.5)*.1,a0=rot+p0,
+ px=cx+Math.sin(a0)*r,pz=cz+Math.cos(a0)*r,al=a0-(i-1.5)*.26+(Math.random()-.5)*.04;
  return{p:new T.Vector3(px-Math.sin(al)*r,.016+i*.012,pz-Math.cos(al)*r),q:new T.Quaternion().setFromAxisAngle(Y,al).multiply(new T.Quaternion().setFromAxisAngle(X,-Math.PI/2)),s:new T.Vector3(SS,SS,SS)}}
 /*VM-BEGIN*/
 const isStatic=c=>!c.fly&&!c.mv&&!c.pend;
@@ -2299,10 +2225,11 @@ function prepare(st,fresh,prevKeys){const me=st.players.find(p=>p.id===st.you.id
   if(e.t==='success')e._ids=take(k=>rk(k)===e.rank,e.count);
   else if(e.t==='fish'&&e.drew){const need=new Set();fresh.forEach(b=>{if(b.t==='book'&&b.name===myName){let n=0;H0.forEach(k=>{if(rk(k)===b.rank)n++});if(n===3)need.add(b.rank)}});
    let g=take(k=>need.has(rk(k)),1);if(!g.length)g=take(()=>true,1);e._ids=g}
-  })}
+  else if(e.t==='refill')e._ids=take(()=>true,e.n);
+  else if(e.t==='empty'&&e.drew)e._ids=take(()=>true,1)})}
 // ---- the physical animations for each kind of event ----
 function deal(order,gap,mineKeys){const mine=(mineKeys||[]).slice();
- order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap,1.25)})}
+ order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap)})}
 function success(e){const A_=byPid[byName[e.name]],T_=byPid[byName[e.tname]];if(!A_||!T_)return;let objs=[];
  if(T_===you)objs=you.cards.filter(c=>RK[c.r]===e.rank&&isStatic(c)).slice(0,e.count);
  else{if(A_===you){const w=(e._ids||[]).map(k=>key2obj[k]).filter(Boolean);objs=w.map(o=>bring(o,T_,w))}
@@ -2311,6 +2238,7 @@ function success(e){const A_=byPid[byName[e.name]],T_=byPid[byName[e.tname]];if(
 function drawCards(e,n){const h=byPid[byName[e.name]];if(!h)return;
  for(let i=0;i<n;i++){const k=h===you&&e._ids&&e._ids[i];const c=fromDeck(k?key2obj[k]:null);if(c)give(c,h,i*250)}}
 const fish=e=>{if(e.drew!==false)drawCards(e,1)};
+const refill=e=>drawCards(e,e.n||1);
 function book(e){const h=byPid[byName[e.name]];if(!h)return;const objs=SU.map(s=>key2obj[e.rank+s]);
  if(h!==you)objs.forEach(o=>bring(o,h,objs));
  const k=h.setN++,p0=(Math.random()-.5)*.25;
@@ -2333,9 +2261,7 @@ function reconcile(st){if(!you)return false;let moved=false;const S=(c,to,d)=>{s
 const ray=new T.Raycaster(),mp=new T.Vector2(),cv=rd.domElement;
 function pick(e){const r=cv.getBoundingClientRect();mp.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(mp,cam);
  const all=[you,...opps].filter(Boolean).flatMap(h=>h.cards).flatMap(c=>c.meshes),hit=ray.intersectObjects(all)[0];return hit?hit.object.userData.c:null}
-// touch: if you miss a fan by a finger-width, still pick the nearest opponent
-function nearSeat(e){const r=cv.getBoundingClientRect();let best=null,bd=70;for(const h of opps){v.copy(h.g.position);v.y=.5;v.project(cam);const dx=(v.x*.5+.5)*r.width+r.left-e.clientX,dy=(-v.y*.5+.5)*r.height+r.top-e.clientY,d=Math.hypot(dx,dy);if(d<bd){bd=d;best=h}}return best}
-function tap(e){const c=pick(e);if(!c){if(e.pointerType!=='mouse'){const h=nearSeat(e);if(h)cb.onSeat(h.pid)}else cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
+function tap(e){const c=pick(e);if(!c){if(e.pointerType==='mouse')cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
 let down=null;
 cv.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'){hov=null;hovH=null;return}hov=pick(e);const ho=hov&&owner(hov);hovH=ho&&ho!==you?ho:null;cv.style.cursor=hov?'pointer':'default'});
 cv.addEventListener('pointerleave',()=>{hov=null;hovH=null});
@@ -2349,7 +2275,7 @@ function reset(){for(const k in hands){const h=hands[k];deck.cards.push(...h.car
  cards.forEach(c=>{c.mv=null;c.fly=null;c.pend=false;c.setting=false;c.tt=null});moving.length=0;deck.gaps=[];seatSig='';sel=null;tgtPid=null;idleCbs=[];settling=false}
 const clk=new T.Clock();
 (function loop(){requestAnimationFrame(loop);const dt=Math.min(clk.getDelta(),.05);if($('screen-game').classList.contains('hidden'))return;tick(dt);rd.render(sc,cam)})();
-return{snap:()=>({you:you.cards.map(c=>RK[c.r]+SU[c.s]).sort(),opp:opps.map(h=>[h.pid,h.cards.length,h.set.cards.length]),deck:deck.cards.length,sets:you.set.cards.length}),fit,syncSeats,prepare,deal,success,fish,book,setShadows:applyShadow,reconcile,settle,reset,idle,
+return{snap:()=>({you:you.cards.map(c=>RK[c.r]+SU[c.s]).sort(),opp:opps.map(h=>[h.pid,h.cards.length,h.set.cards.map(c=>RK[c.r]).sort().join('')]),deck:deck.cards.length,sets:you.set.cards.length}),fit,syncSeats,prepare,deal,success,fish,refill,book,reconcile,settle,reset,idle,
  whenIdle:f=>{idleCbs.push(f)},setSel:r=>{sel=r?RK.indexOf(r):null},setTarget:p=>{tgtPid=p},
  shake:name=>{const h=byPid[byName[name]];if(h){h.l.classList.remove('nope');void h.l.offsetWidth;h.l.classList.add('nope')}}}
 }
