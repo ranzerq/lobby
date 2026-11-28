@@ -26,6 +26,8 @@
     --accent: #2e9c6c;
     --danger: #ff6b6b;
     --sky: #8fd3ff;
+    --btn2: #1c6f4e;
+    --field: #0c3e2a;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
@@ -47,10 +49,10 @@
   }
   @media (hover: hover) { button:hover:not(:disabled) { filter: brightness(1.12); } }
   button:disabled { opacity: .45; cursor: not-allowed; }
-  button.secondary { background: #1c6f4e; border: 1px solid var(--panel-border); }
+  button.secondary { background: var(--btn2); border: 1px solid var(--panel-border); }
   input, select {
     font: inherit; padding: 9px 10px; border-radius: 10px; min-height: 42px;
-    border: 1px solid var(--panel-border); background: #0c3e2a; color: var(--text);
+    border: 1px solid var(--panel-border); background: var(--field); color: var(--text);
     width: 100%;
   }
   select:disabled, input:disabled { opacity: .55; }
@@ -73,9 +75,9 @@
   #setupStatus.err { color: var(--danger); }
   .roomcode {
     font-size: 2.2rem; letter-spacing: .25em; text-align: center; font-weight: 800;
-    background: #0c3e2a; border-radius: 10px; padding: 10px; margin: 8px 0; color: var(--gold);
+    background: var(--field); border-radius: 10px; padding: 10px; margin: 8px 0; color: var(--gold);
   }
-  .lobby-player { padding: 8px 10px; background: #0c3e2a; border-radius: 8px; margin-top: 6px; }
+  .lobby-player { padding: 8px 10px; background: var(--field); border-radius: 8px; margin-top: 6px; }
 
   /* ============================================================
      GAME SCREEN LAYOUT
@@ -295,7 +297,7 @@
   .deck-icon { height: calc(14px + var(--dk, 1) * 22px); }
   .drawer { position: fixed; right: 8px; top: 54px; width: min(360px, calc(100vw - 16px)); max-height: calc(100dvh - 70px); overflow: auto; z-index: 140;
     background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; padding: 12px; box-shadow: 0 10px 30px #0008; }
-  #chatLog { height: 220px; overflow-y: auto; background: #0c3e2a; border-radius: 10px; padding: 8px; font-size: .9rem; margin-bottom: 8px; }
+  #chatLog { height: 220px; overflow-y: auto; background: var(--field); border-radius: 10px; padding: 8px; font-size: .9rem; margin-bottom: 8px; }
   #chatLog div { margin-bottom: 4px; word-break: break-word; } #chatLog .sys { color: var(--danger); }
   .drawer label.small { margin-top: 10px; } .drawer input[type=range] { padding: 0; } .drawer input[type=color] { padding: 2px; height: 42px; }
   .chk { display: flex; gap: 8px; align-items: center; margin-top: 12px; } .chk input { width: auto; min-height: 0; }
@@ -306,8 +308,8 @@
     background: repeating-linear-gradient(45deg,#2b4fa8 0 3px,#1f3b80 3px 6px); transform: rotate(var(--r)); transform-origin: 50% 120%; }
   .actionbar { grid-template-columns: 1fr; }
   #btnAsk { grid-column: 1 / -1; }
-  #cntRow { display: flex; gap: 6px; } .cb { min-width: 46px; background: #1c6f4e; border: 2px solid transparent; }
-  .cb.on { border-color: var(--gold); background: #2e9c6c; } .tlabel { grid-column: 1 / -1; font-size: .72rem; color: var(--muted); }
+  #cntRow { display: flex; gap: 6px; } .cb { min-width: 46px; background: var(--btn2); border: 2px solid transparent; }
+  .cb.on { border-color: var(--gold); background: var(--accent); } .tlabel { grid-column: 1 / -1; font-size: .72rem; color: var(--muted); }
   .fly { position: fixed; left: 0; top: 0; width: 36px; height: 50px; border-radius: 5px; border: 2px solid #fff; z-index: 400; pointer-events: none;
     background: repeating-linear-gradient(45deg,#2b4fa8 0 4px,#1f3b80 4px 8px); box-shadow: 0 8px 16px #0007; }
   .seat.nope { animation: nope .45s; } .seat.bk { animation: bk 1s; }
@@ -317,7 +319,7 @@
   .fcnt { position: absolute; right: -4px; top: -9px; font-size: .62rem; background: #000b; border-radius: 6px; padding: 0 4px; }
   .ver { color: var(--muted); font-size: .75rem; text-align: center; margin-top: 10px; }
   .hs { display: flex; gap: 8px; align-items: center; margin-top: 14px; } .hs button { min-height: 36px; border: 2px solid transparent; }
-  .hs button.on { border-color: var(--gold); background: #2e9c6c; } .hs button:disabled { opacity: 1; cursor: default; }
+  .hs button.on { border-color: var(--gold); background: var(--accent); } .hs button:disabled { opacity: 1; cursor: default; }
   body.ingame { min-height: 0; height: 100dvh; overflow: hidden; }
   @media (max-width: 640px) {
     #screen-game { padding: 4px 6px calc(4px + env(safe-area-inset-bottom)); }
@@ -361,7 +363,7 @@
   .fab.intop button { box-shadow: 0 6px 18px rgba(0,0,0,.9), 0 2px 4px #000; border: 1px solid var(--panel-border); }
   #tbar { position: fixed; top: 0; left: 0; right: 0; height: 4px; margin: 0; border-radius: 0; z-index: 300; background: rgba(0,0,0,.35); }
   #board { position: absolute; top: calc(8px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: max-content; max-width: min(56vw, 640px); min-height: 0; flex: none; pointer-events: none; padding: 5px 14px; gap: 0;
-    background: rgba(6,16,12,.64); backdrop-filter: blur(4px); border: 1px solid var(--panel-border); border-radius: 12px; z-index: 15; text-align: center; transition: opacity .6s; }
+    background: color-mix(in srgb, var(--felt-dark) 72%, transparent); backdrop-filter: blur(4px); border: 1px solid var(--panel-border); border-radius: 12px; z-index: 15; text-align: center; transition: opacity .6s; }
   #board.fade { opacity: 0; }
   #board .ab-ask { font-size: clamp(11px, 1.9vw, 13px); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 0; }
   #board .ab-outcome { font-size: clamp(14px, 2.6vw, 19px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 0; }
@@ -370,7 +372,7 @@
     box-shadow: 0 6px 18px rgba(0,0,0,.8); backdrop-filter: blur(4px); max-width: 46vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #turnbox.hidden { display: none; }
   #askp { position: absolute; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); width: 220px; z-index: 20; display: flex; flex-direction: column; gap: 7px;
-    background: rgba(10,24,18,.82); border: 1px solid var(--panel-border); border-radius: 14px; padding: 10px; backdrop-filter: blur(6px); }
+    background: color-mix(in srgb, var(--felt-dark) 86%, transparent); border: 1px solid var(--panel-border); border-radius: 14px; padding: 10px; backdrop-filter: blur(6px); }
   #askp .tlabel { font-size: .75rem; color: var(--muted); }
   #askRank { font-size: .9rem; }
   #cntRow { display: flex; gap: 6px; }
@@ -385,10 +387,10 @@
     #roomTag { min-height: 28px; padding: 2px 9px; font-size: .8rem; } .fab.intop button { min-height: 30px; padding: 2px 9px; }
   }
   /* ----- final leaderboard ----- */
-  #overBanner { position: fixed; inset: 0; z-index: 400; display: flex; align-items: center; justify-content: center; padding: 10px; margin: 0; border: 0; background: rgba(3,8,6,.8); backdrop-filter: blur(6px); }
+  #overBanner { position: fixed; inset: 0; z-index: 400; display: flex; align-items: center; justify-content: center; padding: 10px; margin: 0; border: 0; background: color-mix(in srgb, color-mix(in srgb, var(--felt-dark) 35%, #000) 82%, transparent); backdrop-filter: blur(6px); }
   #overBanner.hidden { display: none; }
   .lbcard { position: relative; width: min(94vw, 560px); max-height: 94vh; overflow: auto; text-align: center; padding: 18px 16px; border: 2px solid var(--gold); border-radius: 20px;
-    background: linear-gradient(180deg, rgba(18,40,30,.97), rgba(8,20,15,.97)); box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(255,213,74,.18); }
+    background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 96%, #000), color-mix(in srgb, var(--felt-dark) 96%, #000)); box-shadow: 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(255,213,74,.18); }
   .lbtitle { font-size: clamp(22px, 5vw, 32px); font-weight: 900; color: var(--gold); text-shadow: 0 2px 14px rgba(255,213,74,.5); }
   .lbsub { color: var(--muted); font-size: .88rem; margin: 4px 0 12px; }
   .podium { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin: 6px 0 14px; }
@@ -412,6 +414,30 @@
   .conf { position: absolute; top: -16px; width: 8px; height: 14px; opacity: .9; animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
   @keyframes bob { 50% { transform: translateY(-5px); } }
+  /* ----- round 3 tweaks ----- */
+  #roomTag { background: none; border: 0; box-shadow: none; border-radius: 0; padding: 2px 6px; min-height: 0; color: #fff;
+    text-shadow: 0 2px 3px #000, 0 0 8px #000, 0 3px 14px #000, 0 0 24px rgba(0,0,0,.95); }
+  .lab.clk::after { content: ''; position: absolute; inset: -14px -18px; }
+  #board .ab-ask, #board .ab-outcome { overflow: hidden; text-overflow: clip; white-space: nowrap; }
+  #board .ab-ask span, #board .ab-outcome span { display: inline-block; }
+  .marq { animation: marq 7s ease-in-out infinite alternate; }
+  @keyframes marq { 0%, 15% { transform: translateX(0); } 85%, 100% { transform: translateX(var(--sc)); } }
+  #askp { width: 204px; gap: 6px; padding: 8px; box-sizing: border-box; align-items: stretch; }
+  #askp .askrow { display: flex; justify-content: center; align-items: center; gap: 6px; width: 100%; min-width: 0; }
+  #askRank { flex: 0 1 auto; min-width: 0; max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .95rem; font-weight: 800; color: #fff; text-align: center; padding: 0 2px; }
+  #askRank:empty { display: none; }
+  #cntRow { display: flex; justify-content: center; gap: 6px; flex: 0 1 auto; min-width: 0; }
+  #cntRow .cb { flex: 1 1 0; min-width: 0; max-width: 42px; width: 42px; padding: 0; min-height: 34px; font-size: 1rem; border-radius: 10px; }
+  #btnAsk { width: 100%; min-height: 36px; font-size: .88rem; padding: 4px 8px; flex: none; }
+  @media (max-height: 520px) { #askp { width: 190px; padding: 6px; gap: 5px; } #cntRow .cb { max-width: 38px; width: 38px; min-height: 32px; } #btnAsk { min-height: 34px; font-size: .8rem; } }
+  @media (max-width: 640px), (orientation: portrait) {
+    #askp { left: 8px; right: 8px; width: auto; flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+    #cntRow .cb { max-width: 56px; width: 56px; } #btnAsk { width: 100%; }
+  }
+  .lab .kick { position: relative; z-index: 2; top: 0; right: 0; }
+  .lab.clk::after { z-index: 1; }
+  @media (max-width: 640px), (max-height: 520px) { .lab { font-size: 11px; padding: 2px 8px; } .bk { font-size: 11px; padding: 1px 6px; } }
+  .pod .bar { background: linear-gradient(180deg, var(--accent), var(--panel)); }
 </style>
 
 <!-- ================= SETUP SCREEN ================= -->
@@ -464,9 +490,7 @@
   <div class="board hidden" id="board"><div class="ab-ask" id="abAsk"></div><div class="ab-outcome" id="abOutcome"></div></div>
   <div id="turnbox" class="hidden"></div>
   <div id="askp">
-    <div class="tlabel" id="tlabel"></div>
-    <div id="askRank"></div>
-    <div id="cntRow"></div>
+    <div class="askrow"><div id="askRank"></div><div id="cntRow"></div></div>
     <button id="btnAsk">Ask!</button>
   </div>
   <div id="overBanner" class="hidden">
@@ -643,7 +667,7 @@ function startGame() {
   G.players.forEach(p => { p.hand = []; p.books = []; p.note = ''; p.stats = { asks: 0, hits: 0, best: 0, lucky: 0 }; });
   G.phase = 'playing';
   // One card at a time, round-robin. The gap shrinks only for big tables so a deal never takes more than ~8s.
-  const total = G.players.length * HAND_SIZE, gap = Math.min(250, Math.floor(8000 / total)), dur = 1000, order = [];
+  const total = G.players.length * HAND_SIZE, gap = Math.min(380, Math.floor(10000 / total)), dur = 1300, order = [];
   for (let r = 0; r < HAND_SIZE; r++) G.players.forEach(p => order.push(p.id));
   emit({ t: 'start', order, gap, dur });
   G.players.forEach(p => { p.hand = G.deck.splice(-HAND_SIZE); p.dealt = p.hand.map(c => c.rank + c.suit); sortHand(p); });
@@ -669,10 +693,17 @@ function extractBooks(p) {
   return formed;
 }
 
-/** Lay down finished books. A player who runs out of cards is OUT for good: no refill, no draw. */
+/** Lay down finished books. Someone who ends up with NO cards draws ONE card if the pile still has any; with an empty pile they are simply out. */
 function settle(p) {
   extractBooks(p);
   sortHand(p);
+  topUp(p);
+}
+function topUp(p) {
+  if (p.hand.length > 0 || G.deck.length === 0) return;
+  const c = G.deck.pop(); p.hand.push(c); sortHand(p);
+  p.note = (p.note ? p.note + ' ' : '') + 'You ran out of cards, so you drew ' + cardStr(c) + '.';
+  emit({ t: 'refill', name: p.name, n: 1, deck: G.deck.length });
 }
 
 /** Pass the turn clockwise (= next index in the players array). */
@@ -680,11 +711,11 @@ function passTurn() {
   G.turn = (G.turn + 1) % G.players.length;
 }
 
-/** The game ends when all 13 books exist, or when nobody can make a move any more. */
+/** The game ends when all 13 books exist, or when 1 (or 0) players still hold cards: a lone player has nobody to ask, and the draw pile is simply ignored. */
 function checkOver() {
   if (G.phase !== 'playing') return G.phase === 'over';
   const total = G.players.reduce((s, p) => s + p.books.length, 0), holders = G.players.filter(p => p.hand.length > 0);
-  const stalled = total < 13 && (holders.length === 0 || (holders.length === 1 && G.deck.length === 0) || (G.deck.length === 0 && !holders.some(p => p.connected)));
+  const stalled = total < 13 && (holders.length <= 1 || (G.deck.length === 0 && !holders.some(p => p.connected)));
   if (total < 13 && !stalled) return false;
 
   G.phase = 'over';
@@ -698,22 +729,12 @@ function checkOver() {
 /**
  * Called after every state change. Makes sure the current player is able to act:
  *  - checks for game over
- *  - if only ONE player still holds cards, nobody is left to ask: they draw out the pile
  *  - skips disconnected players, and players who are out of cards (they never get cards back)
  */
 function advance() {
   let guard = 0;
   while (G.phase === 'playing' && guard++ < 200) {
     if (checkOver()) break;
-    const holders = G.players.filter(q => q.hand.length > 0);
-    if (holders.length === 1 && G.deck.length > 0 && holders[0].connected) {
-      const q = holders[0], c = G.deck.pop();
-      q.hand.push(c); sortHand(q);
-      q.note = 'Nobody else has cards, so you drew ' + cardStr(c) + '.';
-      emit({ t: 'solo', name: q.name, drew: true, deck: G.deck.length });
-      settle(q);
-      continue;
-    }
     const p = curPlayer();
     if (!p.connected) {
       if (p.grace) {                                   // first turn after dropping: wait 20s, others see a countdown
@@ -726,7 +747,8 @@ function advance() {
       passTurn();
       continue;
     }
-    if (p.hand.length === 0) { passTurn(); continue; }
+    topUp(p);
+    if (p.hand.length === 0) { passTurn(); continue; }          // no cards and an empty pile: out for good
     break; // current player can act
   }
 }
@@ -774,6 +796,7 @@ function resolveMove(p, t, rank, count) {
     p.stats.hits++; p.stats.best = Math.max(p.stats.best, count);
     emit({ t: 'success', name: p.name, tname: t.name, rank, count, phrase: randInt(PULL_PHRASES.length) });
     settle(p);
+    topUp(t);                                          // the player who lost their last cards draws 1
     advance();
     broadcast();
   } else {
@@ -1617,19 +1640,23 @@ function showSplash(e, done) {
 }
 
 
-/* ---------- announcement board: at most two short lines (what was asked / what happened) ---------- */
-let boardT = null;
-function boardVis() {
-  const b = $('board'), has = $('abAsk').textContent || $('abOutcome').textContent;
-  b.classList.toggle('hidden', !has); b.classList.remove('fade');
-  clearTimeout(boardT);
-  if (has) boardT = setTimeout(() => b.classList.add('fade'), 7000);
+/* ---------- announcement board: two short lines. Top = the last ask (stays until the next ask), bottom = what happened (fades). Long text scrolls. ---------- */
+let outT = null;
+function setLine(el, text) {
+  el.textContent = '';
+  if (!text) return;
+  const sp = document.createElement('span'); sp.textContent = text; el.appendChild(sp);
+  requestAnimationFrame(() => {                         // too long for one line? slide it back and forth
+    const over = sp.scrollWidth - el.clientWidth;
+    if (over > 4) { sp.style.setProperty('--sc', -(over + 12) + 'px'); sp.classList.add('marq'); }
+  });
 }
-function setAsk(t) { $('abAsk').textContent = t; boardVis(); }
+function boardVis() { $('board').classList.toggle('hidden', !($('abAsk').textContent || $('abOutcome').textContent)); }
+function setAsk(t) { setLine($('abAsk'), t); boardVis(); }
 function setOutcome(text, kind) {
-  const el = $('abOutcome');
-  el.textContent = text; el.className = 'ab-outcome k-' + kind;
-  if (text) retrigger(el, 'pop');
+  const el = $('abOutcome'); clearTimeout(outT);
+  setLine(el, text); el.className = 'ab-outcome k-' + kind;
+  if (text) { retrigger(el, 'pop'); outT = setTimeout(() => { setLine(el, ''); boardVis(); }, 8000); }
   boardVis();
 }
 function clearExtras() {}
@@ -1639,7 +1666,7 @@ function resetBoard() {
   evQ.length = 0; evBusy = false;
   clearTimeout(splashT1); clearTimeout(splashT2);
   $('splash').className = 'splash hidden';
-  setAsk(''); setOutcome('', 'sys');
+  clearTimeout(outT); setAsk(''); setOutcome('', 'sys');
   $('turnbox').className = 'hidden'; statusKey = '';
   $('overBanner').classList.add('hidden'); overFor = '';
 }
@@ -1648,6 +1675,8 @@ function resetBoard() {
 function enqueueEvents(list) { list.forEach(e => evQ.push(e)); pump(); }
 function pump() {
   if (evBusy) return;
+  if (evQ.length && V && !V.ready()) { evBusy = true; V.whenReady(() => { evBusy = false; pump(); }); return; }   // first frames of the table are still compiling
+  if (evQ.length && V && !V.idle()) { evBusy = true; V.whenIdle(() => { evBusy = false; pump(); }); return; }   // never start an announcement while cards are still travelling
   const e = evQ.shift();
   if (!e) { applyStatus(); if (V) V.settle(() => lastState, () => !evBusy && !evQ.length, updateAsk); else updateAsk(); return; }
   evBusy = true;
@@ -1670,11 +1699,11 @@ function playEvent(e, done) {
         idle(done);
       });
     case 'ask':                                  // drum roll while the host waits ASK_DELAY
-      setAsk(''); setOutcome(askText(e), 'sys');
+      setAsk(askText(e)); setOutcome('', 'sys');          // the ask stays on the top line until the next ask
       A.roll();
       return done();
     case 'timeout':
-      setAsk(''); setOutcome('⏰ ' + e.name + ' ran out of time!', 'bad');
+      setOutcome('⏰ ' + e.name + ' ran out of time!', 'bad');
       return done();
     case 'fail':
       A.wrong();
@@ -1687,9 +1716,9 @@ function playEvent(e, done) {
       if (e.lucky) setOutcome('🍀 Lucky catch! ' + e.name + ' fished the exact rank they asked for and goes again!', 'good');
       if (V) V.fish(e);
       return idle(done);
-    case 'solo':
-      setAsk(''); setOutcome('🃏 Nobody else has cards, so ' + e.name + ' draws the rest of the pile', 'info');
-      if (V) V.fish(e);
+    case 'refill':
+      setOutcome('🃏 ' + e.name + ' ran out of cards and draws 1', 'info');
+      if (V) V.refill(e);
       return idle(done);
     case 'book':                                 // a finished book replaces both lines: the pull / the ask no longer matter
       A.reward();
@@ -1814,7 +1843,7 @@ function renderLobby(state) {
   show('screen-lobby');
   // leaving a finished game: wipe the board and the hand
   resetBoard();
-  if (V) V.reset(); prevHandKeys = []; selR = null;
+  if (V) V.reset(); prevHandKeys = []; selR = null; lastPhase = 'lobby'; prewarm3D();
   lastSeq = Math.max(lastSeq, ...(state.events || []).map(e => e.seq), 0);
   $('lobbyCode').textContent = state.roomCode;
   $('lobbyCount').textContent = state.players.length;
@@ -1832,9 +1861,13 @@ function renderLobby(state) {
     : 'Waiting for the host to start the game…';
 }
 
+function mkV() { return make3D({ onCard: pickRank, onSeat: pickSeat, onKick: askKick, onClear: clearPicks, isHost: () => isHost, getShadow: () => getLS('gf_shadow', 'auto') }); }
+let lastPhase = 'lobby', gamesShown = 0;
 function renderGame(state) {
   show('screen-game');
-  if (!V) { V = make3D({ onCard: pickRank, onSeat: pickSeat, onKick: askKick, onClear: clearPicks, isHost: () => isHost, getShadow: () => getLS('gf_shadow', 'auto') }); V.fit(); }
+  if (!V) { V = mkV(); V.fit(); }
+  if (state.phase === 'playing' && lastPhase !== 'playing') V.hold(gamesShown++ ? 900 : 2000);   // let the table render before the first card moves
+  lastPhase = state.phase;
   asking = false;
   $('roomTag').textContent = state.roomCode;
   $('hostOnly').classList.toggle('hidden', !isHost);
@@ -1855,6 +1888,8 @@ function renderGame(state) {
 /* ---------- the ask form: tap a card (rank), tap a player, pick a count ---------- */
 let lastNote = '';
 const uiIdle = () => !evBusy && !evQ.length && (!V || V.idle());
+function prewarm3D() { if (!V && !prewarmT) prewarmT = setTimeout(() => { prewarmT = 0; if (!V) V = mkV(); }, 500); }
+let prewarmT = 0;
 function refreshForm(state) {
   const me = state.you.id;
   handCounts = {};
@@ -1868,7 +1903,7 @@ function updateCountOptions() {
   const own = selR ? (handCounts[selR] || 0) : 0, max = own ? 4 - own : 0;
   if (cnt > max) cnt = max || null;
   $('cntRow').innerHTML = [1, 2, 3].map(n => '<button class="cb' + (cnt === n ? ' on' : '') + '" data-n="' + n + '"' + (n > max ? ' disabled' : '') + '>' + n + '</button>').join('');
-  $('askRank').innerHTML = selR ? '<b>' + esc(rankWord(selR)) + '</b> · you hold ' + own : 'Tap a card in your hand';
+  $('askRank').textContent = selR ? rankWord(selR) : '—';
   updateAsk();
 }
 function updateAsk() {
@@ -1881,7 +1916,6 @@ function updateAsk() {
   b.disabled = !ok;
   b.textContent = ok ? 'Ask ' + t.name + ' for exactly ' + rankPhrase(selR, cnt)
     : (s.phase !== 'playing' ? 'Ask!' : (!mine ? 'Waiting for your turn' : (!selR ? 'Pick a card' : (!t ? 'Pick a player' : (!cnt ? 'Pick a count' : 'Ask!')))));
-  $('tlabel').textContent = t ? 'Asking ' + t.name : 'Tap a player’s cards (or name)';
 }
 function pickRank(r) { if (asking || !handCounts[r]) return; selR = selR === r ? null : r; V.setSel(selR); updateCountOptions(); }
 function pickSeat(pid) {
@@ -1961,13 +1995,32 @@ const sendNow = () => { const v = $('chatIn').value.trim(); if (v) { sendChat(v)
 $('chatSend').onclick = sendNow;
 $('chatIn').addEventListener('keydown', e => { if (e.key === 'Enter') sendNow(); });
 
+/** One colour drives the whole UI: background, panels, buttons, chat, settings and the in-game overlays. */
 function applyBg(c) {
-  document.body.style.background = 'radial-gradient(circle at 50% 0%, ' + c + ' 0%, color-mix(in srgb, ' + c + ' 55%, #000) 80%) fixed';
+  const m = /^#?([0-9a-f]{6})$/i.exec(c); if (!m) return;
+  const n = parseInt(m[1], 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
+  let h = 0, s = 0;
+  if (d) { s = d / (1 - Math.abs(2 * l - 1)); h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h = Math.round(h * 60); if (h < 0) h += 360; }
+  const S = Math.max(25, Math.min(75, Math.round(s * 100))), L = Math.max(10, Math.min(34, Math.round(l * 100)));
+  const root = document.documentElement.style, hsl = (sat, lig) => 'hsl(' + h + ' ' + sat + '% ' + lig + '%)';
+  root.setProperty('--felt', '#' + m[1]);
+  root.setProperty('--felt-dark', hsl(S, Math.round(L * .62)));
+  root.setProperty('--panel', hsl(S, L + 5));
+  root.setProperty('--panel-border', hsl(S, Math.min(58, L + 13)));
+  root.setProperty('--accent', hsl(Math.min(S + 5, 80), Math.min(46, L + 22)));
+  root.setProperty('--btn2', hsl(S, Math.min(40, L + 12)));
+  root.setProperty('--field', hsl(S, Math.max(6, Math.round(L * .78))));
+  root.setProperty('--muted', hsl(Math.min(S, 35), 72));
+}
+function resetTheme() {
+  const root = document.documentElement.style;
+  ['--felt', '--felt-dark', '--panel', '--panel-border', '--accent', '--btn2', '--field', '--muted'].forEach(k => root.removeProperty(k));
 }
 const savedBg = getLS('gf_bg', '');
 if (savedBg) { applyBg(savedBg); $('bgColor').value = savedBg; }
 $('bgColor').oninput = e => { applyBg(e.target.value); setLS('gf_bg', e.target.value); };
-$('bgReset').onclick = () => { setLS('gf_bg', ''); document.body.style.background = ''; $('bgColor').value = '#0f4d33'; };
+$('bgReset').onclick = () => { setLS('gf_bg', ''); resetTheme(); $('bgColor').value = '#0f4d33'; };
 $('vol').value = Math.round(bgm.volume * 100);
 $('vol').oninput = e => { bgm.volume = e.target.value / 100; setLS('gf_vol', e.target.value); };
 
@@ -2073,7 +2126,7 @@ function felt(){const S=256,c=document.createElement('canvas');c.width=c.height=
  for(let i=0;i<16000;i++){g.fillStyle=Math.random()>.5?'rgba(255,255,255,.05)':'rgba(0,0,0,.07)';g.fillRect(Math.random()*S,Math.random()*S,1.4,1.4)}
  const t=new T.CanvasTexture(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(7,5);t.encoding=T.sRGBEncoding;t.anisotropy=AN;return t}
 const tableG=new T.Group();sc.add(tableG);const WOOD=woodTex(),FELT=felt();
-function buildTable(kk){RX=(por?4.9:7.6)*kk;RZ=(por?7.6:4.9)*kk;FELT.repeat.set(RX*.92,RZ*.92);
+function buildTable(kk){RX=7.6*kk;RZ=4.9*kk;FELT.repeat.set(7*kk,5*kk);
  while(tableG.children.length){const o=tableG.children.pop();o.geometry.dispose()}
 function cyl(rx,rz,y,mat){const g=new T.CylinderGeometry(1,1,.62,96);g.scale(rx,1,rz);const m=new T.Mesh(g,mat);m.position.y=y;m.receiveShadow=true;tableG.add(m);return m}
 {const top=.06,bot=-.3,w=.7,ri=.1,ro=.16,K=8,pr=[{r:0,y:bot,nr:-1,ny:0},{r:0,y:top-ri,nr:-1,ny:0}];
@@ -2127,37 +2180,48 @@ for(let s=0;s<4;s++)for(let r=0;r<13;r++){
  const c={r,s,g,fly:null,pend:false,meshes:[bo,f,b],fm:f.material,jx:Math.random()-.5,jz:Math.random()-.5,jr:Math.random()-.5};
  bo.userData.c=f.userData.c=b.userData.c=c;cards.push(c);sc.add(g)}
 // ---------- camera framing: fit the real geometry into whatever screen this is (phone, tablet, desktop; portrait or landscape) ----------
-let por=false,YS=1.1,youSpread=1.5,camInit=false,needFrame=true,lastAh=-1,lastSt=null,fcount=0;
+let por=false,YS=1.1,youSpread=1.5,camInit=false,needFrame=true,lastAh=-1,lastSt=null,fcount=0,probe=null;
 const camC={d:13.6,sx:0,sy:0,p:.76},camT={d:13.6,sx:0,sy:0,p:.76};
 const narrow=()=>innerWidth<=640||innerHeight>innerWidth;
+function insets(){                                     // iOS notch / home bar, in px
+ if(typeof getComputedStyle!=='function')return{t:0,r:0,b:0,l:0};
+ if(!probe){probe=document.createElement('div');probe.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';document.body.appendChild(probe)}
+ const cs=getComputedStyle(probe);return{t:parseFloat(cs.paddingTop)||0,r:parseFloat(cs.paddingRight)||0,b:parseFloat(cs.paddingBottom)||0,l:parseFloat(cs.paddingLeft)||0}}
 function place(){const w=innerWidth,h=innerHeight;cam.aspect=w/h;cam.near=Math.max(2,camC.d*.2);cam.far=camC.d+70;
  cam.position.set(0,Math.sin(camC.p)*camC.d,Math.cos(camC.p)*camC.d);cam.lookAt(0,-.3,.3);cam.setViewOffset(w,h,-camC.sx,-camC.sy,w,h);cam.updateProjectionMatrix()}
 function fit(){rd.setSize(innerWidth,innerHeight);needFrame=true}
 function frameCam(){
- const w=innerWidth,h=innerHeight,nar=narrow(),askH=nar?($('askp').offsetHeight||100)+8:0;
- document.documentElement.style.setProperty('--askh',askH+'px');lastAh=$('askp').offsetHeight;
- const p=por?.95:.76,top=por?104:58,bot=nar?askH+4:8,side=8;
- YS=por?(w<=480?2.3:w<=760?1.8:1.3):(h<=430?1.8:h<=620?1.45:1.1);
- const Wmax=.82*2*RX;youSpread=Math.max(.5,Math.min(1.5,2*Math.asin(Math.min(.99,Math.max(0,(Wmax/YS-1)/(2*R))))));
- const pts=[],ex=RX+.8,ez=RZ+.8;for(let i=0;i<28;i++){const a=i/28*Math.PI*2;pts.push([ex*Math.cos(a),.1,ez*Math.sin(a)])}
- const SZ=RZ-1,fh=(R*Math.sin(youSpread/2)+.55)*YS;
- pts.push([-fh,.1,SZ+.6*YS],[fh,.1,SZ+.6*YS],[-fh*.9,.9*YS,SZ-.5*YS],[fh*.9,.9*YS,SZ-.5*YS]);
- if(you){const o=.6*YS+.95;you.lp.set(you.g.position.x+Math.sin(you.rot)*o,.6,you.g.position.z+Math.cos(you.rot)*o)}
- for(const k in hands){const l=hands[k].lp;pts.push([l.x-1.3,l.y,l.z],[l.x+1.3,l.y,l.z])}
+ const w=innerWidth,h=innerHeight,nar=narrow(),ap=$('askp'),askH=nar?(ap.offsetHeight||90):0,ins=insets();
+ document.documentElement.style.setProperty('--askh',(askH+ins.b)+'px');lastAh=ap.offsetHeight;
+ por=h>w;
+ const top=Math.max(por?104:(h<=430?48:58),ins.t+44),bot=(nar?askH+10:0)+ins.b+8,sl=8+ins.l,sr=8+ins.r;
+ YS=por?Math.max(1.6,Math.min(3,3-(w-390)/378*1.4)):Math.max(1.1,Math.min(1.5,1.1+(760-h)/380*.4));   // scales smoothly with the screen
+ const Wmax=.84*2*RX;youSpread=Math.max(.5,Math.min(1.5,2*Math.asin(Math.min(.99,Math.max(0,(Wmax/YS-1)/(2*R))))));
+const exo=(YS-1.1)*.8;                                   // a bigger hand sits a little further out so it never covers the draw pile
+ if(you){you.g.position.set(you.base.x+Math.sin(you.rot)*exo,0,you.base.z+Math.cos(you.rot)*exo);you.g.updateMatrixWorld(true);const o=.6*YS+.95;you.lp.set(you.g.position.x+Math.sin(you.rot)*o,.6,you.g.position.z+Math.cos(you.rot)*o)}
+ // points that must stay on screen (x,y,z, pixel padding for the HTML pills)
+ const pts=[],ex=RX+.8,ez=RZ+.8;for(let i=0;i<28;i++){const a=i/28*Math.PI*2;pts.push([ex*Math.cos(a),.1,ez*Math.sin(a),4,4])}
+ const SZ=RZ-1+exo,fh=(R*Math.sin(youSpread/2)+.55)*YS;
+ pts.push([-fh,.1,SZ+.6*YS,4,4],[fh,.1,SZ+.6*YS,4,4],[-fh*.9,.9*YS,SZ-.5*YS,4,4],[fh*.9,.9*YS,SZ-.5*YS,4,4]);
+ for(const k in hands){const l=hands[k].lp;pts.push([l.x,l.y,l.z,w<=640?34:50,14])}
  const v3=new T.Vector3(),tgt=new T.Vector3(0,-.3,.3);cam.aspect=w/h;cam.clearViewOffset();
- const ext=d=>{cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.near=Math.max(2,d*.2);cam.far=d+70;cam.lookAt(tgt);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);
-  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const q of pts){v3.set(q[0],q[1],q[2]).project(cam);const px=(v3.x*.5+.5)*w,py=(-v3.y*.5+.5)*h;x0=Math.min(x0,px);x1=Math.max(x1,px);y0=Math.min(y0,py);y1=Math.max(y1,py)}return{x0,x1,y0,y1}};
- let lo=5,hi=110;for(let i=0;i<26;i++){const d=(lo+hi)/2,e=ext(d);if(e.x1-e.x0<=w-2*side&&e.y1-e.y0<=h-top-bot)hi=d;else lo=d}
- const e=ext(hi);camT.d=hi;camT.p=p;camT.sx=w/2-(e.x0+e.x1)/2;camT.sy=(top+h-bot)/2-(e.y0+e.y1)/2;
- if(!camInit){Object.assign(camC,camT);camInit=true;place()}
- sc.fog.near=hi+18;sc.fog.far=hi+48;
+ const ext=(d,p)=>{cam.position.set(0,Math.sin(p)*d,Math.cos(p)*d);cam.near=Math.max(2,d*.2);cam.far=d+70;cam.lookAt(tgt);cam.updateProjectionMatrix();cam.updateMatrixWorld(true);
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const q of pts){v3.set(q[0],q[1],q[2]).project(cam);const px=(v3.x*.5+.5)*w,py=(-v3.y*.5+.5)*h;x0=Math.min(x0,px-q[3]);x1=Math.max(x1,px+q[3]);y0=Math.min(y0,py-q[4]);y1=Math.max(y1,py+q[4])}return{x0,x1,y0,y1}};
+ // try several camera pitches and keep the one that lets the table be biggest (a lower camera suits wide, short phone screens)
+ const pref=por?.9:.76,cands=por?[.9,.8,1.0]:(h<=560?[.76,.7,.65,.6]:[.76,.72]);let best=null;
+ for(const p of cands){let lo=5,hi=130;for(let i=0;i<26;i++){const d=(lo+hi)/2,e=ext(d,p);if(e.x1-e.x0<=w-sl-sr&&e.y1-e.y0<=h-top-bot)hi=d;else lo=d}
+  const sc=hi+Math.abs(p-pref)*.03;if(!best||sc<best.sc)best={sc,d:hi,p}}
+ const e=ext(best.d,best.p);camT.d=best.d;camT.p=best.p;camT.sx=(sl+w-sr)/2-(e.x0+e.x1)/2;camT.sy=top+(h-bot-top)*(por?.58:.5)-(e.y0+e.y1)/2;
+ if(!camInit){Object.assign(camC,camT);camInit=true}
+ place();                                                // always restore the real camera + view offset after probing
+ sc.fog.near=best.d+18;sc.fog.far=best.d+48;
  if(you){you.g.scale.setScalar(YS);you.g.updateMatrixWorld(true);for(const k in hands)relayoutSets(hands[k],meta[hands[k].pid])}}
 // ---------- shadows: soft blurred (VSM) where the GPU copes, simple (PCF) on touch devices, or off ----------
 function applyShadow(mode){const coarse=matchMedia('(pointer:coarse)').matches,eff=mode==='auto'?(coarse?'simple':'soft'):mode;
  rd.shadowMap.enabled=eff!=='off';rd.shadowMap.type=eff==='soft'?T.VSMShadowMap:T.PCFSoftShadowMap;key.castShadow=eff!=='off';key.shadow.bias=eff==='soft'?-.0004:-.0009;
  sc.traverse(o=>{if(o.material)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{m.needsUpdate=true})});rd.shadowMap.needsUpdate=true}
 applyShadow(cb.getShadow?cb.getShadow():'auto');
-addEventListener('resize',()=>{fit();if(lastSt&&(innerHeight>innerWidth)!==por)syncSeats(lastSt)});
+addEventListener('resize',fit);
 fit();
 // ---------- seats: one per player in the room, me at the bottom, turn order runs clockwise ----------
 const deck={cards:[],deck:true,gaps:[],gs:[],ne:0};
@@ -2171,12 +2235,12 @@ function buildSeats(list){
  const n=list.length,old={};
  for(const k in hands){old[hands[k].pid]=hands[k];hands[k].l.remove();hands[k].bk.remove();delete hands[k]}
  for(const k in byPid)delete byPid[k];
- const tk=n+(por?'p':'l');if(tk!==tableKey){tableKey=tk;buildTable(1+(Math.max(n,4)-4)*.09)}
+ if(n!==tableN){tableN=n;buildTable(1+(Math.max(n,4)-4)*.09)}
  NP=n;const SX=RX-.9,SZ=RZ-1,sc2=Math.min(.9,Math.max(.68,.85-(n-4)*.035));
  list.forEach((p,i)=>{const psi=i/n*Math.PI*2,x=-SX*Math.sin(psi),z=SZ*Math.cos(psi),nx=x/(SX*SX),nz=z/(SZ*SZ),nl=Math.hypot(nx,nz),ox=nx/nl,oz=nz/nl,rot=Math.atan2(ox,oz),me=i===0,key=me?'you':'p'+p.id;
   const g=new T.Object3D();g.position.set(x,0,z);g.rotation.order='YXZ';g.rotation.set(me?-.9:.52,rot,0);g.scale.setScalar(me?YS:sc2);g.updateMatrixWorld(true);
   const l=document.createElement('div');l.className='lab';const t=document.createElement('span');l.appendChild(t);const bk=document.createElement('div');bk.className='bk';
-  const h={k:key,pid:p.id,name:p.name,cards:[],g,l,t,bk,txt:'',btxt:'',lift:0,gaps:[],gs:[],ne:0,rot,set:{cards:[],tab:true},setN:0,lp:new T.Vector3(x+ox*1.5,.6,z+oz*1.5)};
+  const h={k:key,pid:p.id,name:p.name,base:{x,z},cards:[],g,l,t,bk,txt:'',btxt:'',lift:0,gaps:[],gs:[],ne:0,rot,set:{cards:[],tab:true},setN:0,lp:Math.abs(ox)>.45?new T.Vector3(x-ox*.1,(me?.6:1.9*sc2+.5),z-oz*.1):new T.Vector3(x+ox*1.5,.6,z+oz*1.5)};
   if(!me){l.onclick=()=>cb.onSeat(p.id);if(cb.isHost()){const kb=document.createElement('button');kb.className='kick';kb.textContent='✖';kb.onclick=e=>{e.stopPropagation();cb.onKick(p.id)};l.appendChild(kb)}}
   $('stage').appendChild(l);$('stage').appendChild(bk);hands[key]=h;byPid[p.id]=h});
  you=hands.you;opps=list.slice(1).map(p=>byPid[p.id]);
@@ -2186,12 +2250,12 @@ function buildSeats(list){
  list.forEach(p=>relayoutSets(byPid[p.id],meta[p.id]));
  if(tgtPid!==null&&!byPid[tgtPid])tgtPid=null;needFrame=true}
 function syncSeats(st){
- lastSt=st;por=innerHeight>innerWidth;
+ lastSt=st;
  const iMe=Math.max(0,st.players.findIndex(p=>p.id===st.you.id)),ordered=st.players.slice(iMe).concat(st.players.slice(0,iMe));
  for(const k in meta)delete meta[k];byName={};
  st.players.forEach(p=>{meta[p.id]={name:p.name,books:p.books.slice(),connected:p.connected,cardCount:p.cardCount,host:p.id===st.hostId,out:st.phase==='playing'&&p.cardCount===0};byName[p.name]=p.id});
  cur={turnId:st.turnId,phase:st.phase};
- const sig=ordered.map(p=>p.id+':'+p.name).join('|')+(por?'P':'L');
+ const sig=ordered.map(p=>p.id+':'+p.name).join('|');
  if(sig!==seatSig){seatSig=sig;buildSeats(ordered)}}
 // layout: cards keep their layer; gaps open where cards leave/arrive
 const m4=new T.Matrix4(),loc=new T.Matrix4(),v=new T.Vector3(),q=new T.Quaternion(),q2=new T.Quaternion(),one=new T.Vector3(1,1,1),Z=new T.Vector3(0,0,1),X=new T.Vector3(1,0,0),Y=new T.Vector3(0,1,0);
@@ -2236,7 +2300,7 @@ function tick(dt){if(!you)return;const a=1-Math.exp(-dt*12);if(needFrame){needFr
  for(const c of cards)c.meshes[1].visible=known(c);
  for(const k in hands){const h=hands[k],m=meta[h.pid];if(!m)continue;const me=h===you;
   v.copy(h.lp).project(cam);h.l.style.left=(v.x*.5+.5)*innerWidth+'px';h.l.style.top=(-v.y*.5+.5)*innerHeight+'px';
-  const ib=me?.5*YS+.75:1;v.set(h.g.position.x-Math.sin(h.rot)*ib,.3,h.g.position.z-Math.cos(h.rot)*ib).project(cam);h.bk.style.left=(v.x*.5+.5)*innerWidth+'px';h.bk.style.top=(-v.y*.5+.5)*innerHeight+'px';
+  (me?v.set(h.lp.x+Math.cos(h.rot)*1.9,.6,h.lp.z-Math.sin(h.rot)*1.9):v.set(h.g.position.x-Math.sin(h.rot)*1,.3,h.g.position.z-Math.cos(h.rot)*1)).project(cam);h.bk.style.left=(v.x*.5+.5)*innerWidth+'px';h.bk.style.top=(-v.y*.5+.5)*innerHeight+'px';
   const txt=(m.host?'👑 ':'')+(me?'You':m.name)+(m.connected?'':' · offline')+(m.out?' · out':'');if(txt!==h.txt){h.txt=txt;h.t.textContent=txt}
   const bt='📚 '+m.books.length;if(bt!==h.btxt){h.btxt=bt;h.bk.textContent=bt}
   h.bk.classList.toggle('zero',!m.books.length);
@@ -2247,8 +2311,8 @@ function give(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(!
  from.cards.splice(from.cards.indexOf(c),1);c.sl=0;const g1=from.deck?null:{c,w:1,wt:1.7};if(g1)from.gaps.push(g1);
  c.mv={st:'out',t:0,from,to,g1,g2:null};moving.push(c);if(!g1)start(c)},delay)}
 function owner(c){return [you,...opps,deck,...[you,...opps].filter(Boolean).map(h=>h.set)].find(h=>h&&h.cards.includes(c))}
-function send(c,to,delay=0){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
- const g=c.g;c.fly={t:0,d:.95,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
+function send(c,to,delay=0,dur=.95){c.pend=true;setTimeout(()=>{const from=owner(c);if(from)from.cards.splice(from.cards.indexOf(c),1);if(!live(to))to=deck;to.cards.push(c);c.pend=false;c.pf={from,to};
+ const g=c.g;c.fly={t:0,d:dur,h:2+Math.random()*.6,p:g.position.clone(),q:g.quaternion.clone()}},delay)}
 function setTT(h,k,i,p0){const me=h.k==='you',SS=(NP<=4?.75:NP<=6?.68:.6)*(me?Math.min(1.5,1+(YS-1.1)*.3):1),r=.72*SS,cols=NP<=4?5:NP<=6?4:3,slot=k%cols,row=Math.floor(k/cols),
  sp=1.4*SS/.75,lat=(slot===0?0:(slot%2?1:-1)*Math.ceil(slot/2))*sp,dc=(me?.55+.95*YS:1.85)+row*1.2,rot=h.rot,ox=Math.sin(rot),oz=Math.cos(rot),lx=Math.cos(rot),lz=-Math.sin(rot);
  let cx=h.g.position.x-ox*dc+lx*lat+(Math.random()-.5)*.1,cz=h.g.position.z-oz*dc+lz*lat+(Math.random()-.5)*.1;
@@ -2282,10 +2346,10 @@ function prepare(st,fresh,prevKeys){const me=st.players.find(p=>p.id===st.you.id
   if(e.t==='success')e._ids=take(k=>rk(k)===e.rank,e.count);
   else if(e.t==='fish'&&e.drew){const need=new Set();fresh.forEach(b=>{if(b.t==='book'&&b.name===myName){let n=0;H0.forEach(k=>{if(rk(k)===b.rank)n++});if(n===3)need.add(b.rank)}});
    let g=take(k=>need.has(rk(k)),1);if(!g.length)g=take(()=>true,1);e._ids=g}
-  else if(e.t==='solo'&&e.drew)e._ids=take(()=>true,1)})}
+  else if(e.t==='refill')e._ids=take(()=>true,e.n)})}
 // ---- the physical animations for each kind of event ----
 function deal(order,gap,mineKeys){const mine=(mineKeys||[]).slice();
- order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap)})}
+ order.forEach((pid,i)=>{const h=byPid[pid];if(!h)return;let c;if(h===you){const k=mine.shift();c=fromDeck(k?key2obj[k]:null)}else c=fromDeck(null);if(c)send(c,h,i*gap,1.25)})}
 function success(e){const A_=byPid[byName[e.name]],T_=byPid[byName[e.tname]];if(!A_||!T_)return;let objs=[];
  if(T_===you)objs=you.cards.filter(c=>RK[c.r]===e.rank&&isStatic(c)).slice(0,e.count);
  else{if(A_===you){const w=(e._ids||[]).map(k=>key2obj[k]).filter(Boolean);objs=w.map(o=>bring(o,T_,w))}
@@ -2294,6 +2358,7 @@ function success(e){const A_=byPid[byName[e.name]],T_=byPid[byName[e.tname]];if(
 function drawCards(e,n){const h=byPid[byName[e.name]];if(!h)return;
  for(let i=0;i<n;i++){const k=h===you&&e._ids&&e._ids[i];const c=fromDeck(k?key2obj[k]:null);if(c)give(c,h,i*250)}}
 const fish=e=>{if(e.drew!==false)drawCards(e,1)};
+const refill=e=>drawCards(e,e.n||1);
 function book(e){const h=byPid[byName[e.name]];if(!h)return;const objs=SU.map(s=>key2obj[e.rank+s]);
  if(h!==you)objs.forEach(o=>bring(o,h,objs));
  const k=h.setN++,p0=(Math.random()-.5)*.25;
@@ -2316,7 +2381,9 @@ function reconcile(st){if(!you)return false;let moved=false;const S=(c,to,d)=>{s
 const ray=new T.Raycaster(),mp=new T.Vector2(),cv=rd.domElement;
 function pick(e){const r=cv.getBoundingClientRect();mp.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);ray.setFromCamera(mp,cam);
  const all=[you,...opps].filter(Boolean).flatMap(h=>h.cards).flatMap(c=>c.meshes),hit=ray.intersectObjects(all)[0];return hit?hit.object.userData.c:null}
-function tap(e){const c=pick(e);if(!c){if(e.pointerType==='mouse')cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
+// touch: if you miss a fan by a finger-width, still pick the nearest opponent
+function nearSeat(e){const r=cv.getBoundingClientRect();let best=null,bd=70;for(const h of opps){v.copy(h.g.position);v.y=.5;v.project(cam);const dx=(v.x*.5+.5)*r.width+r.left-e.clientX,dy=(-v.y*.5+.5)*r.height+r.top-e.clientY,d=Math.hypot(dx,dy);if(d<bd){bd=d;best=h}}return best}
+function tap(e){const c=pick(e);if(!c){if(e.pointerType!=='mouse'){const h=nearSeat(e);if(h)cb.onSeat(h.pid)}else cb.onClear();return}const o=owner(c);if(o===you)cb.onCard(RK[c.r]);else if(o&&!o.deck&&!o.tab)cb.onSeat(o.pid)}
 let down=null;
 cv.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'){hov=null;hovH=null;return}hov=pick(e);const ho=hov&&owner(hov);hovH=ho&&ho!==you?ho:null;cv.style.cursor=hov?'pointer':'default'});
 cv.addEventListener('pointerleave',()=>{hov=null;hovH=null});
@@ -2328,9 +2395,12 @@ let settling=false;
 function settle(getSt,ok,done){if(settling)return;settling=true;idleCbs.push(()=>{settling=false;const st=getSt();let m=false;if(st&&st.phase!=='lobby'&&ok())m=reconcile(st);if(m)idleCbs.push(()=>done&&done());else done&&done()})}
 function reset(){for(const k in hands){const h=hands[k];deck.cards.push(...h.cards,...h.set.cards);h.cards=[];h.set.cards=[];h.setN=0}
  cards.forEach(c=>{c.mv=null;c.fly=null;c.pend=false;c.setting=false;c.tt=null});moving.length=0;deck.gaps=[];seatSig='';sel=null;tgtPid=null;idleCbs=[];settling=false}
+let frameN=0,holdFrame=0,holdUntil=0,readyCbs=[];
+const hold=ms=>{holdFrame=frameN;holdUntil=performance.now()+ms};
+const ready=()=>frameN-holdFrame>=24&&performance.now()>=holdUntil;
 const clk=new T.Clock();
-(function loop(){requestAnimationFrame(loop);const dt=Math.min(clk.getDelta(),.05);if($('screen-game').classList.contains('hidden'))return;tick(dt);rd.render(sc,cam)})();
-return{snap:()=>({you:you.cards.map(c=>RK[c.r]+SU[c.s]).sort(),opp:opps.map(h=>[h.pid,h.cards.length,h.set.cards.length]),deck:deck.cards.length,sets:you.set.cards.length}),fit,syncSeats,prepare,deal,success,fish,book,setShadows:applyShadow,reconcile,settle,reset,idle,
+(function loop(){requestAnimationFrame(loop);const dt=Math.min(clk.getDelta(),.05);if($('screen-game').classList.contains('hidden'))return;frameN++;tick(dt);rd.render(sc,cam);if(readyCbs.length&&ready()){const l=readyCbs;readyCbs=[];l.forEach(f=>{try{f()}catch(x){console.error(x)}})}})();
+return{hold,ready,whenReady:f=>{readyCbs.push(f)},snap:()=>({you:you.cards.map(c=>RK[c.r]+SU[c.s]).sort(),opp:opps.map(h=>[h.pid,h.cards.length,h.set.cards.length]),deck:deck.cards.length,sets:you.set.cards.length}),fit,syncSeats,prepare,deal,success,fish,refill,book,setShadows:applyShadow,reconcile,settle,reset,idle,
  whenIdle:f=>{idleCbs.push(f)},setSel:r=>{sel=r?RK.indexOf(r):null},setTarget:p=>{tgtPid=p},
  shake:name=>{const h=byPid[byName[name]];if(h){h.l.classList.remove('nope');void h.l.offsetWidth;h.l.classList.add('nope')}}}
 }
